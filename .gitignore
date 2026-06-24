@@ -1,0 +1,9 @@
+.DS_Store
+.build/
+.swiftpm/
+DerivedData/
+outputs/*.app
+outputs/*.dmg
+Resources/*.iconset/
+work/
+*.xcuserstate

@@ -1,0 +1,17 @@
+# Architecture
+
+Battery Panic is split by responsibility:
+
+- `App`: application startup and coordination.
+- `Battery`: battery status reading, polling, and pure alarm decision logic.
+- `Overlay`: full-screen red warning windows, pulse speed, and pulse intensity.
+- `MenuBar`: colored battery states, charging display, menu header, and commands.
+- `Settings`: persisted settings, first-run onboarding, settings window, creator links, and launch-at-login support.
+- `Sound`: warning sound catalog, selection, preview, and playback.
+- `Shared`: constants, formatters, and small helpers.
+
+The most important pure unit is `AlarmPolicy`. It decides whether the warning should be visible from a `BatteryStatus` and an `AlarmSettingsSnapshot`. UI classes call into that policy instead of duplicating threshold logic.
+
+The preview button does not depend on the real current battery level. It creates a synthetic low-battery status, so the red overlay can always be tested immediately.
+
+The menu bar status is derived from `BatteryStatusAppearance`, which maps battery state into healthy, warning, critical, charging, or unavailable UI states.

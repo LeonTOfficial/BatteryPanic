@@ -1,0 +1,34 @@
+# Security Review
+
+Date: 2026-06-24
+
+## Result
+
+Battery Panic is suitable for an initial public source release after local verification.
+
+## Reviewed Areas
+
+- Battery status access through IOKit power APIs.
+- Login item handling through ServiceManagement.
+- Local settings storage through UserDefaults.
+- Overlay windows and click-through behavior.
+- Build scripts and generated app bundle.
+- Repository ignore rules.
+- Secret scanning patterns for common tokens and keys.
+
+## Findings
+
+- No hardcoded API keys, private keys, GitHub tokens, or OpenAI-style keys were found.
+- No network calls are present in the app code.
+- No unnecessary macOS privacy permissions are requested.
+- Build scripts remove extended attributes before signing the app bundle.
+- Public binary distribution still needs Developer ID signing and notarization.
+
+## Verification Commands
+
+```bash
+./scripts/run_tests.sh
+./scripts/build_app.sh
+codesign --verify --deep --strict --verbose=2 "outputs/Battery Panic.app"
+rg -n "(token|secret|password|api[_-]?key|BEGIN PRIVATE|ghp_|github_pat|sk-)" . --glob '!/.build/**' --glob '!outputs/**'
+```
