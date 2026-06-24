@@ -13,6 +13,7 @@ Battery Panic is suitable for an initial public source release after local verif
 - Local settings storage through UserDefaults.
 - Overlay windows and click-through behavior.
 - Build scripts and generated app bundle.
+- Synthesized siren playback through AVFoundation.
 - Repository ignore rules.
 - Secret scanning patterns for common tokens and keys.
 
@@ -21,6 +22,7 @@ Battery Panic is suitable for an initial public source release after local verif
 - No hardcoded API keys, private keys, GitHub tokens, or OpenAI-style keys were found.
 - No network calls are present in the app code.
 - No unnecessary macOS privacy permissions are requested.
+- The siren is generated locally and does not require microphone or media-library permissions.
 - Build scripts remove extended attributes before signing the app bundle.
 - Public binary distribution still needs Developer ID signing and notarization.
 

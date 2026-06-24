@@ -188,7 +188,7 @@ final class AppCoordinator {
             soundPlayer.playWarning(named: settings.selectedSoundName)
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + AppConstants.testAlarmDuration) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + settings.previewDuration) { [weak self] in
             guard let self, testAlarmVisible, testAlarmToken == token else { return }
             testAlarmVisible = false
             if let latestStatus {

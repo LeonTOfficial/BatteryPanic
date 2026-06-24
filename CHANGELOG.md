@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0
+
+- Redesigned the red warning overlay copy and layout to feel more distinct and ownable.
+- Added a built-in synthesized Battery Panic Siren sound.
+- Added live pulsing overlay preview inside Settings.
+- Added preview duration control.
+- Improved the menu bar dropdown with a more readable status/settings summary.
+- Removed the duplicate creator link from the top menu header while keeping credits lower in the menu.
+
 ## 0.2.0
 
 - Added adjustable pulse speed and pulse intensity settings.

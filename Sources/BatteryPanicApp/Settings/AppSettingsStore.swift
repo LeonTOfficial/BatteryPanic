@@ -5,6 +5,7 @@ struct AlarmSettingsSnapshot: Equatable {
     let pulseEnabled: Bool
     let pulseSpeed: Double
     let pulseIntensity: Double
+    let previewDuration: Double
     let soundEnabled: Bool
     let selectedSoundName: String
     let launchAtLoginEnabled: Bool
@@ -18,6 +19,7 @@ final class AppSettingsStore {
         static let pulseEnabled = "pulseEnabled"
         static let pulseSpeed = "pulseSpeed"
         static let pulseIntensity = "pulseIntensity"
+        static let previewDuration = "previewDuration"
         static let soundEnabled = "soundEnabled"
         static let selectedSoundName = "selectedSoundName"
         static let launchAtLoginEnabled = "launchAtLoginEnabled"
@@ -36,6 +38,7 @@ final class AppSettingsStore {
             Keys.pulseEnabled: true,
             Keys.pulseSpeed: 1.0,
             Keys.pulseIntensity: 1.0,
+            Keys.previewDuration: AppConstants.defaultPreviewDuration,
             Keys.soundEnabled: true,
             Keys.selectedSoundName: WarningSound.defaultSound.name,
             Keys.launchAtLoginEnabled: false,
@@ -50,6 +53,7 @@ final class AppSettingsStore {
             pulseEnabled: defaults.bool(forKey: Keys.pulseEnabled),
             pulseSpeed: pulseSpeed,
             pulseIntensity: pulseIntensity,
+            previewDuration: previewDuration,
             soundEnabled: defaults.bool(forKey: Keys.soundEnabled),
             selectedSoundName: selectedSoundName,
             launchAtLoginEnabled: defaults.bool(forKey: Keys.launchAtLoginEnabled),
@@ -70,6 +74,11 @@ final class AppSettingsStore {
     var pulseIntensity: Double {
         let value = defaults.double(forKey: Keys.pulseIntensity)
         return (value == 0 ? 1.0 : value).clamped(to: 0.45...1.6)
+    }
+
+    var previewDuration: Double {
+        let value = defaults.double(forKey: Keys.previewDuration)
+        return (value == 0 ? AppConstants.defaultPreviewDuration : value).clamped(to: 3...30)
     }
 
     var selectedSoundName: String {
@@ -94,6 +103,11 @@ final class AppSettingsStore {
 
     func setPulseIntensity(_ value: Double) {
         defaults.set(value.clamped(to: 0.45...1.6), forKey: Keys.pulseIntensity)
+        notify()
+    }
+
+    func setPreviewDuration(_ value: Double) {
+        defaults.set(value.clamped(to: 3...30), forKey: Keys.previewDuration)
         notify()
     }
 

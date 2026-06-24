@@ -47,8 +47,8 @@ private func drawSettingsPreview() -> NSImage {
     drawText("Battery Panic", x: 340, y: 130, size: 34, weight: .bold, color: .white)
     drawText("Settings", x: 342, y: 170, size: 18, weight: .medium, color: muted)
     section(title: "Battery threshold", body: "Warn below 10%", y: 230)
-    section(title: "Pulsing overlay", body: "Speed 1.0x  /  Intensity 100%", y: 345)
-    section(title: "Audio warning alerts", body: "Sound: Basso  /  Test Sound", y: 460)
+    section(title: "Pulsing overlay", body: "Speed 1.0x  /  Intensity 100%  /  Preview 8s", y: 345)
+    section(title: "Audio warning alerts", body: "Sound: Battery Panic Siren  /  Test Sound", y: 460)
     drawText("Created by Leon.T  -  GitHub: LeonTOfficial", x: 340, y: 620, size: 16, weight: .medium, color: .linkColor)
     image.unlockFocus()
     return image
@@ -66,8 +66,9 @@ private func drawOverlayPreview() -> NSImage {
     rounded(NSRect(x: 392, y: 294, width: 416, height: 112), radius: 42, color: NSColor(calibratedWhite: 0.10, alpha: 0.94))
     strokeRounded(NSRect(x: 392, y: 294, width: 416, height: 112), radius: 42, color: NSColor.systemRed.withAlphaComponent(0.88), width: 2)
     drawBattery(x: 438, y: 335, color: .systemRed)
-    drawText("9% Remaining", x: 530, y: 320, size: 28, weight: .bold, color: .systemRed)
-    drawText("Connect charger immediately", x: 532, y: 356, size: 17, weight: .semibold, color: NSColor.systemRed.withAlphaComponent(0.78))
+    drawText("BATTERY PANIC", x: 530, y: 304, size: 14, weight: .black, color: NSColor.systemRed.withAlphaComponent(0.78))
+    drawText("Low power: 9%", x: 530, y: 330, size: 32, weight: .black, color: .systemRed)
+    drawText("Plug in your charger to dismiss this alert", x: 532, y: 372, size: 16, weight: .medium, color: NSColor.white.withAlphaComponent(0.72))
     image.unlockFocus()
     return image
 }

@@ -18,6 +18,7 @@ let package = Package(
             path: "Sources/BatteryPanicApp",
             linkerSettings: [
                 .linkedFramework("AppKit"),
+                .linkedFramework("AVFoundation"),
                 .linkedFramework("IOKit"),
                 .linkedFramework("ServiceManagement")
             ]

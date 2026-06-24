@@ -1,25 +1,25 @@
-# Battery Panic 0.2.0 Release Notes
+# Battery Panic 0.3.0 Release Notes
 
-Battery Panic 0.2.0 turns the first version into a more polished macOS utility ready for public GitHub release.
+Battery Panic 0.3.0 makes the app feel more original, clearer, and more useful during setup.
 
 ## What's New
 
+- New red alert copy and layout:
+  - Uses a more distinct Battery Panic style.
+  - Avoids the previous "remaining" wording.
+- Built-in synthesized Battery Panic Siren.
+- Live Settings preview for pulse speed and pulse intensity.
+- Configurable red-screen preview duration.
+- Cleaner menu bar dropdown:
+  - Better battery status readability.
+  - Clear power connection state.
+  - Threshold, alarm, overlay, and sound summary.
+  - Duplicate top creator link removed.
 - Modern menu bar battery states:
   - Green for healthy battery.
   - Orange when the battery is getting low.
   - Red with an exclamation mark when critical.
   - Charging state with a charging indicator.
-- Adjustable pulsing overlay:
-  - Pulse speed setting.
-  - Pulse intensity setting.
-- Better audio warning alerts:
-  - Select a macOS system sound.
-  - Test the selected sound from Settings.
-- Improved Preferences UI:
-  - Clearer sections.
-  - Better spacing.
-  - More readable controls.
-  - Creator and GitHub link.
 - Security and quality pass:
   - No network behavior.
   - No secrets or tokens found in the repository scan.

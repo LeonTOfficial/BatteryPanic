@@ -45,7 +45,7 @@ struct BatteryStatusAppearance {
                 level: .critical,
                 color: .systemRed,
                 title: "\(status.percentage)% critical",
-                subtitle: "Connect charger immediately.",
+                subtitle: "Plug in your charger to recover.",
                 showsBolt: false,
                 showsExclamation: true
             )

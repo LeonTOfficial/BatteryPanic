@@ -10,6 +10,9 @@ final class SettingsWindowController: NSWindowController {
     private let pulseSpeedValueLabel = NSTextField(labelWithString: "1.0x")
     private let pulseIntensitySlider = NSSlider(value: 1.0, minValue: 0.45, maxValue: 1.6, target: nil, action: nil)
     private let pulseIntensityValueLabel = NSTextField(labelWithString: "100%")
+    private let previewDurationSlider = NSSlider(value: AppConstants.defaultPreviewDuration, minValue: 3, maxValue: 30, target: nil, action: nil)
+    private let previewDurationValueLabel = NSTextField(labelWithString: "8s")
+    private let overlayPreviewView = OverlayPreviewView(frame: NSRect(x: 0, y: 0, width: 498, height: 128))
     private let soundPopup = NSPopUpButton(frame: .zero, pullsDown: false)
     private let pulseCheckbox = NSButton(checkboxWithTitle: "Pulse red overlay", target: nil, action: nil)
     private let soundCheckbox = NSButton(checkboxWithTitle: "Play warning sound", target: nil, action: nil)
@@ -26,7 +29,7 @@ final class SettingsWindowController: NSWindowController {
         self.loginItemService = loginItemService
 
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 590, height: 760),
+            contentRect: NSRect(x: 0, y: 0, width: 590, height: 830),
             styleMask: [.titled, .closable, .miniaturizable],
             backing: .buffered,
             defer: false
@@ -163,20 +166,27 @@ final class SettingsWindowController: NSWindowController {
         pulseSpeedSlider.action = #selector(pulseSpeedChanged)
         pulseIntensitySlider.target = self
         pulseIntensitySlider.action = #selector(pulseIntensityChanged)
+        previewDurationSlider.target = self
+        previewDurationSlider.action = #selector(previewDurationChanged)
         styleValueLabel(pulseSpeedValueLabel)
         styleValueLabel(pulseIntensityValueLabel)
+        styleValueLabel(previewDurationValueLabel)
+        overlayPreviewView.heightAnchor.constraint(equalToConstant: 128).isActive = true
+        overlayPreviewView.widthAnchor.constraint(equalToConstant: 498).isActive = true
 
         let stack = NSStackView()
         stack.orientation = .vertical
         stack.alignment = .leading
         stack.spacing = 11
+        stack.addArrangedSubview(overlayPreviewView)
         stack.addArrangedSubview(pulseCheckbox)
         stack.addArrangedSubview(makeSliderRow(title: "Pulse speed", slider: pulseSpeedSlider, valueLabel: pulseSpeedValueLabel))
         stack.addArrangedSubview(makeSliderRow(title: "Pulse intensity", slider: pulseIntensitySlider, valueLabel: pulseIntensityValueLabel))
+        stack.addArrangedSubview(makeSliderRow(title: "Preview duration", slider: previewDurationSlider, valueLabel: previewDurationValueLabel))
 
         return makeSection(
             title: "Pulsing overlay",
-            subtitle: "Adjust how quickly and strongly the red warning breathes on screen.",
+            subtitle: "Adjust how the warning breathes. The panel updates live while you move the controls.",
             content: stack
         )
     }
@@ -322,12 +332,15 @@ final class SettingsWindowController: NSWindowController {
         pulseSpeedValueLabel.stringValue = String(format: "%.1fx", settings.pulseSpeed)
         pulseIntensitySlider.doubleValue = settings.pulseIntensity
         pulseIntensityValueLabel.stringValue = "\(Int(settings.pulseIntensity * 100))%"
+        previewDurationSlider.doubleValue = settings.previewDuration
+        previewDurationValueLabel.stringValue = "\(Int(settings.previewDuration))s"
         pulseCheckbox.state = settings.pulseEnabled ? .on : .off
         soundCheckbox.state = settings.soundEnabled ? .on : .off
         selectSound(named: settings.selectedSoundName)
         launchAtLoginCheckbox.state = (settings.launchAtLoginEnabled || loginItemService.isEnabled) ? .on : .off
         pausedCheckbox.state = settings.isPaused ? .on : .off
         statusLabel.stringValue = settings.isPaused ? "Alarm paused" : "Ready"
+        updateOverlayPreview()
     }
 
     @objc private func thresholdChanged() {
@@ -339,6 +352,7 @@ final class SettingsWindowController: NSWindowController {
 
     @objc private func pulseChanged() {
         settingsStore.setPulseEnabled(pulseCheckbox.state == .on)
+        updateOverlayPreview()
         statusLabel.stringValue = pulseCheckbox.state == .on ? "Pulse enabled" : "Pulse disabled"
     }
 
@@ -346,6 +360,7 @@ final class SettingsWindowController: NSWindowController {
         let value = pulseSpeedSlider.doubleValue
         settingsStore.setPulseSpeed(value)
         pulseSpeedValueLabel.stringValue = String(format: "%.1fx", value)
+        updateOverlayPreview()
         statusLabel.stringValue = String(format: "Pulse speed set to %.1fx", value)
     }
 
@@ -353,7 +368,15 @@ final class SettingsWindowController: NSWindowController {
         let value = pulseIntensitySlider.doubleValue
         settingsStore.setPulseIntensity(value)
         pulseIntensityValueLabel.stringValue = "\(Int(value * 100))%"
+        updateOverlayPreview()
         statusLabel.stringValue = "Pulse intensity set to \(Int(value * 100))%"
+    }
+
+    @objc private func previewDurationChanged() {
+        let value = previewDurationSlider.doubleValue
+        settingsStore.setPreviewDuration(value)
+        previewDurationValueLabel.stringValue = "\(Int(value))s"
+        statusLabel.stringValue = "Preview duration set to \(Int(value)) seconds"
     }
 
     @objc private func soundChanged() {
@@ -395,7 +418,7 @@ final class SettingsWindowController: NSWindowController {
     }
 
     @objc private func testAlarm() {
-        statusLabel.stringValue = "Showing preview for \(Int(AppConstants.testAlarmDuration)) seconds"
+        statusLabel.stringValue = "Showing preview for \(Int(settingsStore.snapshot().previewDuration)) seconds"
         onTestAlarm?()
     }
 
@@ -451,5 +474,13 @@ final class SettingsWindowController: NSWindowController {
             }
         }
         soundPopup.selectItem(at: 0)
+    }
+
+    private func updateOverlayPreview() {
+        overlayPreviewView.configure(
+            pulseEnabled: pulseCheckbox.state == .on,
+            pulseSpeed: pulseSpeedSlider.doubleValue,
+            pulseIntensity: pulseIntensitySlider.doubleValue
+        )
     }
 }

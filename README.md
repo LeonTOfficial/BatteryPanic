@@ -13,8 +13,10 @@ The app is built with Swift and AppKit, stays local to your Mac, and is designed
 - Red pulsing full-screen overlay across connected displays.
 - Adjustable low-battery threshold.
 - Adjustable overlay pulse speed and pulse intensity.
-- Selectable macOS system warning sounds.
+- Built-in Battery Panic siren plus selectable macOS system warning sounds.
 - Test buttons for both the red overlay and the selected sound.
+- Live in-settings overlay preview that updates while you move pulse controls.
+- Adjustable preview duration.
 - Optional launch at login.
 - First-run welcome/setup window.
 - Local-only behavior: no analytics, no network calls, no accounts.
@@ -76,7 +78,8 @@ Battery Panic only shows the real warning when the Mac has a battery, is unplugg
 - **Pulse red overlay:** enables or disables the animated overlay pulse.
 - **Pulse speed:** controls how fast the warning breathes.
 - **Pulse intensity:** controls how strong the red wash and glow are.
-- **Warning sound:** choose from macOS system sounds such as Basso, Ping, Glass, Hero, and more.
+- **Preview duration:** controls how long the red-screen test stays visible.
+- **Warning sound:** choose the built-in Battery Panic Siren or macOS system sounds such as Basso, Ping, Glass, Hero, and more.
 - **Test Sound:** plays the selected warning sound immediately.
 - **Preview Red Screen:** shows the overlay using a safe simulated low-battery state.
 - **Start at login:** registers Battery Panic as a macOS login item.

@@ -4,9 +4,6 @@ final class BatteryMenuHeaderView: NSView {
     private let iconView = NSImageView()
     private let titleLabel = NSTextField(labelWithString: "Battery Panic")
     private let subtitleLabel = NSTextField(labelWithString: "Waiting for battery status...")
-    private let creatorButton = NSButton(title: "Created by Leon.T - GitHub: LeonTOfficial", target: nil, action: nil)
-
-    var onOpenGitHub: (() -> Void)?
 
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
@@ -30,7 +27,7 @@ final class BatteryMenuHeaderView: NSView {
     }
 
     private func setup() {
-        frame = NSRect(x: 0, y: 0, width: 310, height: 112)
+        frame = NSRect(x: 0, y: 0, width: 318, height: 74)
 
         let root = NSStackView()
         root.orientation = .vertical
@@ -63,15 +60,7 @@ final class BatteryMenuHeaderView: NSView {
         topRow.addArrangedSubview(iconView)
         topRow.addArrangedSubview(labels)
 
-        creatorButton.isBordered = false
-        creatorButton.alignment = .left
-        creatorButton.font = NSFont.systemFont(ofSize: 11, weight: .medium)
-        creatorButton.contentTintColor = .linkColor
-        creatorButton.target = self
-        creatorButton.action = #selector(openGitHub)
-
         root.addArrangedSubview(topRow)
-        root.addArrangedSubview(creatorButton)
         addSubview(root)
 
         NSLayoutConstraint.activate([
@@ -82,7 +71,4 @@ final class BatteryMenuHeaderView: NSView {
         ])
     }
 
-    @objc private func openGitHub() {
-        onOpenGitHub?()
-    }
 }

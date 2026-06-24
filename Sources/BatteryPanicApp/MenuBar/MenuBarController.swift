@@ -10,13 +10,13 @@ final class MenuBarController: NSObject {
     private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
     private let menu = NSMenu()
     private let headerView = BatteryMenuHeaderView()
+    private let detailsView = BatteryMenuDetailsView()
     private let headerItem = NSMenuItem()
+    private let detailsItem = NSMenuItem()
 
-    private let statusLineItem = NSMenuItem(title: "Battery: --", action: nil, keyEquivalent: "")
-    private let thresholdItem = NSMenuItem(title: "Threshold: 10%", action: nil, keyEquivalent: "")
-    private let alarmStateItem = NSMenuItem(title: "Alarm: idle", action: nil, keyEquivalent: "")
     private let pauseItem = NSMenuItem(title: "Pause Alarm", action: #selector(togglePause), keyEquivalent: "")
     private var latestStatus: BatteryStatus?
+    private var alarmSummary = "Idle"
 
     var onOpenSettings: (() -> Void)?
     var onOpenWelcome: (() -> Void)?
@@ -40,14 +40,14 @@ final class MenuBarController: NSObject {
         latestStatus = status
         updateButton(for: status)
         headerView.update(status: status, settings: settingsStore.snapshot())
-        statusLineItem.title = "Battery: \(BatteryFormatter.longStatus(for: status))"
+        updateDetails()
     }
 
     func updateSettings() {
         let snapshot = settingsStore.snapshot()
-        thresholdItem.title = "Threshold: \(snapshot.thresholdPercentage)%"
         pauseItem.title = snapshot.isPaused ? "Resume Alarm" : "Pause Alarm"
         headerView.update(status: latestStatus, settings: snapshot)
+        updateDetails()
         if let latestStatus {
             updateButton(for: latestStatus)
         }
@@ -55,10 +55,11 @@ final class MenuBarController: NSObject {
 
     func setAlarmVisible(_ visible: Bool, mode: AlarmDisplayMode = .active) {
         if visible {
-            alarmStateItem.title = mode == .preview ? "Alarm: preview" : "Alarm: visible"
+            alarmSummary = mode == .preview ? "Preview running" : "Visible"
         } else {
-            alarmStateItem.title = "Alarm: idle"
+            alarmSummary = "Idle"
         }
+        updateDetails()
     }
 
     private func updateButton(for status: BatteryStatus) {
@@ -86,12 +87,7 @@ final class MenuBarController: NSObject {
         }
 
         headerItem.view = headerView
-        headerView.onOpenGitHub = { [weak self] in
-            self?.onOpenGitHub?()
-        }
-        statusLineItem.isEnabled = false
-        thresholdItem.isEnabled = false
-        alarmStateItem.isEnabled = false
+        detailsItem.view = detailsView
         pauseItem.target = self
 
         let testItem = NSMenuItem(title: "Preview Red Screen", action: #selector(testAlarm), keyEquivalent: "t")
@@ -114,9 +110,7 @@ final class MenuBarController: NSObject {
 
         menu.addItem(headerItem)
         menu.addItem(.separator())
-        menu.addItem(statusLineItem)
-        menu.addItem(thresholdItem)
-        menu.addItem(alarmStateItem)
+        menu.addItem(detailsItem)
         menu.addItem(.separator())
         menu.addItem(testItem)
         menu.addItem(pauseItem)
@@ -127,6 +121,14 @@ final class MenuBarController: NSObject {
         menu.addItem(gitHubItem)
         menu.addItem(.separator())
         menu.addItem(quitItem)
+    }
+
+    private func updateDetails() {
+        detailsView.update(
+            status: latestStatus,
+            settings: settingsStore.snapshot(),
+            alarmSummary: alarmSummary
+        )
     }
 
     @objc private func openSettings() {

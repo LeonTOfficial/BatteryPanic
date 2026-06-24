@@ -10,6 +10,12 @@ APP_BUNDLE="$OUTPUT_DIR/$APP_NAME.app"
 BINARY_SOURCE="$ROOT_DIR/.build/$BUILD_CONFIG/BatteryPanicApp"
 BINARY_DEST="$APP_BUNDLE/Contents/MacOS/$APP_NAME"
 
+clean_bundle_attributes() {
+    xattr -cr "$APP_BUNDLE" 2>/dev/null || true
+    xattr -d com.apple.FinderInfo "$APP_BUNDLE" 2>/dev/null || true
+    xattr -d 'com.apple.fileprovider.fpfs#P' "$APP_BUNDLE" 2>/dev/null || true
+}
+
 cd "$ROOT_DIR"
 
 swift build -c "$BUILD_CONFIG"
@@ -46,9 +52,9 @@ cat > "$APP_BUNDLE/Contents/Info.plist" <<PLIST
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
-    <string>0.2.0</string>
+    <string>0.3.0</string>
     <key>CFBundleVersion</key>
-    <string>2</string>
+    <string>3</string>
     <key>LSMinimumSystemVersion</key>
     <string>13.0</string>
     <key>LSUIElement</key>
@@ -59,9 +65,8 @@ cat > "$APP_BUNDLE/Contents/Info.plist" <<PLIST
 </plist>
 PLIST
 
-xattr -cr "$APP_BUNDLE"
+clean_bundle_attributes
 codesign --force --deep --sign - "$APP_BUNDLE"
-xattr -cr "$APP_BUNDLE"
-codesign --force --deep --sign - "$APP_BUNDLE"
+clean_bundle_attributes
 
 echo "Built: $APP_BUNDLE"

@@ -62,8 +62,8 @@ final class OverlayView: NSView {
 
     private func drawWarningPill(in rect: NSRect) {
         let pulse = pulseEnabled ? pulseValue : 1
-        let pillWidth = min(max(rect.width * 0.38, 420), 560)
-        let pillHeight: CGFloat = 92
+        let pillWidth = min(max(rect.width * 0.34, 420), 520)
+        let pillHeight: CGFloat = 118
         let pillRect = NSRect(
             x: rect.midX - (pillWidth / 2),
             y: rect.midY - (pillHeight / 2),
@@ -78,8 +78,8 @@ final class OverlayView: NSView {
 
         NSGraphicsContext.saveGraphicsState()
         shadow.set()
-        let pillPath = NSBezierPath(roundedRect: pillRect, xRadius: 36, yRadius: 36)
-        NSColor(calibratedWhite: 0.11, alpha: 0.92).setFill()
+        let pillPath = NSBezierPath(roundedRect: pillRect, xRadius: 28, yRadius: 28)
+        NSColor(calibratedWhite: 0.08, alpha: 0.94).setFill()
         pillPath.fill()
         NSGraphicsContext.restoreGraphicsState()
 
@@ -87,47 +87,88 @@ final class OverlayView: NSView {
         pillPath.lineWidth = 2
         pillPath.stroke()
 
-        drawBatteryIcon(in: pillRect)
+        drawPanicBadge(in: pillRect)
         drawPillText(in: pillRect)
     }
 
-    private func drawBatteryIcon(in pillRect: NSRect) {
-        let iconRect = NSRect(x: pillRect.minX + 36, y: pillRect.midY - 12, width: 40, height: 24)
+    private func drawPanicBadge(in pillRect: NSRect) {
+        let badgeRect = NSRect(x: pillRect.minX + 30, y: pillRect.midY - 28, width: 58, height: 56)
+        let badge = NSBezierPath(roundedRect: badgeRect, xRadius: 16, yRadius: 16)
+        NSColor.systemRed.withAlphaComponent(0.14).setFill()
+        badge.fill()
+        NSColor.systemRed.withAlphaComponent(0.82).setStroke()
+        badge.lineWidth = 2
+        badge.stroke()
+
+        let iconRect = NSRect(x: badgeRect.midX - 18, y: badgeRect.midY - 8, width: 31, height: 18)
         let body = NSBezierPath(roundedRect: iconRect, xRadius: 6, yRadius: 6)
-        body.lineWidth = 3
+        body.lineWidth = 2.4
         NSColor.systemRed.setStroke()
         body.stroke()
 
-        let nubRect = NSRect(x: iconRect.maxX + 4, y: iconRect.midY - 5, width: 5, height: 10)
+        let nubRect = NSRect(x: iconRect.maxX + 3, y: iconRect.midY - 4, width: 4, height: 8)
         let nub = NSBezierPath(roundedRect: nubRect, xRadius: 2, yRadius: 2)
         NSColor.systemRed.setFill()
         nub.fill()
 
-        let chargeRect = NSRect(x: iconRect.minX + 6, y: iconRect.minY + 6, width: 10, height: 12)
+        let chargeRect = NSRect(x: iconRect.minX + 5, y: iconRect.minY + 5, width: 8, height: 8)
         let charge = NSBezierPath(roundedRect: chargeRect, xRadius: 3, yRadius: 3)
         NSColor.systemRed.withAlphaComponent(0.55).setFill()
         charge.fill()
+
+        drawCenteredText(
+            "!",
+            in: NSRect(x: badgeRect.midX + 7, y: badgeRect.midY - 16, width: 18, height: 24),
+            font: NSFont.systemFont(ofSize: 22, weight: .black),
+            color: .systemRed
+        )
     }
 
     private func drawPillText(in pillRect: NSRect) {
-        let title = isTest ? "Preview: \(percentage)% Remaining" : "\(percentage)% Remaining"
-        let subtitle = isTest ? "This is how Battery Panic looks below your threshold" : "Connect charger immediately"
-        let textOriginX = pillRect.minX + 102
+        let eyebrow = isTest ? "BATTERY PANIC PREVIEW" : "BATTERY PANIC"
+        let title = "Low power: \(percentage)%"
+        let subtitle = isTest ? "Live warning preview using your settings" : "Plug in your charger to dismiss this alert"
+        let textOriginX = pillRect.minX + 112
 
+        let eyebrowAttributes: [NSAttributedString.Key: Any] = [
+            .font: NSFont.systemFont(ofSize: 11, weight: .black),
+            .foregroundColor: NSColor.systemRed.withAlphaComponent(0.75),
+            .kern: 1.1
+        ]
         let titleAttributes: [NSAttributedString.Key: Any] = [
-            .font: NSFont.systemFont(ofSize: 20, weight: .bold),
+            .font: NSFont.systemFont(ofSize: 26, weight: .black),
             .foregroundColor: NSColor.systemRed
         ]
         let subtitleAttributes: [NSAttributedString.Key: Any] = [
-            .font: NSFont.systemFont(ofSize: 14, weight: .semibold),
-            .foregroundColor: NSColor.systemRed.withAlphaComponent(0.78)
+            .font: NSFont.systemFont(ofSize: 14, weight: .medium),
+            .foregroundColor: NSColor.white.withAlphaComponent(0.72)
         ]
 
+        NSAttributedString(string: eyebrow, attributes: eyebrowAttributes).draw(
+            at: NSPoint(x: textOriginX, y: pillRect.minY + 24)
+        )
         NSAttributedString(string: title, attributes: titleAttributes).draw(
-            at: NSPoint(x: textOriginX, y: pillRect.minY + 25)
+            at: NSPoint(x: textOriginX, y: pillRect.minY + 43)
         )
         NSAttributedString(string: subtitle, attributes: subtitleAttributes).draw(
-            at: NSPoint(x: textOriginX, y: pillRect.minY + 52)
+            at: NSPoint(x: textOriginX, y: pillRect.minY + 78)
+        )
+    }
+
+    private func drawCenteredText(_ text: String, in rect: NSRect, font: NSFont, color: NSColor) {
+        let value = NSAttributedString(
+            string: text,
+            attributes: [
+                .font: font,
+                .foregroundColor: color
+            ]
+        )
+        let size = value.size()
+        value.draw(
+            at: NSPoint(
+                x: rect.midX - (size.width / 2),
+                y: rect.midY - (size.height / 2)
+            )
         )
     }
 }

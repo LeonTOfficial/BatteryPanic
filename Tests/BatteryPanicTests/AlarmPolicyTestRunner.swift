@@ -89,6 +89,7 @@ struct AlarmPolicyTestRunner {
             pulseEnabled: true,
             pulseSpeed: 1.0,
             pulseIntensity: 1.0,
+            previewDuration: AppConstants.defaultPreviewDuration,
             soundEnabled: true,
             selectedSoundName: WarningSound.defaultSound.name,
             launchAtLoginEnabled: false,
