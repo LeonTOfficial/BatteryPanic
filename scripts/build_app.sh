@@ -61,5 +61,7 @@ PLIST
 
 xattr -cr "$APP_BUNDLE"
 codesign --force --deep --sign - "$APP_BUNDLE"
+xattr -cr "$APP_BUNDLE"
+codesign --force --deep --sign - "$APP_BUNDLE"
 
 echo "Built: $APP_BUNDLE"
