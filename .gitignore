@@ -2,8 +2,10 @@
 .build/
 .swiftpm/
 DerivedData/
+outputs/
 outputs/*.app
 outputs/*.dmg
+outputs/*.zip
 Resources/*.iconset/
 work/
 *.xcuserstate

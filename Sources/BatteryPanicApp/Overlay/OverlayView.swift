@@ -41,7 +41,7 @@ final class OverlayView: NSView {
 
     private func drawRedVignette(in rect: NSRect) {
         let pulse = pulseEnabled ? pulseValue : 1
-        let maxSteps = 92
+        let maxSteps = 38
 
         for step in 0..<maxSteps {
             let progress = CGFloat(step) / CGFloat(maxSteps)
@@ -49,7 +49,7 @@ final class OverlayView: NSView {
             let inset = progress * min(rect.width, rect.height) * 0.14
             let strokeRect = rect.insetBy(dx: inset, dy: inset)
             let path = NSBezierPath(roundedRect: strokeRect, xRadius: 26, yRadius: 26)
-            path.lineWidth = 3
+            path.lineWidth = 2.2
             NSColor.systemRed.withAlphaComponent(alpha * 0.14).setStroke()
             path.stroke()
         }
@@ -100,7 +100,7 @@ final class OverlayView: NSView {
         badge.lineWidth = 2
         badge.stroke()
 
-        let iconRect = NSRect(x: badgeRect.midX - 18, y: badgeRect.midY - 8, width: 31, height: 18)
+        let iconRect = NSRect(x: badgeRect.midX - 20, y: badgeRect.midY - 9, width: 34, height: 18)
         let body = NSBezierPath(roundedRect: iconRect, xRadius: 6, yRadius: 6)
         body.lineWidth = 2.4
         NSColor.systemRed.setStroke()
@@ -116,12 +116,16 @@ final class OverlayView: NSView {
         NSColor.systemRed.withAlphaComponent(0.55).setFill()
         charge.fill()
 
-        drawCenteredText(
-            "!",
-            in: NSRect(x: badgeRect.midX + 7, y: badgeRect.midY - 16, width: 18, height: 24),
-            font: NSFont.systemFont(ofSize: 22, weight: .black),
-            color: .systemRed
-        )
+        let accentRects = [
+            NSRect(x: badgeRect.maxX - 12, y: badgeRect.minY + 13, width: 4, height: 4),
+            NSRect(x: badgeRect.maxX - 12, y: badgeRect.minY + 24, width: 4, height: 4),
+            NSRect(x: badgeRect.maxX - 12, y: badgeRect.minY + 35, width: 4, height: 4)
+        ]
+        accentRects.forEach { rect in
+            let dot = NSBezierPath(roundedRect: rect, xRadius: 2, yRadius: 2)
+            NSColor.systemRed.withAlphaComponent(0.82).setFill()
+            dot.fill()
+        }
     }
 
     private func drawPillText(in pillRect: NSRect) {
@@ -155,20 +159,4 @@ final class OverlayView: NSView {
         )
     }
 
-    private func drawCenteredText(_ text: String, in rect: NSRect, font: NSFont, color: NSColor) {
-        let value = NSAttributedString(
-            string: text,
-            attributes: [
-                .font: font,
-                .foregroundColor: color
-            ]
-        )
-        let size = value.size()
-        value.draw(
-            at: NSPoint(
-                x: rect.midX - (size.width / 2),
-                y: rect.midY - (size.height / 2)
-            )
-        )
-    }
 }

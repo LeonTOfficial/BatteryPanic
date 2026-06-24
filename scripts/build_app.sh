@@ -4,11 +4,21 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 APP_NAME="Battery Panic"
 BUNDLE_ID="com.leontofficial.batterypanic"
+VERSION="0.4.0"
+BUILD_NUMBER="4"
 BUILD_CONFIG="${BUILD_CONFIG:-release}"
 OUTPUT_DIR="$ROOT_DIR/outputs"
-APP_BUNDLE="$OUTPUT_DIR/$APP_NAME.app"
+OUTPUT_APP_BUNDLE="$OUTPUT_DIR/$APP_NAME.app"
+RELEASE_ZIP="$OUTPUT_DIR/$APP_NAME $VERSION.zip"
+STAGING_DIR="${TMPDIR:-/tmp}/BatteryPanicBuild.$$"
+APP_BUNDLE="$STAGING_DIR/$APP_NAME.app"
 BINARY_SOURCE="$ROOT_DIR/.build/$BUILD_CONFIG/BatteryPanicApp"
 BINARY_DEST="$APP_BUNDLE/Contents/MacOS/$APP_NAME"
+
+cleanup() {
+    rm -rf "$STAGING_DIR"
+}
+trap cleanup EXIT
 
 clean_bundle_attributes() {
     xattr -cr "$APP_BUNDLE" 2>/dev/null || true
@@ -20,9 +30,12 @@ cd "$ROOT_DIR"
 
 swift build -c "$BUILD_CONFIG"
 
-rm -rf "$APP_BUNDLE"
+rm -rf "$STAGING_DIR"
+rm -rf "$OUTPUT_APP_BUNDLE"
+rm -f "$RELEASE_ZIP"
 mkdir -p "$APP_BUNDLE/Contents/MacOS"
 mkdir -p "$APP_BUNDLE/Contents/Resources"
+mkdir -p "$OUTPUT_DIR"
 
 cp "$BINARY_SOURCE" "$BINARY_DEST"
 chmod +x "$BINARY_DEST"
@@ -52,9 +65,9 @@ cat > "$APP_BUNDLE/Contents/Info.plist" <<PLIST
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
-    <string>0.3.0</string>
+    <string>$VERSION</string>
     <key>CFBundleVersion</key>
-    <string>3</string>
+    <string>$BUILD_NUMBER</string>
     <key>LSMinimumSystemVersion</key>
     <string>13.0</string>
     <key>LSUIElement</key>
@@ -68,5 +81,10 @@ PLIST
 clean_bundle_attributes
 codesign --force --deep --sign - "$APP_BUNDLE"
 clean_bundle_attributes
+codesign --verify --deep --strict --verbose=2 "$APP_BUNDLE"
 
-echo "Built: $APP_BUNDLE"
+ditto --norsrc "$APP_BUNDLE" "$OUTPUT_APP_BUNDLE"
+(cd "$STAGING_DIR" && ditto -c -k --keepParent --norsrc "$APP_NAME.app" "$RELEASE_ZIP")
+
+echo "Built: $OUTPUT_APP_BUNDLE"
+echo "Release package: $RELEASE_ZIP"

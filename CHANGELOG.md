@@ -1,11 +1,20 @@
 # Changelog
 
+## 0.4.0
+
+- Reworked the app and menu bar icon so the critical state is cleaner and no longer uses a squeezed exclamation mark.
+- Fixed Battery Panic Siren playback by matching the generated audio buffer to the Mac output format.
+- Added repeated warning-sound playback while a real low-battery alarm remains active.
+- Made all red-screen previews a fixed short 4-second test.
+- Improved the first-run welcome screen with more spacing and a personal note from Leon.
+- Reduced overlay drawing work to keep the pulsing warning smoother over time.
+- Updated README previews, release notes, and local app bundle version.
+
 ## 0.3.0
 
 - Redesigned the red warning overlay copy and layout to feel more distinct and ownable.
 - Added a built-in synthesized Battery Panic Siren sound.
 - Added live pulsing overlay preview inside Settings.
-- Added preview duration control.
 - Improved the menu bar dropdown with a more readable status/settings summary.
 - Removed the duplicate creator link from the top menu header while keeping credits lower in the menu.
 

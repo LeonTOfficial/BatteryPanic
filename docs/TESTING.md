@@ -20,7 +20,8 @@ Manual checks:
 - Change pulse speed and pulse intensity, then preview the red screen again.
 - Confirm the live Settings preview changes while moving pulse controls.
 - Select the Battery Panic Siren and several macOS sounds, then use `Test Sound`.
-- Change preview duration and confirm the red-screen preview respects it.
+- Confirm red-screen previews stop after about four seconds.
+- Leave a real alarm active briefly and confirm the selected sound repeats.
 - Set the threshold above the current battery level to trigger the real alarm.
 - Plug in the charger and confirm that the overlay disappears.
 - Toggle sound, pulse, pause, and launch-at-login from Settings.

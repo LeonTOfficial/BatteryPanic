@@ -30,10 +30,9 @@ final class BatteryMenuDetailsView: NSView {
         thresholdValue.stringValue = "\(settings.thresholdPercentage)%"
         alarmValue.stringValue = settings.isPaused ? "Paused" : alarmSummary
         overlayValue.stringValue = String(
-            format: "%.1fx speed · %d%% intensity · %ds preview",
+            format: "%.1fx pulse · %d%% intensity",
             settings.pulseSpeed,
-            Int(settings.pulseIntensity * 100),
-            Int(settings.previewDuration)
+            Int(settings.pulseIntensity * 100)
         )
         soundValue.stringValue = settings.soundEnabled
             ? WarningSound.sound(named: settings.selectedSoundName).displayName

@@ -86,7 +86,7 @@ final class OverlayManager: NSObject {
         guard animationTimer == nil else { return }
         animationStart = Date()
 
-        let timer = Timer(timeInterval: 1.0 / 30.0, repeats: true) { [weak self] _ in
+        let timer = Timer(timeInterval: 1.0 / 24.0, repeats: true) { [weak self] _ in
             self?.tickAnimation()
         }
         RunLoop.main.add(timer, forMode: .common)

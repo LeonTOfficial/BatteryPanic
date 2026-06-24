@@ -31,6 +31,9 @@ Battery Panic is suitable for an initial public source release after local verif
 ```bash
 ./scripts/run_tests.sh
 ./scripts/build_app.sh
-codesign --verify --deep --strict --verbose=2 "outputs/Battery Panic.app"
+rm -rf /tmp/BatteryPanicZipCheck
+mkdir -p /tmp/BatteryPanicZipCheck
+ditto -x -k "outputs/Battery Panic 0.4.0.zip" /tmp/BatteryPanicZipCheck
+codesign --verify --deep --strict --verbose=2 "/tmp/BatteryPanicZipCheck/Battery Panic.app"
 rg -n "(token|secret|password|api[_-]?key|BEGIN PRIVATE|ghp_|github_pat|sk-)" . --glob '!/.build/**' --glob '!outputs/**'
 ```

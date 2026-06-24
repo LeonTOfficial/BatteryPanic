@@ -4,10 +4,10 @@ enum BatteryFormatter {
     static func menuTitle(for status: BatteryStatus, threshold: Int) -> String {
         guard status.hasBattery else { return "BP --" }
         if status.isPluggedIn {
-            return "\(status.percentage)%"
+            return "⚡ \(status.percentage)%"
         }
         if status.percentage <= threshold {
-            return "! \(status.percentage)%"
+            return "\(status.percentage)%"
         }
         return "\(status.percentage)%"
     }

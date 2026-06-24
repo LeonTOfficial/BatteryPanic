@@ -8,7 +8,7 @@ enum MenuBarIconFactory {
             title: "",
             subtitle: "",
             showsBolt: false,
-            showsExclamation: isLow
+            showsCriticalDot: isLow
         )
         return image(appearance: appearance, percentage: isLow ? 9 : 80)
     }
@@ -35,14 +35,14 @@ enum MenuBarIconFactory {
         color.withAlphaComponent(0.76).setFill()
         fill.fill()
 
-        if appearance.showsExclamation {
-            NSColor.systemRed.withAlphaComponent(0.18).setFill()
-            NSBezierPath(ovalIn: NSRect(x: 0, y: 1, width: 18, height: 16)).fill()
-            drawText("!", in: NSRect(x: 7.2, y: 1.3, width: 6, height: 8), color: .systemRed, size: 8, weight: .black)
+        if appearance.showsCriticalDot {
+            let alertDot = NSBezierPath(ovalIn: NSRect(x: 14.1, y: 2.2, width: 3.4, height: 3.4))
+            NSColor.systemRed.withAlphaComponent(0.9).setFill()
+            alertDot.fill()
         }
 
         if appearance.showsBolt {
-            drawText("⌁", in: NSRect(x: 6.2, y: 1.0, width: 9, height: 11), color: color, size: 10, weight: .bold)
+            drawText("⚡", in: NSRect(x: 5.4, y: 0.6, width: 10, height: 11), color: color, size: 9, weight: .bold)
         }
 
         image.unlockFocus()

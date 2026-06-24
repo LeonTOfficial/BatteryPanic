@@ -15,6 +15,7 @@ final class AppCoordinator {
     private var alarmVisible = false
     private var testAlarmVisible = false
     private var testAlarmToken = UUID()
+    private var warningSoundTimer: Timer?
 
     init(
         settingsStore: AppSettingsStore = AppSettingsStore(),
@@ -52,6 +53,8 @@ final class AppCoordinator {
 
     func stop() {
         batteryMonitor.stop()
+        stopWarningSoundRepeater()
+        soundPlayer.stop()
         overlayManager.hide()
     }
 
@@ -128,8 +131,11 @@ final class AppCoordinator {
                 pulseIntensity: settings.pulseIntensity,
                 isTest: false
             )
-            if !alarmVisible && settings.soundEnabled {
-                soundPlayer.playWarning(named: settings.selectedSoundName)
+            if !alarmVisible {
+                playWarningSound(using: settings)
+            }
+            if warningSoundTimer == nil {
+                startWarningSoundRepeater()
             }
             alarmVisible = true
             menuBarController.setAlarmVisible(true)
@@ -140,6 +146,8 @@ final class AppCoordinator {
 
     private func hideActiveAlarm() {
         overlayManager.hide()
+        stopWarningSoundRepeater()
+        soundPlayer.stop()
         alarmVisible = false
         menuBarController.setAlarmVisible(false)
     }
@@ -174,6 +182,7 @@ final class AppCoordinator {
         let status = BatteryStatus.lowBatteryPreview(threshold: settings.thresholdPercentage)
         let token = UUID()
 
+        stopWarningSoundRepeater()
         testAlarmToken = token
         testAlarmVisible = true
         menuBarController.setAlarmVisible(true, mode: .preview)
@@ -188,15 +197,37 @@ final class AppCoordinator {
             soundPlayer.playWarning(named: settings.selectedSoundName)
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + settings.previewDuration) { [weak self] in
-            guard let self, testAlarmVisible, testAlarmToken == token else { return }
-            testAlarmVisible = false
-            if let latestStatus {
-                evaluateAlarm(for: latestStatus)
+        DispatchQueue.main.asyncAfter(deadline: .now() + AppConstants.previewAlarmDuration) { [weak self] in
+            guard let self, self.testAlarmVisible, self.testAlarmToken == token else { return }
+            self.testAlarmVisible = false
+            self.soundPlayer.stop()
+            if let latestStatus = self.latestStatus {
+                self.evaluateAlarm(for: latestStatus)
             } else {
-                overlayManager.hide()
-                menuBarController.setAlarmVisible(false)
+                self.overlayManager.hide()
+                self.menuBarController.setAlarmVisible(false)
             }
         }
+    }
+
+    private func playWarningSound(using settings: AlarmSettingsSnapshot) {
+        guard settings.soundEnabled else { return }
+        soundPlayer.playWarning(named: settings.selectedSoundName)
+    }
+
+    private func startWarningSoundRepeater() {
+        warningSoundTimer?.invalidate()
+        let timer = Timer(timeInterval: AppConstants.warningSoundRepeatInterval, repeats: true) { [weak self] _ in
+            guard let self else { return }
+            guard self.alarmVisible, !self.testAlarmVisible else { return }
+            self.playWarningSound(using: self.settingsStore.snapshot())
+        }
+        RunLoop.main.add(timer, forMode: .common)
+        warningSoundTimer = timer
+    }
+
+    private func stopWarningSoundRepeater() {
+        warningSoundTimer?.invalidate()
+        warningSoundTimer = nil
     }
 }

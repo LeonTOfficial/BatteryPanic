@@ -14,7 +14,7 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
         self.loginItemService = loginItemService
 
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 560, height: 470),
+            contentRect: NSRect(x: 0, y: 0, width: 660, height: 540),
             styleMask: [.titled, .closable, .miniaturizable],
             backing: .buffered,
             defer: false
@@ -56,7 +56,7 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
         stack.orientation = .vertical
         stack.alignment = .leading
         stack.spacing = 20
-        stack.edgeInsets = NSEdgeInsets(top: 28, left: 30, bottom: 26, right: 30)
+        stack.edgeInsets = NSEdgeInsets(top: 32, left: 36, bottom: 30, right: 36)
         stack.translatesAutoresizingMaskIntoConstraints = false
 
         let header = makeHeader()
@@ -89,20 +89,20 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
         row.alignment = .centerY
         row.spacing = 16
 
-        let icon = NSImageView(image: MenuBarIconFactory.image(isLow: true, isPaused: false))
+        let icon = NSImageView(image: AppIconFactory.image(size: 56))
         icon.imageScaling = .scaleProportionallyUpOrDown
-        icon.widthAnchor.constraint(equalToConstant: 48).isActive = true
-        icon.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        icon.widthAnchor.constraint(equalToConstant: 54).isActive = true
+        icon.heightAnchor.constraint(equalToConstant: 54).isActive = true
 
         let textStack = NSStackView()
         textStack.orientation = .vertical
         textStack.alignment = .leading
         textStack.spacing = 5
 
-        let title = NSTextField(labelWithString: "Battery Panic is ready")
+        let title = NSTextField(labelWithString: "Welcome to Battery Panic")
         title.font = NSFont.systemFont(ofSize: 28, weight: .bold)
 
-        let subtitle = NSTextField(labelWithString: "A red screen warning appears when your MacBook drops below your chosen battery level.")
+        let subtitle = NSTextField(labelWithString: "Built by Leon to make low battery warnings impossible to miss, while staying small, private, and easy to control.")
         subtitle.textColor = .secondaryLabelColor
         subtitle.lineBreakMode = .byWordWrapping
         subtitle.maximumNumberOfLines = 2
@@ -123,8 +123,8 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
         row.spacing = 12
 
         row.addArrangedSubview(makeFeatureCard(title: "10% default", body: "Change the threshold anytime."))
-        row.addArrangedSubview(makeFeatureCard(title: "Red preview", body: "Test the full-screen warning now."))
-        row.addArrangedSubview(makeFeatureCard(title: "Menu bar app", body: "Runs quietly in the background."))
+        row.addArrangedSubview(makeFeatureCard(title: "4s preview", body: "Test the red warning safely."))
+        row.addArrangedSubview(makeFeatureCard(title: "Menu bar control", body: "Runs quietly in the background."))
 
         return row
     }
@@ -182,9 +182,15 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
         let note = NSTextField(labelWithString: "Current default: warn at 10% battery while unplugged.")
         note.textColor = .secondaryLabelColor
 
+        let feedback = NSTextField(labelWithString: "If Battery Panic helps you, Leon would genuinely appreciate feedback or a GitHub star. It helps the project grow.")
+        feedback.textColor = .secondaryLabelColor
+        feedback.lineBreakMode = .byWordWrapping
+        feedback.maximumNumberOfLines = 3
+
         stack.addArrangedSubview(title)
         stack.addArrangedSubview(launchAtLoginCheckbox)
         stack.addArrangedSubview(note)
+        stack.addArrangedSubview(feedback)
         return stack
     }
 
@@ -194,7 +200,7 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
         row.alignment = .centerY
         row.spacing = 10
 
-        let previewButton = NSButton(title: "Preview Red Screen", target: self, action: #selector(testAlarm))
+        let previewButton = NSButton(title: "Preview 4s Alarm", target: self, action: #selector(testAlarm))
         previewButton.bezelStyle = .rounded
         previewButton.controlSize = .large
 
@@ -202,7 +208,7 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
         settingsButton.bezelStyle = .rounded
         settingsButton.controlSize = .large
 
-        let startButton = NSButton(title: "Start Using Battery Panic", target: self, action: #selector(completeOnboarding))
+        let startButton = NSButton(title: "Start Battery Panic", target: self, action: #selector(completeOnboarding))
         startButton.bezelStyle = .rounded
         startButton.controlSize = .large
         startButton.keyEquivalent = "\r"

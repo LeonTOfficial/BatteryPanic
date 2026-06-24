@@ -53,8 +53,8 @@ final class OverlayPreviewView: NSView {
         NSColor.systemRed.withAlphaComponent((0.08 + pulse * 0.16) * intensity).setFill()
         NSBezierPath(roundedRect: rect, xRadius: 12, yRadius: 12).fill()
 
-        for step in 0..<28 {
-            let progress = CGFloat(step) / 28.0
+        for step in 0..<20 {
+            let progress = CGFloat(step) / 20.0
             let inset = 6 + progress * 34
             let alpha = (0.36 + pulse * 0.24) * pow(1 - progress, 1.8) * intensity
             let path = NSBezierPath(roundedRect: rect.insetBy(dx: inset, dy: inset * 0.55), xRadius: 12, yRadius: 12)
@@ -99,7 +99,7 @@ final class OverlayPreviewView: NSView {
     }
 
     private func startAnimation() {
-        let timer = Timer(timeInterval: 1.0 / 30.0, repeats: true) { [weak self] _ in
+        let timer = Timer(timeInterval: 1.0 / 24.0, repeats: true) { [weak self] _ in
             self?.tick()
         }
         RunLoop.main.add(timer, forMode: .common)

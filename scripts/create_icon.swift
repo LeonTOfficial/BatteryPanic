@@ -62,19 +62,24 @@ private func makeIcon(size: CGFloat) -> NSImage {
     NSColor(calibratedRed: 0.08, green: 0.08, blue: 0.09, alpha: 1).setFill()
     background.fill()
 
-    let glow = NSBezierPath(roundedRect: bounds.insetBy(dx: size * 0.09, dy: size * 0.09), xRadius: radius * 0.85, yRadius: radius * 0.85)
-    glow.lineWidth = max(2, size * 0.025)
-    NSColor.systemRed.withAlphaComponent(0.72).setStroke()
-    glow.stroke()
+    let outerGlow = NSBezierPath(roundedRect: bounds.insetBy(dx: size * 0.09, dy: size * 0.09), xRadius: radius * 0.86, yRadius: radius * 0.86)
+    outerGlow.lineWidth = max(2, size * 0.026)
+    NSColor.systemRed.withAlphaComponent(0.64).setStroke()
+    outerGlow.stroke()
 
-    let body = NSRect(x: size * 0.24, y: size * 0.40, width: size * 0.44, height: size * 0.22)
-    let bodyPath = NSBezierPath(roundedRect: body, xRadius: size * 0.045, yRadius: size * 0.045)
-    bodyPath.lineWidth = max(2, size * 0.03)
+    let innerGlow = NSBezierPath(roundedRect: bounds.insetBy(dx: size * 0.145, dy: size * 0.145), xRadius: radius * 0.66, yRadius: radius * 0.66)
+    innerGlow.lineWidth = max(1.5, size * 0.014)
+    NSColor.systemRed.withAlphaComponent(0.22).setStroke()
+    innerGlow.stroke()
+
+    let body = NSRect(x: size * 0.22, y: size * 0.38, width: size * 0.49, height: size * 0.24)
+    let bodyPath = NSBezierPath(roundedRect: body, xRadius: size * 0.052, yRadius: size * 0.052)
+    bodyPath.lineWidth = max(2, size * 0.034)
     NSColor.systemRed.setStroke()
     bodyPath.stroke()
 
     let nub = NSBezierPath(
-        roundedRect: NSRect(x: body.maxX + size * 0.035, y: body.midY - size * 0.05, width: size * 0.05, height: size * 0.10),
+        roundedRect: NSRect(x: body.maxX + size * 0.036, y: body.midY - size * 0.052, width: size * 0.055, height: size * 0.104),
         xRadius: size * 0.02,
         yRadius: size * 0.02
     )
@@ -89,15 +94,17 @@ private func makeIcon(size: CGFloat) -> NSImage {
     NSColor.systemRed.withAlphaComponent(0.78).setFill()
     lowFill.fill()
 
-    let mark = NSAttributedString(
-        string: "!",
-        attributes: [
-            .font: NSFont.systemFont(ofSize: size * 0.22, weight: .black),
-            .foregroundColor: NSColor.systemRed
-        ]
+    let pulseLine = NSBezierPath(roundedRect: NSRect(x: size * 0.27, y: size * 0.26, width: size * 0.42, height: size * 0.035), xRadius: size * 0.017, yRadius: size * 0.017)
+    NSColor.systemRed.withAlphaComponent(0.38).setFill()
+    pulseLine.fill()
+
+    let smallPulseLine = NSBezierPath(
+        roundedRect: NSRect(x: size * 0.34, y: size * 0.72, width: size * 0.28, height: size * 0.022),
+        xRadius: size * 0.011,
+        yRadius: size * 0.011
     )
-    let markSize = mark.size()
-    mark.draw(at: NSPoint(x: (size - markSize.width) / 2, y: size * 0.16))
+    NSColor.systemRed.withAlphaComponent(0.20).setFill()
+    smallPulseLine.fill()
 
     image.unlockFocus()
     return image

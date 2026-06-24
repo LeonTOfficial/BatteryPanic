@@ -1,24 +1,31 @@
-# Battery Panic 0.3.0 Release Notes
+# Battery Panic 0.4.0 Release Notes
 
-Battery Panic 0.3.0 makes the app feel more original, clearer, and more useful during setup.
+Battery Panic 0.4.0 focuses on polish, stability, and a smoother first-run experience.
 
 ## What's New
 
-- New red alert copy and layout:
-  - Uses a more distinct Battery Panic style.
-  - Avoids the previous "remaining" wording.
-- Built-in synthesized Battery Panic Siren.
-- Live Settings preview for pulse speed and pulse intensity.
-- Configurable red-screen preview duration.
-- Cleaner menu bar dropdown:
-  - Better battery status readability.
-  - Clear power connection state.
-  - Threshold, alarm, overlay, and sound summary.
-  - Duplicate top creator link removed.
+- Cleaner Battery Panic icon:
+  - More breathing room in the app icon.
+  - Critical battery state no longer relies on a squeezed exclamation mark.
+- Fixed Battery Panic Siren playback:
+  - The generated sound now matches the Mac output audio format.
+  - The siren can be tested from Settings.
+- Repeating audio warnings:
+  - A real low-battery alarm repeats the selected sound while it remains active.
+  - Preview alarms still play once and stop quickly.
+- Short, predictable preview:
+  - Red-screen previews now run for about four seconds from Welcome, Settings, and the menu bar.
+- Smoother overlay:
+  - Reduced redraw work for the pulsing red overlay.
+  - Better behavior during longer tests and multi-display use.
+- Improved welcome screen:
+  - More spacing.
+  - Clearer setup copy.
+  - Personal note from Leon asking for feedback or a GitHub star.
 - Modern menu bar battery states:
   - Green for healthy battery.
   - Orange when the battery is getting low.
-  - Red with an exclamation mark when critical.
+  - Red when critical.
   - Charging state with a charging indicator.
 - Security and quality pass:
   - No network behavior.
@@ -37,8 +44,9 @@ The local app bundle is written to:
 
 ```text
 outputs/Battery Panic.app
+outputs/Battery Panic 0.4.0.zip
 ```
 
 ## Distribution Note
 
-The local build is ad-hoc signed. For public downloadable releases outside GitHub source code, use Developer ID signing and Apple notarization.
+The local build is ad-hoc signed. Upload the zip package for GitHub testing releases. For public downloadable releases beyond GitHub source/testing builds, use Developer ID signing and Apple notarization.

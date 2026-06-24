@@ -14,7 +14,7 @@ struct BatteryStatusAppearance {
     let title: String
     let subtitle: String
     let showsBolt: Bool
-    let showsExclamation: Bool
+    let showsCriticalDot: Bool
 
     static func appearance(for status: BatteryStatus, threshold: Int) -> BatteryStatusAppearance {
         guard status.hasBattery else {
@@ -24,7 +24,7 @@ struct BatteryStatusAppearance {
                 title: "No battery",
                 subtitle: "Battery status is not available.",
                 showsBolt: false,
-                showsExclamation: false
+                showsCriticalDot: false
             )
         }
 
@@ -35,7 +35,7 @@ struct BatteryStatusAppearance {
                 title: "\(status.percentage)% charging",
                 subtitle: "Power adapter connected.",
                 showsBolt: true,
-                showsExclamation: false
+                showsCriticalDot: false
             )
         }
 
@@ -47,7 +47,7 @@ struct BatteryStatusAppearance {
                 title: "\(status.percentage)% critical",
                 subtitle: "Plug in your charger to recover.",
                 showsBolt: false,
-                showsExclamation: true
+                showsCriticalDot: true
             )
         }
 
@@ -58,7 +58,7 @@ struct BatteryStatusAppearance {
                 title: "\(status.percentage)% getting low",
                 subtitle: "Battery is approaching your warning level.",
                 showsBolt: false,
-                showsExclamation: false
+                showsCriticalDot: false
             )
         }
 
@@ -68,7 +68,7 @@ struct BatteryStatusAppearance {
             title: "\(status.percentage)% battery",
             subtitle: "Battery level is healthy.",
             showsBolt: false,
-            showsExclamation: false
+            showsCriticalDot: false
         )
     }
 }
