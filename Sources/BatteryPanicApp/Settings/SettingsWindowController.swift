@@ -27,7 +27,7 @@ final class SettingsWindowController: NSWindowController {
         self.loginItemService = loginItemService
 
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 590, height: 790),
+            contentRect: NSRect(x: 0, y: 0, width: 720, height: 820),
             styleMask: [.titled, .closable, .miniaturizable],
             backing: .buffered,
             defer: false
@@ -61,11 +61,20 @@ final class SettingsWindowController: NSWindowController {
         root.state = .active
         root.translatesAutoresizingMaskIntoConstraints = false
 
+        let scrollView = NSScrollView()
+        scrollView.drawsBackground = false
+        scrollView.hasVerticalScroller = true
+        scrollView.borderType = .noBorder
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+
+        let documentView = NSView()
+        documentView.translatesAutoresizingMaskIntoConstraints = false
+
         let stack = NSStackView()
         stack.orientation = .vertical
         stack.alignment = .leading
-        stack.spacing = 18
-        stack.edgeInsets = NSEdgeInsets(top: 28, left: 30, bottom: 26, right: 30)
+        stack.spacing = 16
+        stack.edgeInsets = NSEdgeInsets(top: 32, left: 34, bottom: 24, right: 34)
         stack.translatesAutoresizingMaskIntoConstraints = false
 
         stack.addArrangedSubview(makeHeader())
@@ -76,14 +85,25 @@ final class SettingsWindowController: NSWindowController {
         stack.addArrangedSubview(makeCreditsSection())
         stack.addArrangedSubview(makeFooter())
 
-        root.addSubview(stack)
+        documentView.addSubview(stack)
+        scrollView.documentView = documentView
+        root.addSubview(scrollView)
         window.contentView = root
 
         NSLayoutConstraint.activate([
-            stack.leadingAnchor.constraint(equalTo: root.leadingAnchor),
-            stack.trailingAnchor.constraint(equalTo: root.trailingAnchor),
-            stack.topAnchor.constraint(equalTo: root.topAnchor),
-            stack.bottomAnchor.constraint(equalTo: root.bottomAnchor)
+            scrollView.leadingAnchor.constraint(equalTo: root.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: root.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: root.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: root.bottomAnchor),
+
+            documentView.widthAnchor.constraint(equalTo: scrollView.contentView.widthAnchor),
+            documentView.topAnchor.constraint(equalTo: stack.topAnchor),
+            documentView.bottomAnchor.constraint(equalTo: stack.bottomAnchor),
+
+            stack.leadingAnchor.constraint(equalTo: documentView.leadingAnchor),
+            stack.trailingAnchor.constraint(equalTo: documentView.trailingAnchor),
+            stack.topAnchor.constraint(equalTo: documentView.topAnchor),
+            stack.bottomAnchor.constraint(equalTo: documentView.bottomAnchor)
         ])
     }
 
@@ -133,7 +153,7 @@ final class SettingsWindowController: NSWindowController {
         row.addArrangedSubview(NSTextField(labelWithString: "Warn below"))
         row.addArrangedSubview(thresholdSlider)
         row.addArrangedSubview(thresholdValueLabel)
-        thresholdSlider.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        thresholdSlider.widthAnchor.constraint(equalToConstant: 404).isActive = true
 
         return makeSection(
             title: "Battery threshold",
@@ -166,8 +186,8 @@ final class SettingsWindowController: NSWindowController {
         pulseIntensitySlider.action = #selector(pulseIntensityChanged)
         styleValueLabel(pulseSpeedValueLabel)
         styleValueLabel(pulseIntensityValueLabel)
-        overlayPreviewView.heightAnchor.constraint(equalToConstant: 128).isActive = true
-        overlayPreviewView.widthAnchor.constraint(equalToConstant: 498).isActive = true
+        overlayPreviewView.heightAnchor.constraint(equalToConstant: 150).isActive = true
+        overlayPreviewView.widthAnchor.constraint(equalToConstant: 596).isActive = true
 
         let stack = NSStackView()
         stack.orientation = .vertical
@@ -201,7 +221,7 @@ final class SettingsWindowController: NSWindowController {
 
         let label = NSTextField(labelWithString: "Warning sound")
         label.widthAnchor.constraint(equalToConstant: 116).isActive = true
-        soundPopup.widthAnchor.constraint(equalToConstant: 180).isActive = true
+        soundPopup.widthAnchor.constraint(equalToConstant: 240).isActive = true
 
         let testButton = NSButton(title: "Test Sound", target: self, action: #selector(testSound))
         testButton.bezelStyle = .rounded
@@ -261,50 +281,58 @@ final class SettingsWindowController: NSWindowController {
         doneButton.controlSize = .large
         doneButton.keyEquivalent = "\r"
 
+        let spacer = NSView()
+        spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
         row.addArrangedSubview(statusLabel)
-        row.addArrangedSubview(NSView())
+        row.addArrangedSubview(spacer)
         row.addArrangedSubview(previewButton)
         row.addArrangedSubview(doneButton)
+        row.widthAnchor.constraint(equalToConstant: 636).isActive = true
         return row
     }
 
     private func makeSection(title: String, subtitle: String, content: NSView) -> NSView {
-        let box = NSBox()
-        box.boxType = .custom
-        box.cornerRadius = 12
-        box.borderWidth = 1
-        box.borderColor = NSColor.separatorColor.withAlphaComponent(0.55)
-        box.fillColor = NSColor.controlBackgroundColor.withAlphaComponent(0.68)
+        let card = NSView()
+        card.wantsLayer = true
+        card.layer?.cornerRadius = 14
+        card.layer?.borderWidth = 1
+        card.layer?.borderColor = NSColor.separatorColor.withAlphaComponent(0.42).cgColor
+        card.layer?.backgroundColor = NSColor.controlBackgroundColor.withAlphaComponent(0.58).cgColor
+        card.translatesAutoresizingMaskIntoConstraints = false
 
         let stack = NSStackView()
         stack.orientation = .vertical
         stack.alignment = .leading
-        stack.spacing = 10
-        stack.edgeInsets = NSEdgeInsets(top: 15, left: 16, bottom: 15, right: 16)
+        stack.spacing = 12
+        stack.edgeInsets = NSEdgeInsets(top: 18, left: 20, bottom: 18, right: 20)
         stack.translatesAutoresizingMaskIntoConstraints = false
 
         let titleLabel = NSTextField(labelWithString: title)
-        titleLabel.font = NSFont.systemFont(ofSize: 15, weight: .semibold)
+        titleLabel.font = NSFont.systemFont(ofSize: 16, weight: .semibold)
+        titleLabel.lineBreakMode = .byWordWrapping
+        titleLabel.maximumNumberOfLines = 2
 
         let subtitleLabel = NSTextField(labelWithString: subtitle)
+        subtitleLabel.font = NSFont.systemFont(ofSize: 13, weight: .regular)
         subtitleLabel.textColor = .secondaryLabelColor
         subtitleLabel.lineBreakMode = .byWordWrapping
-        subtitleLabel.maximumNumberOfLines = 2
+        subtitleLabel.maximumNumberOfLines = 3
+        subtitleLabel.widthAnchor.constraint(equalToConstant: 596).isActive = true
 
         stack.addArrangedSubview(titleLabel)
         stack.addArrangedSubview(subtitleLabel)
         stack.addArrangedSubview(content)
-        box.contentView = stack
+        card.addSubview(stack)
 
         NSLayoutConstraint.activate([
-            box.widthAnchor.constraint(equalToConstant: 530),
-            stack.leadingAnchor.constraint(equalTo: box.leadingAnchor),
-            stack.trailingAnchor.constraint(equalTo: box.trailingAnchor),
-            stack.topAnchor.constraint(equalTo: box.topAnchor),
-            stack.bottomAnchor.constraint(equalTo: box.bottomAnchor)
+            card.widthAnchor.constraint(equalToConstant: 636),
+            stack.leadingAnchor.constraint(equalTo: card.leadingAnchor),
+            stack.trailingAnchor.constraint(equalTo: card.trailingAnchor),
+            stack.topAnchor.constraint(equalTo: card.topAnchor),
+            stack.bottomAnchor.constraint(equalTo: card.bottomAnchor)
         ])
 
-        return box
+        return card
     }
 
     private func configureCheckboxes() {
@@ -432,7 +460,7 @@ final class SettingsWindowController: NSWindowController {
 
         let label = NSTextField(labelWithString: title)
         label.widthAnchor.constraint(equalToConstant: 116).isActive = true
-        slider.widthAnchor.constraint(equalToConstant: 270).isActive = true
+        slider.widthAnchor.constraint(equalToConstant: 396).isActive = true
         valueLabel.widthAnchor.constraint(equalToConstant: 54).isActive = true
 
         row.addArrangedSubview(label)
