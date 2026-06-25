@@ -30,7 +30,17 @@ ZIP fallback:
 3. Move `Battery Panic.app` into **Applications**.
 4. Open Battery Panic from **Applications**.
 
-Battery Panic is currently open source and ad-hoc signed, but not notarized by Apple yet. macOS may show a message such as **“Battery Panic cannot be opened because the developer cannot be verified.”** To open it without Terminal: right-click `Battery Panic.app`, choose **Open**, then confirm **Open**.
+Battery Panic is currently open source and ad-hoc signed, but not notarized by Apple yet. macOS may show a message such as **“Battery Panic cannot be opened because the developer cannot be verified.”**
+
+Try this first:
+
+1. Right-click `Battery Panic.app` in **Applications**.
+2. Choose **Open**.
+3. Confirm **Open**.
+
+If that does not work, open [Privacy & Security settings](x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension), scroll down, find the Battery Panic security message, and click **Open Anyway** / **Dennoch öffnen**. If the link does not open System Settings, open **System Settings -> Privacy & Security** manually and scroll to the bottom.
+
+This happens because Battery Panic is not Apple-notarized yet. Removing this warning completely requires Apple Developer ID signing and notarization, which is planned for a later public distribution step.
 
 See the full install guide: [`docs/INSTALL.md`](docs/INSTALL.md).
 
