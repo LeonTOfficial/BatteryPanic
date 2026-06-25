@@ -4,27 +4,25 @@ Battery Panic is meant to be installed like a normal macOS app. You do not need 
 
 ## Recommended: Install with the DMG
 
-1. Open the [latest GitHub Release](https://github.com/LeonTOfficial/BatteryPanic/releases/latest).
-2. Download `Battery Panic 0.4.0.dmg`.
-3. Open the downloaded DMG file.
-4. Drag `Battery Panic.app` into the **Applications** shortcut.
-5. Open Battery Panic from **Applications**.
+1. Download [Battery Panic 0.4.0.dmg](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.4.0/Battery%20Panic%200.4.0.dmg).
+2. Open the downloaded DMG file.
+3. Drag `Battery Panic.app` into the **Applications** shortcut.
+4. Open Battery Panic from **Applications**.
 
 ## Alternative: Install with the ZIP
 
 Use this only if the DMG is not available.
 
-1. Open the [latest GitHub Release](https://github.com/LeonTOfficial/BatteryPanic/releases/latest).
-2. Download `Battery Panic 0.4.0.zip`.
-3. Unzip the file.
-4. Move `Battery Panic.app` into **Applications**.
-5. Open Battery Panic from **Applications**.
+1. Download [Battery Panic 0.4.0.zip](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.4.0/Battery%20Panic%200.4.0.zip).
+2. Unzip the file.
+3. Move `Battery Panic.app` into **Applications**.
+4. Open Battery Panic from **Applications**.
 
 ## Important: Releases vs Code ZIP
 
 On GitHub, the green **Code -> Download ZIP** button downloads the source code. That is useful for developers, but it is not the easiest way to install the app.
 
-For normal use, download Battery Panic from **Releases** instead. Releases contain the ready-to-use `.dmg` and `.zip` app packages.
+For normal use, download Battery Panic through the direct links above or from **Releases**. Releases contain the ready-to-use `.dmg` and `.zip` app packages.
 
 ## If macOS Shows a Developer Warning
 
