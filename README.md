@@ -6,6 +6,33 @@ Battery Panic is a native macOS menu bar app that makes low battery warnings imp
 
 The app is built with Swift and AppKit, stays local to your Mac, and is designed as a clean open-source project rather than a one-file demo.
 
+
+## Download & Install
+
+For normal users, download Battery Panic from **GitHub Releases**, not from the green **Code -> Download ZIP** button.
+
+- **GitHub Releases** contains the ready-to-use macOS app package.
+- **Code -> Download ZIP** contains the source code for developers, not the finished app.
+
+Recommended install:
+
+1. Open the [latest Battery Panic release](https://github.com/LeonTOfficial/BatteryPanic/releases/latest).
+2. Download `Battery Panic 0.4.0.dmg` if it is available.
+3. Open the DMG.
+4. Drag `Battery Panic.app` into **Applications**.
+5. Open Battery Panic from **Applications**.
+
+ZIP fallback:
+
+1. Download `Battery Panic 0.4.0.zip` from the latest release.
+2. Unzip it.
+3. Move `Battery Panic.app` into **Applications**.
+4. Open Battery Panic from **Applications**.
+
+Battery Panic is currently open source and ad-hoc signed, but not notarized by Apple yet. macOS may show a message such as **“Battery Panic cannot be opened because the developer cannot be verified.”** To open it without Terminal: right-click `Battery Panic.app`, choose **Open**, then confirm **Open**.
+
+See the full install guide: [`docs/INSTALL.md`](docs/INSTALL.md).
+
 ## Features
 
 - Native macOS menu bar app.
@@ -29,38 +56,24 @@ The app is built with Swift and AppKit, stays local to your Mac, and is designed
 
 ## Installation
 
-### Option 1: Build Locally
+Normal users should install from the [latest GitHub Release](https://github.com/LeonTOfficial/BatteryPanic/releases/latest). Download the DMG if available, open it, and drag `Battery Panic.app` into **Applications**.
 
-Requirements:
-
-- macOS 13 or newer.
-- Xcode 26.5 or Swift command-line tools.
-
-Build the app bundle:
+Developers can build locally with:
 
 ```bash
 chmod +x scripts/build_app.sh
 ./scripts/build_app.sh
 ```
 
-The finished app and release package are created at:
+The finished local packages are created at:
 
 ```text
 outputs/Battery Panic.app
 outputs/Battery Panic 0.4.0.zip
+outputs/Battery Panic 0.4.0.dmg
 ```
 
-Open it from Finder or run:
-
-```bash
-open "outputs/Battery Panic.app"
-```
-
-If macOS blocks the first launch because the app is locally signed, right-click the app and choose **Open**.
-
-### Option 2: Open in Xcode
-
-Open `Package.swift` in Xcode, select the `BatteryPanicApp` scheme, choose **My Mac**, and press Run.
+Open `Package.swift` in Xcode if you want to run the Swift package directly. Select the `BatteryPanicApp` scheme, choose **My Mac**, and press Run.
 
 ## Usage
 
@@ -90,7 +103,9 @@ Battery Panic is local-first:
 
 - No analytics.
 - No telemetry.
-- No network requests.
+- No tracking.
+- No account required.
+- No network connection needed.
 - No API keys or tokens.
 - No private user data collection.
 
@@ -119,7 +134,7 @@ Build the app:
 ./scripts/build_app.sh
 ```
 
-The build script signs the app in a temporary staging folder, verifies it, then writes both the local app bundle and a GitHub-friendly zip package into `outputs/`.
+The build script signs the app in a temporary staging folder, verifies it, then writes the local app bundle, GitHub-friendly ZIP package, and user-friendly DMG package into `outputs/`.
 
 For publishing, release fields, and recommended GitHub security settings, see [`docs/GITHUB_RELEASE_GUIDE.md`](docs/GITHUB_RELEASE_GUIDE.md).
 

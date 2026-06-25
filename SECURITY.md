@@ -7,6 +7,11 @@ Battery Panic is a local macOS utility. It does not require an account, does not
 - Battery status is read locally through macOS power APIs.
 - Settings are stored in local `UserDefaults`.
 - The app does not send network requests.
+- No analytics.
+- No telemetry.
+- No tracking.
+- No account required.
+- No network connection needed.
 - The app does not store prompts, documents, contacts, emails, tokens, or credentials.
 - The optional login item uses Apple's ServiceManagement API.
 

@@ -33,6 +33,33 @@ In **Settings -> Branches**, consider adding a branch protection rule for `main`
 - Select the `macOS checks` workflow.
 - Require pull requests before merging if you want a stricter workflow.
 
+## Build a User-Friendly Release
+
+Before creating a GitHub Release:
+
+1. Run tests:
+
+```bash
+./scripts/run_tests.sh
+```
+
+2. Build packages:
+
+```bash
+./scripts/build_app.sh
+```
+
+3. Check `outputs/` contains:
+
+```text
+Battery Panic.app
+Battery Panic 0.4.0.zip
+Battery Panic 0.4.0.dmg
+```
+
+4. Confirm the ZIP contains the finished `.app`, not source code.
+5. Confirm the DMG opens and supports the normal drag-and-drop install flow: `Battery Panic.app` -> `Applications`.
+
 ## Release Fields
 
 Create a new release with these values:
@@ -40,12 +67,28 @@ Create a new release with these values:
 - Tag: `v0.4.0`
 - Release title: `Battery Panic 0.4.0`
 - Release label: leave as `None` for a normal release. Use `Pre-release` only if you want to clearly mark it as a test build.
-- Attached binary: upload `outputs/Battery Panic 0.4.0.zip`
+- Attached binaries:
+  - `outputs/Battery Panic 0.4.0.dmg`
+  - `outputs/Battery Panic 0.4.0.zip`
+
+Do not upload only GitHub's automatically generated source code archives as the main user download. Those are useful for developers, but normal users need the `.dmg` or `.zip` app package.
 
 Suggested release description:
 
 ```markdown
 Battery Panic 0.4.0 focuses on polish, stability, and a smoother first-run experience.
+
+Download:
+- Recommended: `Battery Panic 0.4.0.dmg`
+- Fallback: `Battery Panic 0.4.0.zip`
+
+Install with DMG:
+1. Download `Battery Panic 0.4.0.dmg`.
+2. Open it.
+3. Drag `Battery Panic.app` into Applications.
+4. Open Battery Panic from Applications.
+
+If macOS warns that the developer cannot be verified, right-click `Battery Panic.app`, choose Open, then confirm Open.
 
 What's new:
 - Cleaner Battery Panic icon with more breathing room.
@@ -57,14 +100,19 @@ What's new:
 - Modern green, orange, red, and charging-aware menu bar states.
 - Local-only privacy model and security check documentation.
 
-Install:
-1. Download `Battery Panic 0.4.0.zip`.
-2. Unzip it.
-3. Move `Battery Panic.app` to Applications.
-4. Right-click the app and choose Open if macOS warns that it is from an unidentified developer.
+Privacy:
+- No analytics.
+- No telemetry.
+- No tracking.
+- No account required.
+- No network connection needed.
 
 Note: This release is locally/ad-hoc signed for open-source testing. A future public distribution build should use Apple Developer ID signing and notarization.
 ```
+
+## Screenshots
+
+The README already links screenshots from `docs/screenshots/`. Use those existing images if you want visual context in the release description. Do not invent screenshots that do not match the app.
 
 ## Attribution and MIT License
 

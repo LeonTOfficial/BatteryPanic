@@ -10,13 +10,16 @@ BUILD_CONFIG="${BUILD_CONFIG:-release}"
 OUTPUT_DIR="$ROOT_DIR/outputs"
 OUTPUT_APP_BUNDLE="$OUTPUT_DIR/$APP_NAME.app"
 RELEASE_ZIP="$OUTPUT_DIR/$APP_NAME $VERSION.zip"
+RELEASE_DMG="$OUTPUT_DIR/$APP_NAME $VERSION.dmg"
 STAGING_DIR="${TMPDIR:-/tmp}/BatteryPanicBuild.$$"
+DMG_STAGING_DIR="${TMPDIR:-/tmp}/BatteryPanicDmg.$$"
 APP_BUNDLE="$STAGING_DIR/$APP_NAME.app"
 BINARY_SOURCE="$ROOT_DIR/.build/$BUILD_CONFIG/BatteryPanicApp"
 BINARY_DEST="$APP_BUNDLE/Contents/MacOS/$APP_NAME"
 
 cleanup() {
     rm -rf "$STAGING_DIR"
+    rm -rf "$DMG_STAGING_DIR"
 }
 trap cleanup EXIT
 
@@ -33,6 +36,8 @@ swift build -c "$BUILD_CONFIG"
 rm -rf "$STAGING_DIR"
 rm -rf "$OUTPUT_APP_BUNDLE"
 rm -f "$RELEASE_ZIP"
+rm -f "$RELEASE_DMG"
+rm -rf "$DMG_STAGING_DIR"
 mkdir -p "$APP_BUNDLE/Contents/MacOS"
 mkdir -p "$APP_BUNDLE/Contents/Resources"
 mkdir -p "$OUTPUT_DIR"
@@ -86,5 +91,20 @@ codesign --verify --deep --strict --verbose=2 "$APP_BUNDLE"
 ditto --norsrc "$APP_BUNDLE" "$OUTPUT_APP_BUNDLE"
 (cd "$STAGING_DIR" && ditto -c -k --keepParent --norsrc "$APP_NAME.app" "$RELEASE_ZIP")
 
-echo "Built: $OUTPUT_APP_BUNDLE"
-echo "Release package: $RELEASE_ZIP"
+mkdir -p "$DMG_STAGING_DIR"
+ditto --norsrc "$APP_BUNDLE" "$DMG_STAGING_DIR/$APP_NAME.app"
+ln -s /Applications "$DMG_STAGING_DIR/Applications"
+hdiutil create \
+    -volname "$APP_NAME $VERSION" \
+    -srcfolder "$DMG_STAGING_DIR" \
+    -ov \
+    -format UDZO \
+    "$RELEASE_DMG" >/dev/null
+
+[[ -d "$OUTPUT_APP_BUNDLE" ]]
+[[ -f "$RELEASE_ZIP" ]]
+[[ -f "$RELEASE_DMG" ]]
+
+echo "Built app: $OUTPUT_APP_BUNDLE"
+echo "Release ZIP: $RELEASE_ZIP"
+echo "Release DMG: $RELEASE_DMG"
