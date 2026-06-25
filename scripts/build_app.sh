@@ -117,7 +117,10 @@ hdiutil create \
 mkdir -p "$DMG_MOUNT_DIR"
 hdiutil attach "$DMG_RW" -readwrite -noverify -noautoopen -mountpoint "$DMG_MOUNT_DIR" >/dev/null
 
-osascript <<APPLESCRIPT
+if [[ "${CI:-}" == "true" ]]; then
+    echo "Skipping Finder DMG layout in CI. The DMG still contains the app, Applications shortcut, and background asset."
+else
+    osascript <<APPLESCRIPT
 tell application "Finder"
     tell disk "$APP_NAME $VERSION"
         open
@@ -137,6 +140,7 @@ tell application "Finder"
     end tell
 end tell
 APPLESCRIPT
+fi
 
 hdiutil detach "$DMG_MOUNT_DIR" >/dev/null
 rm -rf "$DMG_MOUNT_DIR"

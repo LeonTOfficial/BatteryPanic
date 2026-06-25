@@ -26,15 +26,16 @@ jobs:
       - name: Build Swift package
         run: swift build
 
-      - name: Build local app and release zip
+      - name: Build local app and release packages
         run: ./scripts/build_app.sh
 
-      - name: Verify release zip signature
+      - name: Verify release package signatures
         run: |
           rm -rf /tmp/BatteryPanicZipCheck
           mkdir -p /tmp/BatteryPanicZipCheck
-          ditto -x -k "outputs/Battery Panic 0.4.0.zip" /tmp/BatteryPanicZipCheck
+          ditto -x -k "outputs/Battery.Panic.0.4.0.zip" /tmp/BatteryPanicZipCheck
           codesign --verify --deep --strict --verbose=2 "/tmp/BatteryPanicZipCheck/Battery Panic.app"
+          test -f "outputs/Battery.Panic.0.4.0.dmg"
 
       - name: Scan for committed secret-looking values
         run: |
