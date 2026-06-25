@@ -53,8 +53,8 @@ Before creating a GitHub Release:
 
 ```text
 Battery Panic.app
-Battery Panic 0.4.0.zip
-Battery Panic 0.4.0.dmg
+Battery.Panic.0.4.0.zip
+Battery.Panic.0.4.0.dmg
 ```
 
 4. Confirm the ZIP contains the finished `.app`, not source code.
@@ -72,8 +72,8 @@ Create a new release with these values:
 - Release title: `Battery Panic 0.4.0`
 - Release label: leave as `None` for a normal release. Use `Pre-release` only if you want to clearly mark it as a test build.
 - Attached binaries:
-  - `outputs/Battery Panic 0.4.0.dmg`
-  - `outputs/Battery Panic 0.4.0.zip`
+  - `outputs/Battery.Panic.0.4.0.dmg`
+  - `outputs/Battery.Panic.0.4.0.zip`
 
 Do not upload only GitHub's automatically generated source code archives as the main user download. Those are useful for developers, but normal users need the `.dmg` or `.zip` app package.
 
@@ -83,11 +83,11 @@ Suggested release description:
 Battery Panic 0.4.0 focuses on polish, stability, and a smoother first-run experience.
 
 Download:
-- Recommended: `Battery Panic 0.4.0.dmg`
-- Fallback: `Battery Panic 0.4.0.zip`
+- Recommended: `Battery.Panic.0.4.0.dmg`
+- Fallback: `Battery.Panic.0.4.0.zip`
 
 Install with DMG:
-1. Download `Battery Panic 0.4.0.dmg`.
+1. Download `Battery.Panic.0.4.0.dmg`.
 2. Open it.
 3. Drag `Battery Panic.app` into Applications.
 4. Open Battery Panic from Applications.

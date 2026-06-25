@@ -4,7 +4,7 @@ Battery Panic is meant to be installed like a normal macOS app. You do not need 
 
 ## Recommended: Install with the DMG
 
-1. Download [Battery Panic 0.4.0.dmg](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.4.0/Battery.Panic.0.4.0.dmg).
+1. Download [Battery.Panic.0.4.0.dmg](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.4.0/Battery.Panic.0.4.0.dmg).
 2. Open the downloaded DMG file.
 3. Drag `Battery Panic.app` into the **Applications** shortcut.
 4. Open Battery Panic from **Applications**.
@@ -13,7 +13,7 @@ Battery Panic is meant to be installed like a normal macOS app. You do not need 
 
 Use this only if the DMG is not available.
 
-1. Download [Battery Panic 0.4.0.zip](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.4.0/Battery.Panic.0.4.0.zip).
+1. Download [Battery.Panic.0.4.0.zip](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.4.0/Battery.Panic.0.4.0.zip).
 2. Unzip the file.
 3. Move `Battery Panic.app` into **Applications**.
 4. Open Battery Panic from **Applications**.
@@ -41,6 +41,8 @@ To open it without Terminal:
 5. Confirm **Open** if macOS asks again.
 
 If the direct settings link does not open, use the manual path: **System Settings -> Privacy & Security**, then scroll to the bottom.
+
+<img src="screenshots/macos-privacy-security-open-anyway.png" alt="How to allow Battery Panic in Privacy & Security" width="560">
 
 This is the normal macOS flow for opening a non-notarized open-source app. The warning appears because Battery Panic has not yet been signed with an Apple Developer ID and notarized by Apple. Removing this warning completely requires an Apple Developer account and notarization, which costs money each year and is planned for a later public distribution step.
 
