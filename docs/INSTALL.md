@@ -42,7 +42,7 @@ To open it without Terminal:
 
 If the direct settings link does not open, use the manual path: **System Settings -> Privacy & Security**, then scroll to the bottom.
 
-<img src="screenshots/macos-privacy-security-open-anyway.png" alt="How to allow Battery Panic in Privacy & Security" width="560">
+<img src="screenshots/macos-privacy-security-open-anyway.jpg" alt="How to allow Battery Panic in Privacy & Security" width="560">
 
 This is the normal macOS flow for opening a non-notarized open-source app. The warning appears because Battery Panic has not yet been signed with an Apple Developer ID and notarized by Apple. Removing this warning completely requires an Apple Developer account and notarization, which costs money each year and is planned for a later public distribution step.
 

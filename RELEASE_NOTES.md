@@ -44,7 +44,7 @@ The local app bundle is written to:
 
 ```text
 outputs/Battery Panic.app
-outputs/Battery Panic 0.4.0.zip
+outputs/Battery.Panic.0.4.0.zip
 ```
 
 ## Distribution Note

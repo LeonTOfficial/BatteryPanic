@@ -42,7 +42,7 @@ To open it without Terminal:
 
 If the direct settings link does not open, open **System Settings -> Privacy & Security** manually and scroll to the bottom.
 
-<img src="docs/screenshots/macos-privacy-security-open-anyway.png" alt="How to allow Battery Panic in Privacy & Security" width="560">
+<img src="docs/screenshots/macos-privacy-security-open-anyway.jpg" alt="How to allow Battery Panic in Privacy & Security" width="560">
 
 This happens because Battery Panic is not Apple-notarized yet. Removing this warning completely requires Apple Developer ID signing and notarization, which is planned for a later public distribution step.
 
@@ -67,7 +67,7 @@ See the full install guide: [`docs/INSTALL.md`](docs/INSTALL.md).
 ## Screenshots
 
 ![Battery Panic status bar preview](docs/screenshots/status-bar-preview.png)
-![Battery Panic settings preview](docs/screenshots/settings-preview.png)
+![Battery Panic settings preview](docs/screenshots/settings-preview.jpg)
 
 ## Usage
 

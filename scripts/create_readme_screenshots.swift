@@ -7,7 +7,7 @@ let muted = NSColor(calibratedWhite: 0.72, alpha: 1)
 try FileManager.default.createDirectory(at: outputDir, withIntermediateDirectories: true)
 
 try save(drawStatusBarPreview(), name: "status-bar-preview.png")
-try save(drawSettingsPreview(), name: "settings-preview.png")
+try saveJPEG(drawSettingsPreview(), name: "settings-preview.jpg", quality: 0.78)
 try save(drawOverlayPreview(), name: "overlay-preview.png")
 
 print("Created README screenshot previews in \(outputDir.path)")
@@ -21,6 +21,17 @@ private func save(_ image: NSImage, name: String) throws {
         fatalError("Could not render \(name)")
     }
     try png.write(to: outputDir.appendingPathComponent(name))
+}
+
+private func saveJPEG(_ image: NSImage, name: String, quality: CGFloat) throws {
+    guard
+        let tiff = image.tiffRepresentation,
+        let bitmap = NSBitmapImageRep(data: tiff),
+        let jpg = bitmap.representation(using: .jpeg, properties: [.compressionFactor: quality])
+    else {
+        fatalError("Could not render \(name)")
+    }
+    try jpg.write(to: outputDir.appendingPathComponent(name))
 }
 
 private func drawStatusBarPreview() -> NSImage {

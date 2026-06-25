@@ -15,6 +15,7 @@ RELEASE_DMG="$OUTPUT_DIR/$RELEASE_BASE.dmg"
 STAGING_DIR="${TMPDIR:-/tmp}/BatteryPanicBuild.$$"
 DMG_STAGING_DIR="${TMPDIR:-/tmp}/BatteryPanicDmg.$$"
 DMG_MOUNT_DIR="${TMPDIR:-/tmp}/BatteryPanicDmgMount.$$"
+DMG_FINDER_MOUNT_DIR="/Volumes/$APP_NAME $VERSION"
 DMG_RW="$STAGING_DIR/$RELEASE_BASE.rw.dmg"
 APP_BUNDLE="$STAGING_DIR/$APP_NAME.app"
 BINARY_SOURCE="$ROOT_DIR/.build/$BUILD_CONFIG/BatteryPanicApp"
@@ -24,6 +25,10 @@ cleanup() {
     if [[ -d "$DMG_MOUNT_DIR" ]]; then
         hdiutil detach "$DMG_MOUNT_DIR" >/dev/null 2>&1 || true
         rm -rf "$DMG_MOUNT_DIR"
+    fi
+    if [[ -d "$DMG_FINDER_MOUNT_DIR" ]]; then
+        hdiutil detach "$DMG_FINDER_MOUNT_DIR" >/dev/null 2>&1 || true
+        rmdir "$DMG_FINDER_MOUNT_DIR" >/dev/null 2>&1 || true
     fi
     rm -rf "$STAGING_DIR"
     rm -rf "$DMG_STAGING_DIR"
@@ -44,8 +49,11 @@ rm -rf "$STAGING_DIR"
 rm -rf "$OUTPUT_APP_BUNDLE"
 rm -f "$RELEASE_ZIP"
 rm -f "$RELEASE_DMG"
+rm -f "$OUTPUT_DIR/$APP_NAME $VERSION.zip"
+rm -f "$OUTPUT_DIR/$APP_NAME $VERSION.dmg"
 rm -rf "$DMG_STAGING_DIR"
 rm -rf "$DMG_MOUNT_DIR"
+rmdir "$DMG_FINDER_MOUNT_DIR" >/dev/null 2>&1 || true
 mkdir -p "$APP_BUNDLE/Contents/MacOS"
 mkdir -p "$APP_BUNDLE/Contents/Resources"
 mkdir -p "$OUTPUT_DIR"
@@ -114,12 +122,14 @@ hdiutil create \
     -format UDRW \
     "$DMG_RW" >/dev/null
 
-mkdir -p "$DMG_MOUNT_DIR"
-hdiutil attach "$DMG_RW" -readwrite -noverify -noautoopen -mountpoint "$DMG_MOUNT_DIR" >/dev/null
-
 if [[ "${CI:-}" == "true" ]]; then
+    mkdir -p "$DMG_MOUNT_DIR"
+    hdiutil attach "$DMG_RW" -readwrite -noverify -noautoopen -mountpoint "$DMG_MOUNT_DIR" >/dev/null
     echo "Skipping Finder DMG layout in CI. The DMG still contains the app, Applications shortcut, and background asset."
 else
+    rmdir "$DMG_FINDER_MOUNT_DIR" >/dev/null 2>&1 || true
+    hdiutil attach "$DMG_RW" -readwrite -noverify -mountpoint "$DMG_FINDER_MOUNT_DIR" >/dev/null
+    DMG_MOUNT_DIR="$DMG_FINDER_MOUNT_DIR"
     osascript <<APPLESCRIPT
 tell application "Finder"
     tell disk "$APP_NAME $VERSION"
@@ -142,8 +152,17 @@ end tell
 APPLESCRIPT
 fi
 
+sync
+sleep 1
+if [[ "${CI:-}" != "true" && ! -f "$DMG_MOUNT_DIR/.DS_Store" ]]; then
+    echo "Warning: Finder did not write .DS_Store; DMG will still install correctly but may use default Finder layout."
+fi
 hdiutil detach "$DMG_MOUNT_DIR" >/dev/null
-rm -rf "$DMG_MOUNT_DIR"
+if [[ "$DMG_MOUNT_DIR" == "${TMPDIR:-/tmp}"/* ]]; then
+    rm -rf "$DMG_MOUNT_DIR"
+else
+    rmdir "$DMG_MOUNT_DIR" >/dev/null 2>&1 || true
+fi
 hdiutil convert "$DMG_RW" -format UDZO -imagekey zlib-level=9 -o "$RELEASE_DMG" >/dev/null
 
 [[ -d "$OUTPUT_APP_BUNDLE" ]]
