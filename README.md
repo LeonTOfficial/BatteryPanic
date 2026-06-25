@@ -122,6 +122,8 @@ Build the app:
 
 The build script signs the app in a temporary staging folder, verifies it, then writes both the local app bundle and a GitHub-friendly zip package into `outputs/`.
 
+For publishing, release fields, and recommended GitHub security settings, see [`docs/GITHUB_RELEASE_GUIDE.md`](docs/GITHUB_RELEASE_GUIDE.md).
+
 Generate the app icon and README screenshots:
 
 ```bash
@@ -149,6 +151,20 @@ Created by Leon.
 - GitHub: [LeonTOfficial](https://github.com/LeonTOfficial)
 - Inspired by the clean, local-first project style used in [LeonAI](https://github.com/LeonTOfficial/LeonAI).
 
+## About the Developer
+
+I am Leon, 16 years old, born in 2009, from Germany, and preparing for a future in business informatics.
+
+LEON AI is my personal learning project for understanding how modern full-stack software works: modular architecture, secure authentication, local data, tests, and real deployment. Battery Panic follows the same learning mindset: build something real, structure it cleanly, test it, document it, and make it useful.
+
+This project was created with AI-assisted development. That matters to me because it shows how a young developer can use AI as a serious technical partner to build modular, secure, and usable software faster. The code quality, test coverage, and documentation reflect that partnership.
+
+A special highlight: I received the Landespreis Medienbildung for creating educational content that makes AI easier to understand, including what machine learning is at a high level, what is behind systems like ChatGPT, and how to use AI tools responsibly.
+
+If Battery Panic helps you, I would be very happy about feedback or a GitHub star. It supports the project and motivates me to keep improving it.
+
 ## License
 
 Battery Panic is released under the MIT License. See [`LICENSE`](LICENSE).
+
+The MIT License requires that the copyright notice and permission notice stay included in copies or substantial portions of the software. In practice, that means redistributions of the source code should keep the attribution to Leon / LeonTOfficial.

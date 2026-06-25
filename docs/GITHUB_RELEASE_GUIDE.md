@@ -1,0 +1,73 @@
+# GitHub Release Guide
+
+Use this checklist when publishing Battery Panic on GitHub.
+
+## Repository Settings
+
+Recommended repository values:
+
+- Repository name: `Battery-Panic` or `BatteryPanic`
+- Description: `A native macOS menu bar app that shows a red pulsing warning and optional siren when your MacBook battery gets low.`
+- Visibility: Public
+- README: Do not generate one on GitHub if the local README already exists.
+- `.gitignore`: Do not generate one on GitHub if the local `.gitignore` already exists.
+- License: Do not generate one on GitHub if the local MIT `LICENSE` already exists.
+
+## Security Settings
+
+In GitHub, open **Settings -> Code security and analysis** and enable what is available for the repository:
+
+- Dependabot alerts: On
+- Dependabot security updates: On
+- Secret scanning: On, if GitHub offers it for the repository
+- Push protection: On, if GitHub offers it for the repository
+
+In **Settings -> Actions -> General**:
+
+- Allow GitHub Actions for this repository.
+- Use read-only workflow permissions by default unless a future workflow needs write access.
+
+In **Settings -> Branches**, consider adding a branch protection rule for `main` after the first push:
+
+- Require status checks to pass before merging.
+- Select the `macOS checks` workflow.
+- Require pull requests before merging if you want a stricter workflow.
+
+## Release Fields
+
+Create a new release with these values:
+
+- Tag: `v0.4.0`
+- Release title: `Battery Panic 0.4.0`
+- Release label: leave as `None` for a normal release. Use `Pre-release` only if you want to clearly mark it as a test build.
+- Attached binary: upload `outputs/Battery Panic 0.4.0.zip`
+
+Suggested release description:
+
+```markdown
+Battery Panic 0.4.0 focuses on polish, stability, and a smoother first-run experience.
+
+What's new:
+- Cleaner Battery Panic icon with more breathing room.
+- Fixed Battery Panic Siren playback.
+- Repeating audio warnings while a real low-battery alarm is active.
+- Short 4-second preview from Welcome, Settings, and the menu bar.
+- Smoother pulsing overlay with less redraw work.
+- Improved welcome screen with a personal note from Leon.
+- Modern green, orange, red, and charging-aware menu bar states.
+- Local-only privacy model and security check documentation.
+
+Install:
+1. Download `Battery Panic 0.4.0.zip`.
+2. Unzip it.
+3. Move `Battery Panic.app` to Applications.
+4. Right-click the app and choose Open if macOS warns that it is from an unidentified developer.
+
+Note: This release is locally/ad-hoc signed for open-source testing. A future public distribution build should use Apple Developer ID signing and notarization.
+```
+
+## Attribution and MIT License
+
+Battery Panic uses the MIT License. MIT allows use, modification, distribution, and commercial use, but copies or substantial portions of the software must include the copyright and permission notice.
+
+That means redistributions of the source code should keep the attribution to Leon / LeonTOfficial. MIT does not force every modified app UI to visibly show the creator name. If a stricter visible-attribution rule is needed, use a different license instead of standard MIT.

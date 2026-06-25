@@ -20,6 +20,19 @@ The app can draw a transparent warning overlay only inside the logged-in user se
 
 The local build script ad-hoc signs the `.app` bundle so it can run on the developer's Mac. Public distribution should use a Developer ID certificate and notarization.
 
+## GitHub Security Settings
+
+For the public GitHub repository, enable these settings when available:
+
+- Dependabot alerts.
+- Dependabot security updates.
+- Secret scanning.
+- Push protection.
+- GitHub Actions with read-only default workflow permissions.
+- Optional branch protection for `main` after the first push.
+
+See [`docs/GITHUB_RELEASE_GUIDE.md`](docs/GITHUB_RELEASE_GUIDE.md) for the release and repository checklist.
+
 ## Security Review Checklist
 
 Before publishing a release:

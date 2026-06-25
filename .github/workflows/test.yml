@@ -1,13 +1,44 @@
-name: Test
+name: CI
 
 on:
   push:
+    branches:
+      - main
   pull_request:
+  workflow_dispatch:
 
 jobs:
-  swift-test:
+  macos-checks:
+    name: macOS checks
     runs-on: macos-15
     steps:
-      - uses: actions/checkout@v4
-      - name: Run tests
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show tool versions
+        run: |
+          swift --version
+          xcodebuild -version
+
+      - name: Run logic tests
         run: ./scripts/run_tests.sh
+
+      - name: Build Swift package
+        run: swift build
+
+      - name: Build local app and release zip
+        run: ./scripts/build_app.sh
+
+      - name: Verify release zip signature
+        run: |
+          rm -rf /tmp/BatteryPanicZipCheck
+          mkdir -p /tmp/BatteryPanicZipCheck
+          ditto -x -k "outputs/Battery Panic 0.4.0.zip" /tmp/BatteryPanicZipCheck
+          codesign --verify --deep --strict --verbose=2 "/tmp/BatteryPanicZipCheck/Battery Panic.app"
+
+      - name: Scan for committed secret-looking values
+        run: |
+          if rg -n "(ghp_[A-Za-z0-9_]+|github_pat_[A-Za-z0-9_]+|sk-[A-Za-z0-9]{20,}|BEGIN (RSA|OPENSSH|PRIVATE) KEY|api[_-]?key\s*=|password\s*=|secret\s*=)" . --glob '!/.build/**' --glob '!outputs/**'; then
+            echo "Secret-looking value found. Please review before publishing."
+            exit 1
+          fi
