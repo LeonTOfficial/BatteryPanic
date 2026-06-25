@@ -92,7 +92,7 @@ Install with DMG:
 3. Drag `Battery Panic.app` into Applications.
 4. Open Battery Panic from Applications.
 
-If macOS warns that the developer cannot be verified, right-click `Battery Panic.app`, choose Open, then confirm Open. If that does not work, open [Privacy & Security settings](x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension), scroll to the bottom, and click Open Anyway / Dennoch öffnen.
+If macOS warns that the developer cannot be verified, open [Privacy & Security settings](x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension), scroll to the bottom, and click Open Anyway / Dennoch öffnen.
 
 What's new:
 - Cleaner Battery Panic icon with more breathing room.

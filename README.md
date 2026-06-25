@@ -32,13 +32,15 @@ ZIP fallback:
 
 Battery Panic is currently open source and ad-hoc signed, but not notarized by Apple yet. macOS may show a message such as **“Battery Panic cannot be opened because the developer cannot be verified.”**
 
-Try this first:
+To open it without Terminal:
 
-1. Right-click `Battery Panic.app` in **Applications**.
-2. Choose **Open**.
-3. Confirm **Open**.
+1. Click [Open Privacy & Security settings](x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension).
+2. Scroll all the way down.
+3. Find the message that Battery Panic was blocked.
+4. Click **Open Anyway** / **Dennoch öffnen**.
+5. Confirm **Open** if macOS asks again.
 
-If that does not work, open [Privacy & Security settings](x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension), scroll down, find the Battery Panic security message, and click **Open Anyway** / **Dennoch öffnen**. If the link does not open System Settings, open **System Settings -> Privacy & Security** manually and scroll to the bottom.
+If the direct settings link does not open, open **System Settings -> Privacy & Security** manually and scroll to the bottom.
 
 This happens because Battery Panic is not Apple-notarized yet. Removing this warning completely requires Apple Developer ID signing and notarization, which is planned for a later public distribution step.
 
@@ -64,27 +66,6 @@ See the full install guide: [`docs/INSTALL.md`](docs/INSTALL.md).
 
 ![Battery Panic status bar preview](docs/screenshots/status-bar-preview.png)
 ![Battery Panic settings preview](docs/screenshots/settings-preview.png)
-
-## Installation
-
-Normal users should install from the [latest GitHub Release](https://github.com/LeonTOfficial/BatteryPanic/releases/latest). Download the DMG if available, open it, and drag `Battery Panic.app` into **Applications**.
-
-Developers can build locally with:
-
-```bash
-chmod +x scripts/build_app.sh
-./scripts/build_app.sh
-```
-
-The finished local packages are created at:
-
-```text
-outputs/Battery Panic.app
-outputs/Battery Panic 0.4.0.zip
-outputs/Battery Panic 0.4.0.dmg
-```
-
-Open `Package.swift` in Xcode if you want to run the Swift package directly. Select the `BatteryPanicApp` scheme, choose **My Mac**, and press Run.
 
 ## Usage
 

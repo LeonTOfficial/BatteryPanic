@@ -32,14 +32,7 @@ Battery Panic is open source and currently ad-hoc signed, but it is not notarize
 Battery Panic cannot be opened because the developer cannot be verified.
 ```
 
-Try this first:
-
-1. Open **Applications** in Finder.
-2. Right-click `Battery Panic.app`.
-3. Click **Open**.
-4. Confirm **Open**.
-
-If that does not work:
+To open it without Terminal:
 
 1. Click [Open Privacy & Security settings](x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension).
 2. Scroll all the way down.
