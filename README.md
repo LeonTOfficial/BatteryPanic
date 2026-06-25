@@ -1,6 +1,6 @@
 # Battery Panic
 
-![Battery Panic status bar preview](docs/screenshots/status-bar-preview.png)
+![Battery Panic redoverlay preview](docs/screenshots/overlay-preview.png)
 
 Battery Panic is a native macOS menu bar app that makes low battery warnings impossible to miss. When your MacBook drops below your chosen battery threshold, Battery Panic shows a red pulsing screen overlay, plays an optional warning sound, and keeps the status visible in the menu bar.
 
@@ -24,9 +24,8 @@ The app is built with Swift and AppKit, stays local to your Mac, and is designed
 
 ## Screenshots
 
+![Battery Panic status bar preview](docs/screenshots/status-bar-preview.png)
 ![Battery Panic settings preview](docs/screenshots/settings-preview.png)
-
-![Battery Panic red overlay preview](docs/screenshots/overlay-preview.png)
 
 ## Installation
 
