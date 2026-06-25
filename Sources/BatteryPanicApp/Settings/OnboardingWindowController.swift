@@ -3,7 +3,7 @@ import AppKit
 final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
     private let settingsStore: AppSettingsStore
     private let loginItemService: LoginItemService
-    private let launchAtLoginCheckbox = NSButton(checkboxWithTitle: "Start Battery Panic at login", target: nil, action: nil)
+    private let launchAtLoginSwitch = NSSwitch()
 
     var onTestAlarm: (() -> Void)?
     var onOpenSettings: (() -> Void)?
@@ -14,13 +14,14 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
         self.loginItemService = loginItemService
 
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 660, height: 540),
+            contentRect: NSRect(x: 0, y: 0, width: 760, height: 560),
             styleMask: [.titled, .closable, .miniaturizable],
             backing: .buffered,
             defer: false
         )
         window.title = "Welcome to Battery Panic"
         window.isReleasedWhenClosed = false
+        window.titlebarAppearsTransparent = true
 
         super.init(window: window)
         window.delegate = self
@@ -55,22 +56,24 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
         let stack = NSStackView()
         stack.orientation = .vertical
         stack.alignment = .leading
-        stack.spacing = 20
-        stack.edgeInsets = NSEdgeInsets(top: 32, left: 36, bottom: 30, right: 36)
+        stack.spacing = 18
+        stack.edgeInsets = NSEdgeInsets(top: 30, left: 32, bottom: 26, right: 32)
         stack.translatesAutoresizingMaskIntoConstraints = false
 
-        let header = makeHeader()
-        let featureRow = makeFeatureRow()
-        let setupCard = makeSetupCard()
-        let credits = makeCreditsRow()
-        let buttons = makeButtons()
+        let content = NSStackView()
+        content.orientation = .horizontal
+        content.alignment = .top
+        content.spacing = 20
+        content.addArrangedSubview(makeIntroPanel())
 
-        stack.addArrangedSubview(header)
-        stack.addArrangedSubview(featureRow)
-        stack.addArrangedSubview(setupCard)
-        stack.addArrangedSubview(credits)
-        stack.addArrangedSubview(NSView())
-        stack.addArrangedSubview(buttons)
+        let hero = OnboardingHeroView(frame: NSRect(x: 0, y: 0, width: 318, height: 344))
+        hero.widthAnchor.constraint(equalToConstant: 318).isActive = true
+        hero.heightAnchor.constraint(equalToConstant: 344).isActive = true
+        content.addArrangedSubview(hero)
+
+        stack.addArrangedSubview(makeTopBar())
+        stack.addArrangedSubview(content)
+        stack.addArrangedSubview(makeFooter())
 
         root.addSubview(stack)
         window.contentView = root
@@ -83,78 +86,66 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
         ])
     }
 
-    private func makeHeader() -> NSView {
+    private func makeTopBar() -> NSView {
         let row = NSStackView()
         row.orientation = .horizontal
         row.alignment = .centerY
-        row.spacing = 16
+        row.spacing = 12
+        row.widthAnchor.constraint(equalToConstant: 696).isActive = true
 
-        let icon = NSImageView(image: AppIconFactory.image(size: 56))
+        let icon = NSImageView(image: AppIconFactory.image(size: 36))
         icon.imageScaling = .scaleProportionallyUpOrDown
-        icon.widthAnchor.constraint(equalToConstant: 54).isActive = true
-        icon.heightAnchor.constraint(equalToConstant: 54).isActive = true
+        icon.widthAnchor.constraint(equalToConstant: 36).isActive = true
+        icon.heightAnchor.constraint(equalToConstant: 36).isActive = true
 
-        let textStack = NSStackView()
-        textStack.orientation = .vertical
-        textStack.alignment = .leading
-        textStack.spacing = 5
+        let labels = NSStackView()
+        labels.orientation = .vertical
+        labels.alignment = .leading
+        labels.spacing = 1
 
-        let title = NSTextField(labelWithString: "Welcome to Battery Panic")
-        title.font = NSFont.systemFont(ofSize: 28, weight: .bold)
+        let title = NSTextField(labelWithString: "Battery Panic")
+        title.font = .systemFont(ofSize: 15, weight: .bold)
 
-        let subtitle = NSTextField(labelWithString: "Built by Leon to make low battery warnings impossible to miss, while staying small, private, and easy to control.")
+        let subtitle = NSTextField(labelWithString: "Private low-battery alerts for macOS")
+        subtitle.font = .systemFont(ofSize: 12, weight: .regular)
         subtitle.textColor = .secondaryLabelColor
-        subtitle.lineBreakMode = .byWordWrapping
-        subtitle.maximumNumberOfLines = 2
 
-        textStack.addArrangedSubview(title)
-        textStack.addArrangedSubview(subtitle)
+        labels.addArrangedSubview(title)
+        labels.addArrangedSubview(subtitle)
+
+        let github = NSButton(title: "GitHub: LeonTOfficial", target: self, action: #selector(openGitHub))
+        github.isBordered = false
+        github.contentTintColor = .linkColor
+        github.font = .systemFont(ofSize: 12, weight: .medium)
 
         row.addArrangedSubview(icon)
-        row.addArrangedSubview(textStack)
+        row.addArrangedSubview(labels)
+        row.addArrangedSubview(NSView())
+        row.addArrangedSubview(github)
         return row
     }
 
-    private func makeFeatureRow() -> NSView {
-        let row = NSStackView()
-        row.orientation = .horizontal
-        row.alignment = .top
-        row.distribution = .fillEqually
-        row.spacing = 12
-
-        row.addArrangedSubview(makeFeatureCard(title: "10% default", body: "Change the threshold anytime."))
-        row.addArrangedSubview(makeFeatureCard(title: "4s preview", body: "Test the red warning safely."))
-        row.addArrangedSubview(makeFeatureCard(title: "Menu bar control", body: "Runs quietly in the background."))
-
-        return row
-    }
-
-    private func makeFeatureCard(title: String, body: String) -> NSView {
-        let box = NSBox()
-        box.boxType = .custom
-        box.cornerRadius = 10
-        box.borderWidth = 1
-        box.borderColor = NSColor.separatorColor.withAlphaComponent(0.55)
-        box.fillColor = NSColor.controlBackgroundColor.withAlphaComponent(0.75)
-
+    private func makeIntroPanel() -> NSView {
+        let box = makePanel(width: 358, height: 344)
         let stack = NSStackView()
         stack.orientation = .vertical
         stack.alignment = .leading
-        stack.spacing = 5
-        stack.edgeInsets = NSEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        stack.spacing = 15
+        stack.edgeInsets = NSEdgeInsets(top: 22, left: 22, bottom: 20, right: 22)
         stack.translatesAutoresizingMaskIntoConstraints = false
 
-        let titleLabel = NSTextField(labelWithString: title)
-        titleLabel.font = NSFont.systemFont(ofSize: 13, weight: .semibold)
+        let eyebrow = makePill("FIRST LAUNCH SETUP")
+        let title = makeLabel("Ready before your battery gets critical.", size: 28, weight: .bold, color: .labelColor, lines: 2)
+        let subtitle = makeLabel("Battery Panic stays quiet in the menu bar and only shows the red warning when your Mac is unplugged and below your threshold.", size: 13, weight: .regular, color: .secondaryLabelColor, lines: 3)
 
-        let bodyLabel = NSTextField(labelWithString: body)
-        bodyLabel.font = NSFont.systemFont(ofSize: 12)
-        bodyLabel.textColor = .secondaryLabelColor
-        bodyLabel.lineBreakMode = .byWordWrapping
-        bodyLabel.maximumNumberOfLines = 2
-
-        stack.addArrangedSubview(titleLabel)
-        stack.addArrangedSubview(bodyLabel)
+        stack.addArrangedSubview(eyebrow)
+        stack.addArrangedSubview(title)
+        stack.addArrangedSubview(subtitle)
+        stack.addArrangedSubview(makeDivider())
+        stack.addArrangedSubview(makeInfoRow(symbolName: "battery.25", title: "10% default threshold", body: "Change it later in Settings.", tint: .systemRed))
+        stack.addArrangedSubview(makeInfoRow(symbolName: "eye", title: "Safe 4-second preview", body: "Test the overlay without draining the battery.", tint: .systemOrange))
+        stack.addArrangedSubview(makeLoginRow())
+        stack.addArrangedSubview(makeFeedbackNote())
         box.contentView = stack
 
         NSLayoutConstraint.activate([
@@ -163,94 +154,169 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
             stack.topAnchor.constraint(equalTo: box.topAnchor),
             stack.bottomAnchor.constraint(equalTo: box.bottomAnchor)
         ])
-
         return box
     }
 
-    private func makeSetupCard() -> NSView {
-        let stack = NSStackView()
-        stack.orientation = .vertical
-        stack.alignment = .leading
-        stack.spacing = 10
+    private func makeLoginRow() -> NSView {
+        let row = NSStackView()
+        row.orientation = .horizontal
+        row.alignment = .centerY
+        row.spacing = 12
 
-        let title = NSTextField(labelWithString: "Quick setup")
-        title.font = NSFont.systemFont(ofSize: 16, weight: .semibold)
+        let icon = makeSymbol("power", tint: .systemGreen)
+        let text = NSStackView()
+        text.orientation = .vertical
+        text.alignment = .leading
+        text.spacing = 2
+        text.addArrangedSubview(makeLabel("Start at login", size: 13, weight: .semibold, color: .labelColor, lines: 1))
+        text.addArrangedSubview(makeLabel("Keep the warning available automatically.", size: 12, weight: .regular, color: .secondaryLabelColor, lines: 1))
 
-        launchAtLoginCheckbox.target = self
-        launchAtLoginCheckbox.action = #selector(launchAtLoginChanged)
+        launchAtLoginSwitch.target = self
+        launchAtLoginSwitch.action = #selector(launchAtLoginChanged)
 
-        let note = NSTextField(labelWithString: "Current default: warn at 10% battery while unplugged.")
-        note.textColor = .secondaryLabelColor
-
-        let feedback = NSTextField(labelWithString: "If Battery Panic helps you, Leon would genuinely appreciate feedback or a GitHub star. It helps the project grow.")
-        feedback.textColor = .secondaryLabelColor
-        feedback.lineBreakMode = .byWordWrapping
-        feedback.maximumNumberOfLines = 3
-
-        stack.addArrangedSubview(title)
-        stack.addArrangedSubview(launchAtLoginCheckbox)
-        stack.addArrangedSubview(note)
-        stack.addArrangedSubview(feedback)
-        return stack
+        row.addArrangedSubview(icon)
+        row.addArrangedSubview(text)
+        row.addArrangedSubview(NSView())
+        row.addArrangedSubview(launchAtLoginSwitch)
+        return row
     }
 
-    private func makeButtons() -> NSView {
+    private func makeInfoRow(symbolName: String, title: String, body: String, tint: NSColor) -> NSView {
+        let row = NSStackView()
+        row.orientation = .horizontal
+        row.alignment = .centerY
+        row.spacing = 12
+
+        let text = NSStackView()
+        text.orientation = .vertical
+        text.alignment = .leading
+        text.spacing = 2
+        text.addArrangedSubview(makeLabel(title, size: 13, weight: .semibold, color: .labelColor, lines: 1))
+        text.addArrangedSubview(makeLabel(body, size: 12, weight: .regular, color: .secondaryLabelColor, lines: 1))
+
+        row.addArrangedSubview(makeSymbol(symbolName, tint: tint))
+        row.addArrangedSubview(text)
+        return row
+    }
+
+    private func makeFeedbackNote() -> NSView {
+        let label = makeLabel("Built by Leon. Feedback or a GitHub star helps this project keep getting better.", size: 12, weight: .medium, color: .secondaryLabelColor, lines: 2)
+        label.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        return label
+    }
+
+    private func makeFooter() -> NSView {
         let row = NSStackView()
         row.orientation = .horizontal
         row.alignment = .centerY
         row.spacing = 10
+        row.widthAnchor.constraint(equalToConstant: 696).isActive = true
 
-        let previewButton = NSButton(title: "Preview 4s Alarm", target: self, action: #selector(testAlarm))
+        let credits = makeLabel("Created by Leon.T", size: 12, weight: .medium, color: .secondaryLabelColor, lines: 1)
+
+        let previewButton = NSButton(title: "Preview Alarm", target: self, action: #selector(testAlarm))
         previewButton.bezelStyle = .rounded
         previewButton.controlSize = .large
 
-        let settingsButton = NSButton(title: "Open Settings", target: self, action: #selector(openSettings))
+        let settingsButton = NSButton(title: "Settings", target: self, action: #selector(openSettings))
         settingsButton.bezelStyle = .rounded
         settingsButton.controlSize = .large
 
-        let startButton = NSButton(title: "Start Battery Panic", target: self, action: #selector(completeOnboarding))
+        let startButton = NSButton(title: "Start", target: self, action: #selector(completeOnboarding))
         startButton.bezelStyle = .rounded
         startButton.controlSize = .large
         startButton.keyEquivalent = "\r"
 
+        row.addArrangedSubview(credits)
+        row.addArrangedSubview(NSView())
         row.addArrangedSubview(previewButton)
         row.addArrangedSubview(settingsButton)
-        row.addArrangedSubview(NSView())
         row.addArrangedSubview(startButton)
         return row
     }
 
-    private func makeCreditsRow() -> NSView {
-        let row = NSStackView()
-        row.orientation = .horizontal
-        row.alignment = .centerY
-        row.spacing = 8
+    private func makePanel(width: CGFloat, height: CGFloat) -> NSBox {
+        let box = NSBox()
+        box.boxType = .custom
+        box.cornerRadius = 22
+        box.borderWidth = 1
+        box.borderColor = NSColor.separatorColor.withAlphaComponent(0.45)
+        box.fillColor = NSColor.controlBackgroundColor.withAlphaComponent(0.70)
+        box.widthAnchor.constraint(equalToConstant: width).isActive = true
+        box.heightAnchor.constraint(equalToConstant: height).isActive = true
+        return box
+    }
 
-        let created = NSTextField(labelWithString: "Created by Leon.T")
-        created.textColor = .secondaryLabelColor
+    private func makePill(_ text: String) -> NSView {
+        let label = makeLabel(text, size: 10, weight: .black, color: .systemRed, lines: 1)
+        let box = NSBox()
+        box.boxType = .custom
+        box.cornerRadius = 11
+        box.borderWidth = 1
+        box.borderColor = NSColor.systemRed.withAlphaComponent(0.28)
+        box.fillColor = NSColor.systemRed.withAlphaComponent(0.10)
+        box.contentView = label
+        label.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            label.leadingAnchor.constraint(equalTo: box.leadingAnchor, constant: 10),
+            label.trailingAnchor.constraint(equalTo: box.trailingAnchor, constant: -10),
+            label.topAnchor.constraint(equalTo: box.topAnchor, constant: 4),
+            label.bottomAnchor.constraint(equalTo: box.bottomAnchor, constant: -4)
+        ])
+        return box
+    }
 
-        let github = NSButton(title: "GitHub: LeonTOfficial", target: self, action: #selector(openGitHub))
-        github.isBordered = false
-        github.contentTintColor = .linkColor
+    private func makeDivider() -> NSView {
+        let divider = NSBox()
+        divider.boxType = .separator
+        divider.widthAnchor.constraint(equalToConstant: 310).isActive = true
+        return divider
+    }
 
-        row.addArrangedSubview(created)
-        row.addArrangedSubview(NSTextField(labelWithString: "•"))
-        row.addArrangedSubview(github)
-        return row
+    private func makeSymbol(_ name: String, tint: NSColor) -> NSView {
+        let holder = NSBox()
+        holder.boxType = .custom
+        holder.cornerRadius = 10
+        holder.borderWidth = 0
+        holder.fillColor = tint.withAlphaComponent(0.12)
+        holder.widthAnchor.constraint(equalToConstant: 34).isActive = true
+        holder.heightAnchor.constraint(equalToConstant: 34).isActive = true
+
+        let image = NSImageView(image: NSImage(systemSymbolName: name, accessibilityDescription: nil) ?? NSImage())
+        image.contentTintColor = tint
+        image.imageScaling = .scaleProportionallyUpOrDown
+        image.translatesAutoresizingMaskIntoConstraints = false
+        holder.addSubview(image)
+        NSLayoutConstraint.activate([
+            image.centerXAnchor.constraint(equalTo: holder.centerXAnchor),
+            image.centerYAnchor.constraint(equalTo: holder.centerYAnchor),
+            image.widthAnchor.constraint(equalToConstant: 17),
+            image.heightAnchor.constraint(equalToConstant: 17)
+        ])
+        return holder
+    }
+
+    private func makeLabel(_ text: String, size: CGFloat, weight: NSFont.Weight, color: NSColor, lines: Int) -> NSTextField {
+        let label = NSTextField(labelWithString: text)
+        label.font = .systemFont(ofSize: size, weight: weight)
+        label.textColor = color
+        label.lineBreakMode = .byWordWrapping
+        label.maximumNumberOfLines = lines
+        return label
     }
 
     private func refreshFromSettings() {
         let enabled = loginItemService.isEnabled || settingsStore.snapshot().launchAtLoginEnabled
-        launchAtLoginCheckbox.state = enabled ? .on : .off
+        launchAtLoginSwitch.state = enabled ? .on : .off
     }
 
     @objc private func launchAtLoginChanged() {
-        let enabled = launchAtLoginCheckbox.state == .on
+        let enabled = launchAtLoginSwitch.state == .on
         do {
             try loginItemService.setEnabled(enabled)
             settingsStore.setLaunchAtLoginEnabled(enabled)
         } catch {
-            launchAtLoginCheckbox.state = settingsStore.snapshot().launchAtLoginEnabled ? .on : .off
+            launchAtLoginSwitch.state = settingsStore.snapshot().launchAtLoginEnabled ? .on : .off
             showError("Could not update login item.", informativeText: error.localizedDescription)
         }
     }
