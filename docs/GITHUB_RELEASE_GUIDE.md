@@ -61,8 +61,8 @@ Battery Panic 0.4.0.dmg
 5. Confirm the DMG opens and supports the normal drag-and-drop install flow: `Battery Panic.app` -> `Applications`.
 6. Upload both files to the GitHub Release before relying on the direct README links.
 7. After uploading, the README links should resolve:
-   - `https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.4.0/Battery%20Panic%200.4.0.dmg`
-   - `https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.4.0/Battery%20Panic%200.4.0.zip`
+   - `https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.4.0/Battery.Panic.0.4.0.dmg`
+   - `https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.4.0/Battery.Panic.0.4.0.zip`
 
 ## Release Fields
 

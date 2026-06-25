@@ -4,7 +4,7 @@ Battery Panic is meant to be installed like a normal macOS app. You do not need 
 
 ## Recommended: Install with the DMG
 
-1. Download [Battery Panic 0.4.0.dmg](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.4.0/Battery%20Panic%200.4.0.dmg).
+1. Download [Battery Panic 0.4.0.dmg](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.4.0/Battery.Panic.0.4.0.dmg).
 2. Open the downloaded DMG file.
 3. Drag `Battery Panic.app` into the **Applications** shortcut.
 4. Open Battery Panic from **Applications**.
@@ -13,7 +13,7 @@ Battery Panic is meant to be installed like a normal macOS app. You do not need 
 
 Use this only if the DMG is not available.
 
-1. Download [Battery Panic 0.4.0.zip](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.4.0/Battery%20Panic%200.4.0.zip).
+1. Download [Battery Panic 0.4.0.zip](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.4.0/Battery.Panic.0.4.0.zip).
 2. Unzip the file.
 3. Move `Battery Panic.app` into **Applications**.
 4. Open Battery Panic from **Applications**.
