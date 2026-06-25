@@ -150,16 +150,6 @@ Created by Leon.
 - GitHub: [LeonTOfficial](https://github.com/LeonTOfficial)
 - Inspired by the clean, local-first project style used in [LeonAI](https://github.com/LeonTOfficial/LeonAI).
 
-## About the Developer
-
-I am Leon, 16 years old, born in 2009, from Germany, and preparing for a future in business informatics.
-
-LEON AI is my personal learning project for understanding how modern full-stack software works: modular architecture, secure authentication, local data, tests, and real deployment. Battery Panic follows the same learning mindset: build something real, structure it cleanly, test it, document it, and make it useful.
-
-This project was created with AI-assisted development. That matters to me because it shows how a young developer can use AI as a serious technical partner to build modular, secure, and usable software faster. The code quality, test coverage, and documentation reflect that partnership.
-
-A special highlight: I received the Landespreis Medienbildung for creating educational content that makes AI easier to understand, including what machine learning is at a high level, what is behind systems like ChatGPT, and how to use AI tools responsibly.
-
 If Battery Panic helps you, I would be very happy about feedback or a GitHub star. It supports the project and motivates me to keep improving it.
 
 ## License
