@@ -17,6 +17,7 @@ final class MenuBarController: NSObject {
     private let pauseItem = NSMenuItem(title: "Pause Alarm", action: #selector(togglePause), keyEquivalent: "")
     private var latestStatus: BatteryStatus?
     private var alarmSummary = "Idle"
+    private var oneTimePauseActive = false
 
     var onOpenSettings: (() -> Void)?
     var onOpenWelcome: (() -> Void)?
@@ -45,7 +46,7 @@ final class MenuBarController: NSObject {
 
     func updateSettings() {
         let snapshot = settingsStore.snapshot()
-        pauseItem.title = snapshot.isPaused ? "Resume Alarm" : "Pause Alarm"
+        pauseItem.title = snapshot.isPaused || oneTimePauseActive ? "Resume Alarm" : "Pause Alarm"
         headerView.update(status: latestStatus, settings: snapshot)
         updateDetails()
         if let latestStatus {
@@ -60,6 +61,12 @@ final class MenuBarController: NSObject {
             alarmSummary = "Idle"
         }
         updateDetails()
+    }
+
+    func setOneTimePauseActive(_ active: Bool) {
+        oneTimePauseActive = active
+        alarmSummary = active ? "Paused for this alarm" : alarmSummary
+        updateSettings()
     }
 
     private func updateButton(for status: BatteryStatus) {

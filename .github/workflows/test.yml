@@ -34,6 +34,7 @@ jobs:
           rm -rf /tmp/BatteryPanicZipCheck
           mkdir -p /tmp/BatteryPanicZipCheck
           ditto -x -k "outputs/Battery.Panic.0.4.0.zip" /tmp/BatteryPanicZipCheck
+          test -d "/tmp/BatteryPanicZipCheck/Battery Panic.app/Contents/PlugIns/BatteryPanicWidgetExtension.appex"
           codesign --verify --deep --strict --verbose=2 "/tmp/BatteryPanicZipCheck/Battery Panic.app"
           test -f "outputs/Battery.Panic.0.4.0.dmg"
 

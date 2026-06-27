@@ -347,7 +347,7 @@ struct BatteryPanicWidgetBackground: View {
 extension View {
     @ViewBuilder
     func batteryPanicWidgetBackground() -> some View {
-        if #available(macOSApplicationExtension 14.0, *) {
+        if #available(macOS 14.0, *) {
             self.containerBackground(for: .widget) {
                 BatteryPanicWidgetBackground()
             }
@@ -369,23 +369,4 @@ struct BatteryPanicWidgets: Widget {
         .description("Shows your MacBook battery status with Battery Panic styling.")
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
-}
-
-#Preview(as: .systemSmall) {
-    BatteryPanicWidgets()
-} timeline: {
-    BatteryPanicWidgetEntry(date: Date(), snapshot: .previewHealthy)
-    BatteryPanicWidgetEntry(date: Date(), snapshot: .previewCritical)
-}
-
-#Preview(as: .systemMedium) {
-    BatteryPanicWidgets()
-} timeline: {
-    BatteryPanicWidgetEntry(date: Date(), snapshot: .previewWarning)
-}
-
-#Preview(as: .systemLarge) {
-    BatteryPanicWidgets()
-} timeline: {
-    BatteryPanicWidgetEntry(date: Date(), snapshot: .previewCritical)
 }

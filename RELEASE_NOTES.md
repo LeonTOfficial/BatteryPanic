@@ -10,9 +10,12 @@ Battery Panic 0.4.0 focuses on polish, stability, and a smoother first-run exper
 - Fixed Battery Panic Siren playback:
   - The generated sound now matches the Mac output audio format.
   - The siren can be tested from Settings.
-- Repeating audio warnings:
-  - A real low-battery alarm repeats the selected sound while it remains active.
+- Continuous audio warnings:
+  - A real low-battery alarm loops the selected sound while it remains active.
   - Preview alarms still play once and stop quickly.
+- One-time alarm pause:
+  - Pausing from the menu bar during an active alarm now silences only the current alarm state.
+  - The pause resets automatically after charging starts or the battery goes back above the threshold.
 - Short, predictable preview:
   - Red-screen previews now run for about four seconds from Welcome, Settings, and the menu bar.
 - Smoother overlay:
@@ -32,6 +35,10 @@ Battery Panic 0.4.0 focuses on polish, stability, and a smoother first-run exper
   - No secrets or tokens found in the repository scan.
   - Local-only privacy model documented.
   - Build and tests verified.
+- WidgetKit preview:
+  - Small, medium, and large Battery Panic widgets.
+  - Local snapshot sharing from the menu bar app to the widget.
+  - Widget extension embedded into the local app bundle by the build script.
 
 ## Build
 
@@ -45,6 +52,7 @@ The local app bundle is written to:
 ```text
 outputs/Battery Panic.app
 outputs/Battery.Panic.0.4.0.zip
+outputs/Battery.Panic.0.4.0.dmg
 ```
 
 ## Distribution Note

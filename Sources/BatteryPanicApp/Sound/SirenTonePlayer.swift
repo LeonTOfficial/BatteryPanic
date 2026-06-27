@@ -8,7 +8,7 @@ final class SirenTonePlayer {
     private var isPrepared = false
     private var playbackFormat: AVAudioFormat?
 
-    func play() {
+    func play(looping: Bool = false) {
         do {
             try prepareIfNeeded()
             guard let playbackFormat else {
@@ -17,7 +17,8 @@ final class SirenTonePlayer {
             }
 
             player.stop()
-            player.scheduleBuffer(makeSirenBuffer(format: playbackFormat), at: nil, options: .interrupts, completionHandler: nil)
+            let options: AVAudioPlayerNodeBufferOptions = looping ? [.loops, .interrupts] : .interrupts
+            player.scheduleBuffer(makeSirenBuffer(format: playbackFormat), at: nil, options: options, completionHandler: nil)
             player.play()
         } catch {
             NSSound.beep()

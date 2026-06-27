@@ -4,6 +4,9 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 APP_NAME="Battery Panic"
 BUNDLE_ID="com.leontofficial.batterypanic"
+WIDGET_NAME="BatteryPanicWidgetExtension"
+WIDGET_DISPLAY_NAME="Battery Panic Widget"
+WIDGET_BUNDLE_ID="$BUNDLE_ID.widget"
 VERSION="0.4.0"
 BUILD_NUMBER="4"
 BUILD_CONFIG="${BUILD_CONFIG:-release}"
@@ -20,6 +23,9 @@ DMG_RW="$STAGING_DIR/$RELEASE_BASE.rw.dmg"
 APP_BUNDLE="$STAGING_DIR/$APP_NAME.app"
 BINARY_SOURCE="$ROOT_DIR/.build/$BUILD_CONFIG/BatteryPanicApp"
 BINARY_DEST="$APP_BUNDLE/Contents/MacOS/$APP_NAME"
+WIDGET_BUNDLE="$APP_BUNDLE/Contents/PlugIns/$WIDGET_NAME.appex"
+WIDGET_BINARY_SOURCE="$ROOT_DIR/.build/$BUILD_CONFIG/$WIDGET_NAME"
+WIDGET_BINARY_DEST="$WIDGET_BUNDLE/Contents/MacOS/$WIDGET_NAME"
 
 cleanup() {
     if [[ -d "$DMG_MOUNT_DIR" ]]; then
@@ -56,10 +62,14 @@ rm -rf "$DMG_MOUNT_DIR"
 rmdir "$DMG_FINDER_MOUNT_DIR" >/dev/null 2>&1 || true
 mkdir -p "$APP_BUNDLE/Contents/MacOS"
 mkdir -p "$APP_BUNDLE/Contents/Resources"
+mkdir -p "$WIDGET_BUNDLE/Contents/MacOS"
+mkdir -p "$WIDGET_BUNDLE/Contents/Resources"
 mkdir -p "$OUTPUT_DIR"
 
 cp "$BINARY_SOURCE" "$BINARY_DEST"
 chmod +x "$BINARY_DEST"
+cp "$WIDGET_BINARY_SOURCE" "$WIDGET_BINARY_DEST"
+chmod +x "$WIDGET_BINARY_DEST"
 
 if [[ ! -f "$ROOT_DIR/Resources/AppIcon.icns" ]]; then
     swift "$ROOT_DIR/scripts/create_icon.swift"
@@ -102,12 +112,49 @@ cat > "$APP_BUNDLE/Contents/Info.plist" <<PLIST
 </plist>
 PLIST
 
+cat > "$WIDGET_BUNDLE/Contents/Info.plist" <<PLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>en</string>
+    <key>CFBundleDisplayName</key>
+    <string>$WIDGET_DISPLAY_NAME</string>
+    <key>CFBundleExecutable</key>
+    <string>$WIDGET_NAME</string>
+    <key>CFBundleIdentifier</key>
+    <string>$WIDGET_BUNDLE_ID</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleName</key>
+    <string>$WIDGET_DISPLAY_NAME</string>
+    <key>CFBundlePackageType</key>
+    <string>XPC!</string>
+    <key>CFBundleShortVersionString</key>
+    <string>$VERSION</string>
+    <key>CFBundleVersion</key>
+    <string>$BUILD_NUMBER</string>
+    <key>LSMinimumSystemVersion</key>
+    <string>13.0</string>
+    <key>NSExtension</key>
+    <dict>
+        <key>NSExtensionPointIdentifier</key>
+        <string>com.apple.widgetkit-extension</string>
+    </dict>
+</dict>
+</plist>
+PLIST
+
 clean_bundle_attributes
-codesign --force --deep --sign - "$APP_BUNDLE"
+codesign --force --sign - --entitlements "$ROOT_DIR/Entitlements/BatteryPanicWidgetExtension.entitlements" "$WIDGET_BUNDLE"
+codesign --force --deep --sign - --entitlements "$ROOT_DIR/Entitlements/BatteryPanicApp.entitlements" "$APP_BUNDLE"
 clean_bundle_attributes
 codesign --verify --deep --strict --verbose=2 "$APP_BUNDLE"
 
 ditto --norsrc "$APP_BUNDLE" "$OUTPUT_APP_BUNDLE"
+xattr -cr "$OUTPUT_APP_BUNDLE" 2>/dev/null || true
+codesign --verify --deep --strict --verbose=2 "$OUTPUT_APP_BUNDLE"
 (cd "$STAGING_DIR" && ditto -c -k --keepParent --norsrc "$APP_NAME.app" "$RELEASE_ZIP")
 
 mkdir -p "$DMG_STAGING_DIR/.background"
@@ -164,8 +211,10 @@ else
     rmdir "$DMG_MOUNT_DIR" >/dev/null 2>&1 || true
 fi
 hdiutil convert "$DMG_RW" -format UDZO -imagekey zlib-level=9 -o "$RELEASE_DMG" >/dev/null
+xattr -cr "$OUTPUT_APP_BUNDLE" 2>/dev/null || true
 
 [[ -d "$OUTPUT_APP_BUNDLE" ]]
+[[ -d "$OUTPUT_APP_BUNDLE/Contents/PlugIns/$WIDGET_NAME.appex" ]]
 [[ -f "$RELEASE_ZIP" ]]
 [[ -f "$RELEASE_DMG" ]]
 

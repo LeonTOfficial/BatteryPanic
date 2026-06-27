@@ -1,73 +1,56 @@
-# Battery Panic WidgetKit setup
+# Battery Panic Widgets
 
-This pack adds a WidgetKit-ready design for Battery Panic with three widget sizes:
+Battery Panic includes a macOS WidgetKit extension with three widget sizes:
 
-- Small widget: compact battery percentage and status.
-- Medium widget: battery ring, status text, threshold and power state.
-- Large widget: dashboard-style Battery Panic panel.
+- Small: compact battery percentage and status.
+- Medium: battery ring, status text, threshold, and power state.
+- Large: dashboard-style Battery Panic panel.
 
-## Important reality check
+The widget reads a small local battery snapshot written by the main app. It does not use accounts, analytics, telemetry, or network calls.
 
-A real macOS widget is not just a normal Swift file. It needs a WidgetKit Extension target in Xcode. The current Battery Panic repository is mainly a Swift Package executable app, so the widget source code is ready, but you still need to add the Widget Extension target in Xcode.
+## How it is built
 
-## Files in this pack
-
-Copy these into the repository:
+The repository is still a Swift Package based project. To keep the project clean, the widget is split into two targets:
 
 ```text
-Package.swift
-Sources/BatteryPanicWidgetShared/BatteryPanicWidgetSnapshot.swift
+Sources/BatteryPanicWidgetShared/
+Sources/BatteryPanicWidgetExtension/
+```
+
+The app writes widget data through:
+
+```text
 Sources/BatteryPanicApp/Widgets/WidgetSnapshotPublisher.swift
-Sources/BatteryPanicWidgetExtension/BatteryPanicWidgets.swift
-docs/WIDGETS.md
-docs/APP_COORDINATOR_WIDGET_EDIT.md
+```
+
+The release build embeds the extension into the app bundle:
+
+```text
+Battery Panic.app/Contents/PlugIns/BatteryPanicWidgetExtension.appex
+```
+
+## App Group
+
+The app and widget use this App Group identifier:
+
+```text
+group.com.leontofficial.batterypanic
+```
+
+The entitlement templates are stored in:
+
+```text
 Entitlements/BatteryPanicApp.entitlements
 Entitlements/BatteryPanicWidgetExtension.entitlements
 ```
 
-## Xcode steps
+For fully polished public distribution, the widget should later be signed with an Apple Developer account and a real App Group capability. The current local build is ad-hoc signed, which is suitable for local testing but not the same as a notarized Developer ID release.
 
-1. Open the project/repository in Xcode.
-2. Add a new Widget Extension target:
-   - File -> New -> Target...
-   - macOS -> Widget Extension
-   - Product Name: `BatteryPanicWidgetExtension`
-   - Do not include Live Activity.
-3. Add `Sources/BatteryPanicWidgetExtension/BatteryPanicWidgets.swift` to the widget extension target.
-4. Add the shared code target/package `BatteryPanicWidgetShared` to both:
-   - the main app target
-   - the widget extension target
-5. Enable App Groups for both targets:
-   - App Group: `group.com.leontofficial.batterypanic`
-   - You can use the entitlement templates in the `Entitlements/` folder.
-6. If your Bundle ID is different, you can change the app group string in:
-
-```swift
-BatteryPanicWidgetStorage.appGroupIdentifier
-```
-
-## Main app edit
-
-Follow `docs/APP_COORDINATOR_WIDGET_EDIT.md`.
-
-## Build test
-
-After adding the Widget Extension target:
+## Build
 
 ```bash
 swift build
+./scripts/build_app.sh
 ```
 
-Then test the full app/widget in Xcode because WidgetKit extensions are built and embedded by Xcode, not by plain SwiftPM alone.
-
-## Recommendation
-
-For GitHub, commit the widget code first with a clear note that the actual WidgetKit extension target must be opened and built through Xcode.
-
-Suggested commit:
-
-```bash
-git add Package.swift Sources docs
-git commit -m "Add Battery Panic WidgetKit source"
-git push origin main
-```
+After installing the app into Applications, open Battery Panic once. Then open macOS Notification Center / Edit Widgets and search for `Battery Panic`.

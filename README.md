@@ -55,10 +55,11 @@ See the full install guide: [`docs/INSTALL.md`](docs/INSTALL.md).
 - Red pulsing full-screen overlay across connected displays.
 - Adjustable low-battery threshold.
 - Adjustable overlay pulse speed and pulse intensity.
-- Built-in repeating Battery Panic siren plus selectable macOS system warning sounds.
+- Built-in continuous Battery Panic siren plus selectable macOS system warning sounds.
 - Test buttons for both the red overlay and the selected sound.
 - Live in-settings overlay preview that updates while you move pulse controls.
 - Fixed short 4-second red-screen preview for safe testing.
+- macOS WidgetKit extension with small, medium, and large Battery Panic widgets.
 - Optional launch at login.
 - First-run welcome/setup window.
 - Local-only behavior: no analytics, no network calls, no accounts.
@@ -85,11 +86,17 @@ Battery Panic only shows the real warning when the Mac has a battery, is unplugg
 - **Pulse red overlay:** enables or disables the animated overlay pulse.
 - **Pulse speed:** controls how fast the warning breathes.
 - **Pulse intensity:** controls how strong the red wash and glow are.
-- **Warning sound:** choose the built-in Battery Panic Siren or macOS system sounds such as Basso, Ping, Glass, Hero, and more.
+- **Warning sound:** choose the built-in Battery Panic Siren or macOS system sounds such as Basso, Ping, Glass, Hero, and more. During a real alarm, the selected sound loops until the alarm ends.
 - **Test Sound:** plays the selected warning sound immediately.
 - **Preview Red Screen / Preview 4s Alarm:** shows the overlay for about four seconds using a safe simulated low-battery state.
 - **Start at login:** registers Battery Panic as a macOS login item.
-- **Pause alarm:** temporarily disables real low-battery warnings.
+- **Pause alarm:** temporarily disables real low-battery warnings. From the menu bar during an active alarm, pause is one-time and resets after the Mac is charging again or the battery returns above the threshold.
+
+## Widgets
+
+Battery Panic includes a WidgetKit extension for macOS. The widget shows your current battery percentage, warning state, threshold, and power connection status in a cleaner Battery Panic style.
+
+For details, see [`docs/WIDGETS.md`](docs/WIDGETS.md).
 
 ## Security and Privacy
 
@@ -132,6 +139,14 @@ The build script signs the app in a temporary staging folder, verifies it, then 
 
 For publishing, release fields, and recommended GitHub security settings, see [`docs/GITHUB_RELEASE_GUIDE.md`](docs/GITHUB_RELEASE_GUIDE.md).
 
+Open the project in Xcode:
+
+```bash
+open Package.swift
+```
+
+Use the `BatteryPanicApp` scheme for the app and `BatteryPanicWidgetExtension` for the widget source. More details: [`docs/XCODE.md`](docs/XCODE.md).
+
 Generate the app icon and README screenshots:
 
 ```bash
@@ -149,7 +164,10 @@ Sources/BatteryPanicApp/
 ├── Overlay/
 ├── Settings/
 ├── Shared/
-└── Sound/
+├── Sound/
+└── Widgets/
+Sources/BatteryPanicWidgetExtension/
+Sources/BatteryPanicWidgetShared/
 ```
 
 ## Credits

@@ -10,12 +10,13 @@ final class AppCoordinator {
     private let menuBarController: MenuBarController
     private let settingsWindowController: SettingsWindowController
     private let onboardingWindowController: OnboardingWindowController
+    private let widgetSnapshotPublisher = WidgetSnapshotPublisher()
 
     private var latestStatus: BatteryStatus?
     private var alarmVisible = false
     private var testAlarmVisible = false
+    private var oneTimePauseActive = false
     private var testAlarmToken = UUID()
-    private var warningSoundTimer: Timer?
 
     init(
         settingsStore: AppSettingsStore = AppSettingsStore(),
@@ -53,7 +54,6 @@ final class AppCoordinator {
 
     func stop() {
         batteryMonitor.stop()
-        stopWarningSoundRepeater()
         soundPlayer.stop()
         overlayManager.hide()
     }
@@ -107,6 +107,7 @@ final class AppCoordinator {
             guard let self else { return }
             latestStatus = status
             menuBarController.update(status: status)
+            widgetSnapshotPublisher.publish(status: status, settings: settingsStore.snapshot())
             evaluateAlarm(for: status)
         }
     }
@@ -114,6 +115,7 @@ final class AppCoordinator {
     private func handleSettingsChanged() {
         menuBarController.updateSettings()
         guard let latestStatus else { return }
+        widgetSnapshotPublisher.publish(status: latestStatus, settings: settingsStore.snapshot())
         evaluateAlarm(for: latestStatus)
     }
 
@@ -122,6 +124,24 @@ final class AppCoordinator {
 
         let settings = settingsStore.snapshot()
         let shouldShow = AlarmPolicy.shouldShowAlarm(status: status, settings: settings)
+
+        if !shouldShow {
+            if oneTimePauseActive {
+                oneTimePauseActive = false
+                menuBarController.setOneTimePauseActive(false)
+            }
+            hideActiveAlarm()
+            return
+        }
+
+        if oneTimePauseActive {
+            overlayManager.hide()
+            soundPlayer.stop()
+            alarmVisible = false
+            menuBarController.setAlarmVisible(false)
+            menuBarController.setOneTimePauseActive(true)
+            return
+        }
 
         if shouldShow {
             overlayManager.show(
@@ -132,21 +152,15 @@ final class AppCoordinator {
                 isTest: false
             )
             if !alarmVisible {
-                playWarningSound(using: settings)
-            }
-            if warningSoundTimer == nil {
-                startWarningSoundRepeater()
+                playWarningSound(using: settings, looping: true)
             }
             alarmVisible = true
             menuBarController.setAlarmVisible(true)
-        } else {
-            hideActiveAlarm()
         }
     }
 
     private func hideActiveAlarm() {
         overlayManager.hide()
-        stopWarningSoundRepeater()
         soundPlayer.stop()
         alarmVisible = false
         menuBarController.setAlarmVisible(false)
@@ -173,6 +187,20 @@ final class AppCoordinator {
     }
 
     private func togglePause() {
+        if alarmVisible || oneTimePauseActive {
+            oneTimePauseActive.toggle()
+            if oneTimePauseActive {
+                hideActiveAlarm()
+                menuBarController.setOneTimePauseActive(true)
+            } else {
+                menuBarController.setOneTimePauseActive(false)
+                if let latestStatus {
+                    evaluateAlarm(for: latestStatus)
+                }
+            }
+            return
+        }
+
         let current = settingsStore.snapshot().isPaused
         settingsStore.setPaused(!current)
     }
@@ -182,7 +210,7 @@ final class AppCoordinator {
         let status = BatteryStatus.lowBatteryPreview(threshold: settings.thresholdPercentage)
         let token = UUID()
 
-        stopWarningSoundRepeater()
+        soundPlayer.stop()
         testAlarmToken = token
         testAlarmVisible = true
         menuBarController.setAlarmVisible(true, mode: .preview)
@@ -210,24 +238,12 @@ final class AppCoordinator {
         }
     }
 
-    private func playWarningSound(using settings: AlarmSettingsSnapshot) {
+    private func playWarningSound(using settings: AlarmSettingsSnapshot, looping: Bool = false) {
         guard settings.soundEnabled else { return }
-        soundPlayer.playWarning(named: settings.selectedSoundName)
-    }
-
-    private func startWarningSoundRepeater() {
-        warningSoundTimer?.invalidate()
-        let timer = Timer(timeInterval: AppConstants.warningSoundRepeatInterval, repeats: true) { [weak self] _ in
-            guard let self else { return }
-            guard self.alarmVisible, !self.testAlarmVisible else { return }
-            self.playWarningSound(using: self.settingsStore.snapshot())
+        if looping {
+            soundPlayer.playLoopingWarning(named: settings.selectedSoundName)
+        } else {
+            soundPlayer.playWarning(named: settings.selectedSoundName)
         }
-        RunLoop.main.add(timer, forMode: .common)
-        warningSoundTimer = timer
-    }
-
-    private func stopWarningSoundRepeater() {
-        warningSoundTimer?.invalidate()
-        warningSoundTimer = nil
     }
 }

@@ -10,6 +10,7 @@ let package = Package(
     ],
     products: [
         .executable(name: "BatteryPanicApp", targets: ["BatteryPanicApp"]),
+        .executable(name: "BatteryPanicWidgetExtension", targets: ["BatteryPanicWidgetExtension"]),
         .library(name: "BatteryPanicWidgetShared", targets: ["BatteryPanicWidgetShared"])
     ],
     dependencies: [],
@@ -29,6 +30,17 @@ let package = Package(
                 .linkedFramework("AVFoundation"),
                 .linkedFramework("IOKit"),
                 .linkedFramework("ServiceManagement"),
+                .linkedFramework("WidgetKit")
+            ]
+        ),
+        .executableTarget(
+            name: "BatteryPanicWidgetExtension",
+            dependencies: [
+                "BatteryPanicWidgetShared"
+            ],
+            path: "Sources/BatteryPanicWidgetExtension",
+            linkerSettings: [
+                .linkedFramework("SwiftUI"),
                 .linkedFramework("WidgetKit")
             ]
         )
