@@ -13,8 +13,8 @@ For normal users, use the direct app download below. Do **not** use the green **
 
 **Latest app download:**
 
-- [Download Battery Panic 0.4.0 DMG](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.4.0/Battery.Panic.0.4.0.dmg) - recommended macOS drag-and-drop installer
-- [Download Battery Panic 0.4.0 ZIP](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.4.0/Battery.Panic.0.4.0.zip) - fallback if the DMG does not work
+- [Download Battery Panic 0.5.0 DMG](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.0/Battery.Panic.0.5.0.dmg) - recommended macOS drag-and-drop installer
+- [Download Battery Panic 0.5.0 ZIP](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.0/Battery.Panic.0.5.0.zip) - fallback if the DMG does not work
 
 DMG install:
 
@@ -60,9 +60,10 @@ See the full install guide: [`docs/INSTALL.md`](docs/INSTALL.md).
 - Live in-settings overlay preview that updates while you move pulse controls.
 - Fixed short 4-second red-screen preview for safe testing.
 - macOS WidgetKit extension with small, medium, and large Battery Panic widgets.
+- Built-in Sparkle updater with a **Check for Updates...** menu item.
 - Optional launch at login.
 - First-run welcome/setup window.
-- Local-only behavior: no analytics, no network calls, no accounts.
+- Privacy-friendly behavior: no analytics, no accounts, and network access only for optional Sparkle update checks.
 - Custom app icon and README preview assets generated from source scripts.
 
 ## Screenshots
@@ -98,6 +99,12 @@ Battery Panic includes a WidgetKit extension for macOS. The widget shows your cu
 
 For details, see [`docs/WIDGETS.md`](docs/WIDGETS.md).
 
+## Updates
+
+Battery Panic includes Sparkle update support. After installing a Sparkle-enabled version, users can choose **Check for Updates...** from the menu bar item instead of downloading every new version manually.
+
+For release setup, see [`docs/UPDATES.md`](docs/UPDATES.md).
+
 ## Security and Privacy
 
 Battery Panic is local-first:
@@ -106,7 +113,8 @@ Battery Panic is local-first:
 - No telemetry.
 - No tracking.
 - No account required.
-- No network connection needed.
+- No network connection is needed for the battery warning itself.
+- Optional update checks contact the configured Sparkle appcast on GitHub.
 - No API keys or tokens.
 - No private user data collection.
 

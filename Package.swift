@@ -22,7 +22,8 @@ let package = Package(
         .executableTarget(
             name: "BatteryPanicApp",
             dependencies: [
-                "BatteryPanicWidgetShared"
+                "BatteryPanicWidgetShared",
+                "Sparkle"
             ],
             path: "Sources/BatteryPanicApp",
             linkerSettings: [
@@ -30,7 +31,8 @@ let package = Package(
                 .linkedFramework("AVFoundation"),
                 .linkedFramework("IOKit"),
                 .linkedFramework("ServiceManagement"),
-                .linkedFramework("WidgetKit")
+                .linkedFramework("WidgetKit"),
+                .unsafeFlags(["-Xlinker", "-rpath", "-Xlinker", "@executable_path/../Frameworks"])
             ]
         ),
         .executableTarget(
@@ -43,6 +45,10 @@ let package = Package(
                 .linkedFramework("SwiftUI"),
                 .linkedFramework("WidgetKit")
             ]
+        ),
+        .binaryTarget(
+            name: "Sparkle",
+            path: "Vendor/Sparkle/Sparkle.xcframework"
         )
     ]
 )

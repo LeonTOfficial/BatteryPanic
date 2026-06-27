@@ -12,6 +12,7 @@ Battery Panic is split by responsibility:
 - `Widgets`: publishes a local snapshot for the WidgetKit extension.
 - `BatteryPanicWidgetShared`: shared widget snapshot model and storage helper.
 - `BatteryPanicWidgetExtension`: SwiftUI WidgetKit views for small, medium, and large widgets.
+- `Updates`: Sparkle updater integration and menu item wiring.
 
 The most important pure unit is `AlarmPolicy`. It decides whether the warning should be visible from a `BatteryStatus` and an `AlarmSettingsSnapshot`. UI classes call into that policy instead of duplicating threshold logic.
 
@@ -24,3 +25,5 @@ The menu bar status is derived from `BatteryStatusAppearance`, which maps batter
 The Settings window includes a lightweight `OverlayPreviewView` so pulse speed and intensity can be tuned without opening the full-screen overlay.
 
 The WidgetKit extension is compiled as a separate Swift Package executable target and embedded into the app bundle by `scripts/build_app.sh`.
+
+Sparkle is vendored as a local XCFramework under `Vendor/Sparkle` so Xcode, local builds, and CI do not depend on SwiftPM downloading a binary artifact during every setup.

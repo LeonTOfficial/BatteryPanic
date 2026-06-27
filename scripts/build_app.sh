@@ -7,9 +7,11 @@ BUNDLE_ID="com.leontofficial.batterypanic"
 WIDGET_NAME="BatteryPanicWidgetExtension"
 WIDGET_DISPLAY_NAME="Battery Panic Widget"
 WIDGET_BUNDLE_ID="$BUNDLE_ID.widget"
-VERSION="0.4.0"
-BUILD_NUMBER="4"
+VERSION="0.5.0"
+BUILD_NUMBER="5"
 BUILD_CONFIG="${BUILD_CONFIG:-release}"
+SPARKLE_FEED_URL="${SPARKLE_FEED_URL:-https://raw.githubusercontent.com/LeonTOfficial/BatteryPanic/main/appcast.xml}"
+SPARKLE_PUBLIC_ED_KEY="${SPARKLE_PUBLIC_ED_KEY:-XI4zReuhkT5oIylZw3eXkmtQArhooU4Q7fucZ8qndi8=}"
 OUTPUT_DIR="$ROOT_DIR/outputs"
 OUTPUT_APP_BUNDLE="$OUTPUT_DIR/$APP_NAME.app"
 RELEASE_BASE="Battery.Panic.$VERSION"
@@ -26,6 +28,8 @@ BINARY_DEST="$APP_BUNDLE/Contents/MacOS/$APP_NAME"
 WIDGET_BUNDLE="$APP_BUNDLE/Contents/PlugIns/$WIDGET_NAME.appex"
 WIDGET_BINARY_SOURCE="$ROOT_DIR/.build/$BUILD_CONFIG/$WIDGET_NAME"
 WIDGET_BINARY_DEST="$WIDGET_BUNDLE/Contents/MacOS/$WIDGET_NAME"
+SPARKLE_FRAMEWORK_SOURCE="$ROOT_DIR/Vendor/Sparkle/Sparkle.xcframework/macos-arm64_x86_64/Sparkle.framework"
+SPARKLE_FRAMEWORK_DEST="$APP_BUNDLE/Contents/Frameworks/Sparkle.framework"
 
 cleanup() {
     if [[ -d "$DMG_MOUNT_DIR" ]]; then
@@ -53,8 +57,8 @@ swift build -c "$BUILD_CONFIG"
 
 rm -rf "$STAGING_DIR"
 rm -rf "$OUTPUT_APP_BUNDLE"
-rm -f "$RELEASE_ZIP"
-rm -f "$RELEASE_DMG"
+rm -f "$OUTPUT_DIR"/Battery.Panic.*.zip
+rm -f "$OUTPUT_DIR"/Battery.Panic.*.dmg
 rm -f "$OUTPUT_DIR/$APP_NAME $VERSION.zip"
 rm -f "$OUTPUT_DIR/$APP_NAME $VERSION.dmg"
 rm -rf "$DMG_STAGING_DIR"
@@ -62,6 +66,7 @@ rm -rf "$DMG_MOUNT_DIR"
 rmdir "$DMG_FINDER_MOUNT_DIR" >/dev/null 2>&1 || true
 mkdir -p "$APP_BUNDLE/Contents/MacOS"
 mkdir -p "$APP_BUNDLE/Contents/Resources"
+mkdir -p "$APP_BUNDLE/Contents/Frameworks"
 mkdir -p "$WIDGET_BUNDLE/Contents/MacOS"
 mkdir -p "$WIDGET_BUNDLE/Contents/Resources"
 mkdir -p "$OUTPUT_DIR"
@@ -70,6 +75,7 @@ cp "$BINARY_SOURCE" "$BINARY_DEST"
 chmod +x "$BINARY_DEST"
 cp "$WIDGET_BINARY_SOURCE" "$WIDGET_BINARY_DEST"
 chmod +x "$WIDGET_BINARY_DEST"
+ditto "$SPARKLE_FRAMEWORK_SOURCE" "$SPARKLE_FRAMEWORK_DEST"
 
 if [[ ! -f "$ROOT_DIR/Resources/AppIcon.icns" ]]; then
     swift "$ROOT_DIR/scripts/create_icon.swift"
@@ -108,6 +114,14 @@ cat > "$APP_BUNDLE/Contents/Info.plist" <<PLIST
     <true/>
     <key>NSHighResolutionCapable</key>
     <true/>
+    <key>SUEnableInstallerLauncherService</key>
+    <true/>
+    <key>SUFeedURL</key>
+    <string>$SPARKLE_FEED_URL</string>
+    <key>SUShowReleaseNotes</key>
+    <true/>
+    <key>SUPublicEDKey</key>
+    <string>$SPARKLE_PUBLIC_ED_KEY</string>
 </dict>
 </plist>
 PLIST
@@ -147,6 +161,7 @@ cat > "$WIDGET_BUNDLE/Contents/Info.plist" <<PLIST
 PLIST
 
 clean_bundle_attributes
+codesign --force --deep --sign - "$SPARKLE_FRAMEWORK_DEST"
 codesign --force --sign - --entitlements "$ROOT_DIR/Entitlements/BatteryPanicWidgetExtension.entitlements" "$WIDGET_BUNDLE"
 codesign --force --deep --sign - --entitlements "$ROOT_DIR/Entitlements/BatteryPanicApp.entitlements" "$APP_BUNDLE"
 clean_bundle_attributes
@@ -215,6 +230,7 @@ xattr -cr "$OUTPUT_APP_BUNDLE" 2>/dev/null || true
 
 [[ -d "$OUTPUT_APP_BUNDLE" ]]
 [[ -d "$OUTPUT_APP_BUNDLE/Contents/PlugIns/$WIDGET_NAME.appex" ]]
+[[ -d "$OUTPUT_APP_BUNDLE/Contents/Frameworks/Sparkle.framework" ]]
 [[ -f "$RELEASE_ZIP" ]]
 [[ -f "$RELEASE_DMG" ]]
 

@@ -25,6 +25,7 @@ final class MenuBarController: NSObject {
     var onTogglePause: (() -> Void)?
     var onOpenGitHub: (() -> Void)?
     var onQuit: (() -> Void)?
+    var onConfigureUpdaterMenuItem: ((NSMenuItem) -> Void)?
 
     init(settingsStore: AppSettingsStore) {
         self.settingsStore = settingsStore
@@ -106,6 +107,9 @@ final class MenuBarController: NSObject {
         let welcomeItem = NSMenuItem(title: "Welcome & Setup...", action: #selector(openWelcome), keyEquivalent: "")
         welcomeItem.target = self
 
+        let updateItem = NSMenuItem(title: "Check for Updates...", action: nil, keyEquivalent: "")
+        onConfigureUpdaterMenuItem?(updateItem)
+
         let creatorItem = NSMenuItem(title: "Created by Leon.T", action: nil, keyEquivalent: "")
         creatorItem.isEnabled = false
 
@@ -123,6 +127,7 @@ final class MenuBarController: NSObject {
         menu.addItem(pauseItem)
         menu.addItem(settingsItem)
         menu.addItem(welcomeItem)
+        menu.addItem(updateItem)
         menu.addItem(.separator())
         menu.addItem(creatorItem)
         menu.addItem(gitHubItem)

@@ -20,7 +20,7 @@ Battery Panic is suitable for an initial public source release after local verif
 ## Findings
 
 - No hardcoded API keys, private keys, GitHub tokens, or OpenAI-style keys were found.
-- No network calls are present in the app code.
+- Core warning behavior is local. Sparkle update checks can contact the configured GitHub appcast URL.
 - No unnecessary macOS privacy permissions are requested.
 - The siren is generated locally and does not require microphone or media-library permissions.
 - Build scripts remove extended attributes before signing the app bundle.
@@ -33,7 +33,7 @@ Battery Panic is suitable for an initial public source release after local verif
 ./scripts/build_app.sh
 rm -rf /tmp/BatteryPanicZipCheck
 mkdir -p /tmp/BatteryPanicZipCheck
-ditto -x -k "outputs/Battery.Panic.0.4.0.zip" /tmp/BatteryPanicZipCheck
+ditto -x -k "outputs/Battery.Panic.0.5.0.zip" /tmp/BatteryPanicZipCheck
 codesign --verify --deep --strict --verbose=2 "/tmp/BatteryPanicZipCheck/Battery Panic.app"
 rg -n "(token|secret|password|api[_-]?key|BEGIN PRIVATE|ghp_|github_pat|sk-)" . --glob '!/.build/**' --glob '!outputs/**'
 ```

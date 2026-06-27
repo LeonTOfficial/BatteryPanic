@@ -11,6 +11,7 @@ final class AppCoordinator {
     private let settingsWindowController: SettingsWindowController
     private let onboardingWindowController: OnboardingWindowController
     private let widgetSnapshotPublisher = WidgetSnapshotPublisher()
+    private let appUpdater = AppUpdater()
 
     private var latestStatus: BatteryStatus?
     private var alarmVisible = false
@@ -73,6 +74,9 @@ final class AppCoordinator {
         }
         menuBarController.onOpenGitHub = { [weak self] in
             self?.openGitHub()
+        }
+        menuBarController.onConfigureUpdaterMenuItem = { [weak self] item in
+            self?.appUpdater.wireCheckForUpdatesMenuItem(item)
         }
         menuBarController.onQuit = {
             NSApp.terminate(nil)
