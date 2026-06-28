@@ -185,12 +185,15 @@ codesign --verify --deep --strict --verbose=2 "$APP_BUNDLE"
 
 ditto --norsrc "$APP_BUNDLE" "$OUTPUT_APP_BUNDLE"
 clean_output_bundle_attributes
-codesign --verify --deep --strict --verbose=2 "$OUTPUT_APP_BUNDLE"
+if ! codesign --verify --deep --strict --verbose=2 "$OUTPUT_APP_BUNDLE"; then
+    echo "Warning: the loose app copy in outputs has iCloud/Finder metadata. Release ZIP/DMG are built from the clean staging app."
+fi
 (cd "$STAGING_DIR" && ditto -c -k --keepParent --norsrc "$APP_NAME.app" "$RELEASE_ZIP")
 
 mkdir -p "$DMG_STAGING_DIR/.background"
 ditto --norsrc "$APP_BUNDLE" "$DMG_STAGING_DIR/$APP_NAME.app"
 cp "$ROOT_DIR/Resources/DMGBackground.png" "$DMG_STAGING_DIR/.background/background.png"
+sips -z 420 680 "$DMG_STAGING_DIR/.background/background.png" >/dev/null
 ln -s /Applications "$DMG_STAGING_DIR/Applications"
 
 hdiutil create \
@@ -212,11 +215,11 @@ else
 tell application "Finder"
     tell disk "$DMG_VOLUME_NAME"
         open
-        set current view to icon view
-        set toolbar visible to false
-        set statusbar visible to false
-        set bounds to {120, 120, 800, 540}
-        set viewOptions to icon view options
+        set current view of container window to icon view
+        set toolbar visible of container window to false
+        set statusbar visible of container window to false
+        set bounds of container window to {120, 120, 800, 540}
+        set viewOptions to icon view options of container window
         set background picture of viewOptions to (POSIX file "$DMG_MOUNT_DIR/.background/background.png" as alias)
         set position of item "$APP_NAME.app" to {190, 220}
         set position of item "Applications" to {490, 220}
