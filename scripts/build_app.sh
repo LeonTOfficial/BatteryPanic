@@ -10,7 +10,7 @@ WIDGET_BUNDLE_ID="$BUNDLE_ID.widget"
 VERSION="0.5.0"
 BUILD_NUMBER="5"
 BUILD_CONFIG="${BUILD_CONFIG:-release}"
-DMG_VOLUME_NAME="$APP_NAME"
+DMG_VOLUME_NAME="$APP_NAME $VERSION"
 SPARKLE_FEED_URL="${SPARKLE_FEED_URL:-https://raw.githubusercontent.com/LeonTOfficial/BatteryPanic/main/appcast.xml}"
 SPARKLE_PUBLIC_ED_KEY="${SPARKLE_PUBLIC_ED_KEY:-XI4zReuhkT5oIylZw3eXkmtQArhooU4Q7fucZ8qndi8=}"
 OUTPUT_DIR="$ROOT_DIR/outputs"
@@ -220,9 +220,11 @@ tell application "Finder"
         set statusbar visible of container window to false
         set bounds of container window to {120, 120, 800, 540}
         set viewOptions to icon view options of container window
+        set icon size of viewOptions to 96
+        set text size of viewOptions to 13
         set background picture of viewOptions to (POSIX file "$DMG_MOUNT_DIR/.background/background.png" as alias)
-        set position of item "$APP_NAME.app" to {190, 220}
-        set position of item "Applications" to {490, 220}
+        set position of item "$APP_NAME.app" to {190, 230}
+        set position of item "Applications" to {490, 230}
         update without registering applications
         delay 1
         close
