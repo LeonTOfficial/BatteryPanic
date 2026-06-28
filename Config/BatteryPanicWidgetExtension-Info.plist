@@ -24,6 +24,11 @@
     <string>13.0</string>
     <key>NSExtension</key>
     <dict>
+        <key>NSExtensionAttributes</key>
+        <dict>
+            <key>WKAppBundleIdentifier</key>
+            <string>com.leontofficial.batterypanic</string>
+        </dict>
         <key>NSExtensionPointIdentifier</key>
         <string>com.apple.widgetkit-extension</string>
     </dict>
