@@ -17,7 +17,7 @@ final class MenuBarController: NSObject {
     private let pauseItem = NSMenuItem(title: "Pause Alarm", action: #selector(togglePause), keyEquivalent: "")
     private var latestStatus: BatteryStatus?
     private var alarmSummary = "Idle"
-    private var oneTimePauseActive = false
+    private var alarmVisible = false
 
     var onOpenSettings: (() -> Void)?
     var onOpenWelcome: (() -> Void)?
@@ -47,7 +47,7 @@ final class MenuBarController: NSObject {
 
     func updateSettings() {
         let snapshot = settingsStore.snapshot()
-        pauseItem.title = snapshot.isPaused || oneTimePauseActive ? "Resume Alarm" : "Pause Alarm"
+        pauseItem.title = pauseTitle(settings: snapshot)
         headerView.update(status: latestStatus, settings: snapshot)
         updateDetails()
         if let latestStatus {
@@ -56,18 +56,14 @@ final class MenuBarController: NSObject {
     }
 
     func setAlarmVisible(_ visible: Bool, mode: AlarmDisplayMode = .active) {
+        alarmVisible = visible
         if visible {
             alarmSummary = mode == .preview ? "Preview running" : "Visible"
         } else {
             alarmSummary = "Idle"
         }
+        pauseItem.title = pauseTitle(settings: settingsStore.snapshot())
         updateDetails()
-    }
-
-    func setOneTimePauseActive(_ active: Bool) {
-        oneTimePauseActive = active
-        alarmSummary = active ? "Paused for this alarm" : alarmSummary
-        updateSettings()
     }
 
     private func updateButton(for status: BatteryStatus) {
@@ -141,6 +137,16 @@ final class MenuBarController: NSObject {
             settings: settingsStore.snapshot(),
             alarmSummary: alarmSummary
         )
+    }
+
+    private func pauseTitle(settings: AlarmSettingsSnapshot) -> String {
+        if settings.isPaused {
+            return "Resume Alarm"
+        }
+        if alarmVisible {
+            return "Stop Alarm for 30 Minutes"
+        }
+        return "Pause Alarms for 30 Minutes"
     }
 
     @objc private func openSettings() {

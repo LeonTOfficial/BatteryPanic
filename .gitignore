@@ -2,7 +2,9 @@
 .build/
 .swiftpm/
 DerivedData/
-Battery Panic/
+Battery Panic/*
+!Battery Panic/Battery Panic.xcodeproj/
+!Battery Panic/Battery Panic.xcodeproj/**
 outputs/
 outputs/*.app
 outputs/*.dmg

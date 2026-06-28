@@ -5,4 +5,5 @@ enum AppConstants {
     static let defaultThreshold = 10
     static let pollInterval: TimeInterval = 5
     static let previewAlarmDuration: TimeInterval = 4
+    static let alarmSnoozeDuration: TimeInterval = 30 * 60
 }

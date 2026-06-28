@@ -16,7 +16,6 @@ final class AppCoordinator {
     private var latestStatus: BatteryStatus?
     private var alarmVisible = false
     private var testAlarmVisible = false
-    private var oneTimePauseActive = false
     private var testAlarmToken = UUID()
 
     init(
@@ -51,6 +50,7 @@ final class AppCoordinator {
         }
         batteryMonitor.start()
         showOnboardingIfNeeded()
+        appUpdater.checkForUpdatesInBackgroundAfterLaunch()
     }
 
     func stop() {
@@ -91,6 +91,9 @@ final class AppCoordinator {
         settingsWindowController.onOpenGitHub = { [weak self] in
             self?.openGitHub()
         }
+        settingsWindowController.onCheckForUpdates = { [weak self] in
+            self?.appUpdater.checkForUpdates()
+        }
         onboardingWindowController.onTestAlarm = { [weak self] in
             self?.showTestAlarm()
         }
@@ -129,21 +132,13 @@ final class AppCoordinator {
         let settings = settingsStore.snapshot()
         let shouldShow = AlarmPolicy.shouldShowAlarm(status: status, settings: settings)
 
-        if !shouldShow {
-            if oneTimePauseActive {
-                oneTimePauseActive = false
-                menuBarController.setOneTimePauseActive(false)
-            }
+        if settings.isPaused {
             hideActiveAlarm()
             return
         }
 
-        if oneTimePauseActive {
-            overlayManager.hide()
-            soundPlayer.stop()
-            alarmVisible = false
-            menuBarController.setAlarmVisible(false)
-            menuBarController.setOneTimePauseActive(true)
+        if !shouldShow {
+            hideActiveAlarm()
             return
         }
 
@@ -191,22 +186,16 @@ final class AppCoordinator {
     }
 
     private func togglePause() {
-        if alarmVisible || oneTimePauseActive {
-            oneTimePauseActive.toggle()
-            if oneTimePauseActive {
-                hideActiveAlarm()
-                menuBarController.setOneTimePauseActive(true)
-            } else {
-                menuBarController.setOneTimePauseActive(false)
-                if let latestStatus {
-                    evaluateAlarm(for: latestStatus)
-                }
+        if settingsStore.snapshot().isPaused {
+            settingsStore.clearSnooze()
+            if let latestStatus {
+                evaluateAlarm(for: latestStatus)
             }
             return
         }
 
-        let current = settingsStore.snapshot().isPaused
-        settingsStore.setPaused(!current)
+        settingsStore.snoozeAlarm()
+        hideActiveAlarm()
     }
 
     private func showTestAlarm() {

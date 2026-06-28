@@ -13,4 +13,17 @@ final class AppUpdater: NSObject {
         item.target = updaterController
         item.action = #selector(SPUStandardUpdaterController.checkForUpdates(_:))
     }
+
+    func checkForUpdates() {
+        updaterController.checkForUpdates(nil)
+    }
+
+    func checkForUpdatesInBackgroundAfterLaunch() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [updaterController] in
+            let updater = updaterController.updater
+            if updater.automaticallyChecksForUpdates {
+                updater.checkForUpdatesInBackground()
+            }
+        }
+    }
 }

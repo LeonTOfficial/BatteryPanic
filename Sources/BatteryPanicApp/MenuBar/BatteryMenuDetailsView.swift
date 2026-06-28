@@ -28,7 +28,7 @@ final class BatteryMenuDetailsView: NSView {
         }
 
         thresholdValue.stringValue = "\(settings.thresholdPercentage)%"
-        alarmValue.stringValue = settings.isPaused ? "Paused in settings" : alarmSummary
+        alarmValue.stringValue = pausedDescription(for: settings) ?? alarmSummary
         overlayValue.stringValue = String(
             format: "%.1fx pulse · %d%% intensity",
             settings.pulseSpeed,
@@ -85,5 +85,15 @@ final class BatteryMenuDetailsView: NSView {
         row.addArrangedSubview(labelView)
         row.addArrangedSubview(value)
         return row
+    }
+
+    private func pausedDescription(for settings: AlarmSettingsSnapshot) -> String? {
+        guard settings.isPaused else { return nil }
+        guard let pauseUntil = settings.pauseUntil else { return "Paused for 30 minutes" }
+
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        formatter.dateStyle = .none
+        return "Paused until \(formatter.string(from: pauseUntil))"
     }
 }

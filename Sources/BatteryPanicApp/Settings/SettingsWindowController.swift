@@ -15,12 +15,14 @@ final class SettingsWindowController: NSWindowController {
     private let pulseCheckbox = NSButton(checkboxWithTitle: "Pulse red overlay", target: nil, action: nil)
     private let soundCheckbox = NSButton(checkboxWithTitle: "Play warning sound", target: nil, action: nil)
     private let launchAtLoginCheckbox = NSButton(checkboxWithTitle: "Start at login", target: nil, action: nil)
-    private let pausedCheckbox = NSButton(checkboxWithTitle: "Pause low-battery alarm", target: nil, action: nil)
+    private let pauseButton = NSButton(title: "Pause Alarms for 30 Minutes", target: nil, action: nil)
+    private let pauseInfoLabel = NSTextField(labelWithString: "Battery Panic cannot be disabled forever.")
     private let statusLabel = NSTextField(labelWithString: "Ready")
 
     var onTestAlarm: (() -> Void)?
     var onTestSound: ((String) -> Void)?
     var onOpenGitHub: (() -> Void)?
+    var onCheckForUpdates: (() -> Void)?
 
     init(settingsStore: AppSettingsStore, loginItemService: LoginItemService) {
         self.settingsStore = settingsStore
@@ -82,7 +84,7 @@ final class SettingsWindowController: NSWindowController {
         stack.addArrangedSubview(makeOverlaySection())
         stack.addArrangedSubview(makeSoundSection())
         stack.addArrangedSubview(makeBehaviorSection())
-        stack.addArrangedSubview(makeCreditsSection())
+        stack.addArrangedSubview(makeCreatorSection())
         stack.addArrangedSubview(makeFooter())
 
         documentView.addSubview(stack)
@@ -133,6 +135,20 @@ final class SettingsWindowController: NSWindowController {
         textStack.addArrangedSubview(subtitle)
         row.addArrangedSubview(icon)
         row.addArrangedSubview(textStack)
+        let spacer = NSView()
+        spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+
+        let updateButton = NSButton(title: "Check for Updates", target: self, action: #selector(checkForUpdates))
+        updateButton.bezelStyle = .rounded
+        updateButton.controlSize = .large
+        if let image = NSImage(systemSymbolName: "arrow.triangle.2.circlepath", accessibilityDescription: "Updates") {
+            updateButton.image = image
+            updateButton.imagePosition = .imageLeading
+        }
+
+        row.addArrangedSubview(spacer)
+        row.addArrangedSubview(updateButton)
+        row.widthAnchor.constraint(equalToConstant: 636).isActive = true
         return row
     }
 
@@ -164,17 +180,34 @@ final class SettingsWindowController: NSWindowController {
 
     private func makeBehaviorSection() -> NSView {
         configureCheckboxes()
+        pauseButton.target = self
+        pauseButton.action = #selector(pauseChanged)
+        pauseButton.bezelStyle = .rounded
+        pauseButton.controlSize = .large
+
+        pauseInfoLabel.font = NSFont.systemFont(ofSize: 12, weight: .regular)
+        pauseInfoLabel.textColor = .secondaryLabelColor
+        pauseInfoLabel.lineBreakMode = .byWordWrapping
+        pauseInfoLabel.maximumNumberOfLines = 2
+        pauseInfoLabel.widthAnchor.constraint(equalToConstant: 420).isActive = true
+
+        let pauseRow = NSStackView()
+        pauseRow.orientation = .horizontal
+        pauseRow.alignment = .centerY
+        pauseRow.spacing = 12
+        pauseRow.addArrangedSubview(pauseButton)
+        pauseRow.addArrangedSubview(pauseInfoLabel)
 
         let stack = NSStackView()
         stack.orientation = .vertical
         stack.alignment = .leading
         stack.spacing = 10
         stack.addArrangedSubview(launchAtLoginCheckbox)
-        stack.addArrangedSubview(pausedCheckbox)
+        stack.addArrangedSubview(pauseRow)
 
         return makeSection(
             title: "General",
-            subtitle: "Choose how Battery Panic runs in the background.",
+            subtitle: "Choose how Battery Panic runs in the background. Alarm pauses are temporary for safety.",
             content: stack
         )
     }
@@ -244,23 +277,102 @@ final class SettingsWindowController: NSWindowController {
         )
     }
 
-    private func makeCreditsSection() -> NSView {
+    private func makeCreatorSection() -> NSView {
+        let card = NSView()
+        card.wantsLayer = true
+        card.layer?.cornerRadius = 12
+        card.layer?.borderWidth = 1
+        card.layer?.borderColor = NSColor.systemBlue.withAlphaComponent(0.14).cgColor
+        card.layer?.backgroundColor = NSColor.controlAccentColor.withAlphaComponent(0.055).cgColor
+        card.translatesAutoresizingMaskIntoConstraints = false
+
         let row = NSStackView()
         row.orientation = .horizontal
         row.alignment = .centerY
-        row.spacing = 8
+        row.spacing = 14
+        row.edgeInsets = NSEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
+        row.translatesAutoresizingMaskIntoConstraints = false
 
-        let created = NSTextField(labelWithString: "Created by Leon.T")
-        created.textColor = .secondaryLabelColor
+        let badge = NSView()
+        badge.wantsLayer = true
+        badge.layer?.cornerRadius = 10
+        badge.layer?.backgroundColor = NSColor.black.withAlphaComponent(0.82).cgColor
+        badge.translatesAutoresizingMaskIntoConstraints = false
+        badge.widthAnchor.constraint(equalToConstant: 44).isActive = true
+        badge.heightAnchor.constraint(equalToConstant: 44).isActive = true
 
-        let gitHub = NSButton(title: "GitHub: LeonTOfficial", target: self, action: #selector(openGitHub))
-        gitHub.isBordered = false
-        gitHub.contentTintColor = .linkColor
+        let icon = NSImageView()
+        icon.symbolConfiguration = NSImage.SymbolConfiguration(pointSize: 21, weight: .semibold)
+        icon.image = NSImage(systemSymbolName: "chevron.left.forwardslash.chevron.right", accessibilityDescription: "Developer")
+        icon.contentTintColor = .white
+        icon.translatesAutoresizingMaskIntoConstraints = false
+        badge.addSubview(icon)
+        NSLayoutConstraint.activate([
+            icon.centerXAnchor.constraint(equalTo: badge.centerXAnchor),
+            icon.centerYAnchor.constraint(equalTo: badge.centerYAnchor)
+        ])
 
-        row.addArrangedSubview(created)
-        row.addArrangedSubview(NSTextField(labelWithString: "•"))
-        row.addArrangedSubview(gitHub)
-        return row
+        let textStack = NSStackView()
+        textStack.orientation = .vertical
+        textStack.alignment = .leading
+        textStack.spacing = 4
+
+        let titleRow = NSStackView()
+        titleRow.orientation = .horizontal
+        titleRow.alignment = .centerY
+        titleRow.spacing = 8
+
+        let title = NSTextField(labelWithString: "Developed by LeonTOfficial")
+        title.font = NSFont.systemFont(ofSize: 13, weight: .bold)
+
+        let creatorBadge = NSTextField(labelWithString: "CREATOR")
+        creatorBadge.font = NSFont.systemFont(ofSize: 9, weight: .heavy)
+        creatorBadge.textColor = .white
+        creatorBadge.alignment = .center
+        creatorBadge.wantsLayer = true
+        creatorBadge.layer?.cornerRadius = 5
+        creatorBadge.layer?.backgroundColor = NSColor.systemBlue.cgColor
+        creatorBadge.widthAnchor.constraint(equalToConstant: 54).isActive = true
+        creatorBadge.heightAnchor.constraint(equalToConstant: 16).isActive = true
+
+        let description = NSTextField(labelWithString: "Battery Panic was designed as a visible, privacy-friendly Mac battery alert by LeonTOfficial.")
+        description.font = NSFont.systemFont(ofSize: 12, weight: .regular)
+        description.textColor = .secondaryLabelColor
+        description.lineBreakMode = .byWordWrapping
+        description.maximumNumberOfLines = 2
+        description.widthAnchor.constraint(equalToConstant: 390).isActive = true
+
+        titleRow.addArrangedSubview(title)
+        titleRow.addArrangedSubview(creatorBadge)
+        textStack.addArrangedSubview(titleRow)
+        textStack.addArrangedSubview(description)
+
+        let spacer = NSView()
+        spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+
+        let gitHubButton = NSButton(title: "GitHub", target: self, action: #selector(openGitHub))
+        gitHubButton.bezelStyle = .rounded
+        gitHubButton.controlSize = .large
+        if let image = NSImage(systemSymbolName: "arrow.up.right", accessibilityDescription: "Open") {
+            gitHubButton.image = image
+            gitHubButton.imagePosition = .imageTrailing
+        }
+
+        row.addArrangedSubview(badge)
+        row.addArrangedSubview(textStack)
+        row.addArrangedSubview(spacer)
+        row.addArrangedSubview(gitHubButton)
+        card.addSubview(row)
+
+        NSLayoutConstraint.activate([
+            card.widthAnchor.constraint(equalToConstant: 636),
+            row.leadingAnchor.constraint(equalTo: card.leadingAnchor),
+            row.trailingAnchor.constraint(equalTo: card.trailingAnchor),
+            row.topAnchor.constraint(equalTo: card.topAnchor),
+            row.bottomAnchor.constraint(equalTo: card.bottomAnchor)
+        ])
+
+        return card
     }
 
     private func makeFooter() -> NSView {
@@ -342,8 +454,6 @@ final class SettingsWindowController: NSWindowController {
         soundCheckbox.action = #selector(soundChanged)
         launchAtLoginCheckbox.target = self
         launchAtLoginCheckbox.action = #selector(launchAtLoginChanged)
-        pausedCheckbox.target = self
-        pausedCheckbox.action = #selector(pausedChanged)
     }
 
     private func refreshFromSettings() {
@@ -358,8 +468,8 @@ final class SettingsWindowController: NSWindowController {
         soundCheckbox.state = settings.soundEnabled ? .on : .off
         selectSound(named: settings.selectedSoundName)
         launchAtLoginCheckbox.state = (settings.launchAtLoginEnabled || loginItemService.isEnabled) ? .on : .off
-        pausedCheckbox.state = settings.isPaused ? .on : .off
-        statusLabel.stringValue = settings.isPaused ? "Alarm paused" : "Ready"
+        updatePauseControls(settings: settings)
+        statusLabel.stringValue = settings.isPaused ? pauseStatusText(settings: settings) : "Ready"
         updateOverlayPreview()
     }
 
@@ -424,15 +534,25 @@ final class SettingsWindowController: NSWindowController {
         }
     }
 
-    @objc private func pausedChanged() {
-        let paused = pausedCheckbox.state == .on
-        settingsStore.setPaused(paused)
-        statusLabel.stringValue = paused ? "Alarm paused" : "Ready"
+    @objc private func pauseChanged() {
+        if settingsStore.snapshot().isPaused {
+            settingsStore.clearSnooze()
+            statusLabel.stringValue = "Alarm resumed"
+        } else {
+            settingsStore.snoozeAlarm()
+            statusLabel.stringValue = "Alarm paused for 30 minutes"
+        }
+        updatePauseControls(settings: settingsStore.snapshot())
     }
 
     @objc private func testAlarm() {
         statusLabel.stringValue = "Showing preview for \(Int(AppConstants.previewAlarmDuration)) seconds"
         onTestAlarm?()
+    }
+
+    @objc private func checkForUpdates() {
+        statusLabel.stringValue = "Checking for updates..."
+        onCheckForUpdates?()
     }
 
     @objc private func openGitHub() {
@@ -495,5 +615,23 @@ final class SettingsWindowController: NSWindowController {
             pulseSpeed: pulseSpeedSlider.doubleValue,
             pulseIntensity: pulseIntensitySlider.doubleValue
         )
+    }
+
+    private func updatePauseControls(settings: AlarmSettingsSnapshot) {
+        pauseButton.title = settings.isPaused ? "Resume Alarm" : "Pause Alarms for 30 Minutes"
+        pauseInfoLabel.stringValue = settings.isPaused
+            ? pauseStatusText(settings: settings)
+            : "Temporary safety pause. The alarm automatically turns back on after 30 minutes."
+    }
+
+    private func pauseStatusText(settings: AlarmSettingsSnapshot) -> String {
+        guard let pauseUntil = settings.pauseUntil else {
+            return "Alarm paused for 30 minutes"
+        }
+
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        formatter.dateStyle = .none
+        return "Alarm paused until \(formatter.string(from: pauseUntil))"
     }
 }

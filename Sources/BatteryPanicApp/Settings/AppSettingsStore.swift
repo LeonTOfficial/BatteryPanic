@@ -9,7 +9,32 @@ struct AlarmSettingsSnapshot: Equatable {
     let selectedSoundName: String
     let launchAtLoginEnabled: Bool
     let isPaused: Bool
+    let pauseUntil: Date?
     let hasCompletedOnboarding: Bool
+
+    init(
+        thresholdPercentage: Int,
+        pulseEnabled: Bool,
+        pulseSpeed: Double,
+        pulseIntensity: Double,
+        soundEnabled: Bool,
+        selectedSoundName: String,
+        launchAtLoginEnabled: Bool,
+        isPaused: Bool,
+        pauseUntil: Date? = nil,
+        hasCompletedOnboarding: Bool
+    ) {
+        self.thresholdPercentage = thresholdPercentage
+        self.pulseEnabled = pulseEnabled
+        self.pulseSpeed = pulseSpeed
+        self.pulseIntensity = pulseIntensity
+        self.soundEnabled = soundEnabled
+        self.selectedSoundName = selectedSoundName
+        self.launchAtLoginEnabled = launchAtLoginEnabled
+        self.isPaused = isPaused
+        self.pauseUntil = pauseUntil
+        self.hasCompletedOnboarding = hasCompletedOnboarding
+    }
 }
 
 final class AppSettingsStore {
@@ -21,7 +46,8 @@ final class AppSettingsStore {
         static let soundEnabled = "soundEnabled"
         static let selectedSoundName = "selectedSoundName"
         static let launchAtLoginEnabled = "launchAtLoginEnabled"
-        static let isPaused = "isPaused"
+        static let legacyIsPaused = "isPaused"
+        static let pauseUntil = "pauseUntil"
         static let hasCompletedOnboarding = "hasCompletedOnboarding"
     }
 
@@ -39,13 +65,14 @@ final class AppSettingsStore {
             Keys.soundEnabled: true,
             Keys.selectedSoundName: WarningSound.defaultSound.name,
             Keys.launchAtLoginEnabled: false,
-            Keys.isPaused: false,
             Keys.hasCompletedOnboarding: false
         ])
+        defaults.removeObject(forKey: Keys.legacyIsPaused)
     }
 
     func snapshot() -> AlarmSettingsSnapshot {
-        AlarmSettingsSnapshot(
+        let pauseUntil = activePauseUntil
+        return AlarmSettingsSnapshot(
             thresholdPercentage: thresholdPercentage,
             pulseEnabled: defaults.bool(forKey: Keys.pulseEnabled),
             pulseSpeed: pulseSpeed,
@@ -53,7 +80,8 @@ final class AppSettingsStore {
             soundEnabled: defaults.bool(forKey: Keys.soundEnabled),
             selectedSoundName: selectedSoundName,
             launchAtLoginEnabled: defaults.bool(forKey: Keys.launchAtLoginEnabled),
-            isPaused: defaults.bool(forKey: Keys.isPaused),
+            isPaused: pauseUntil != nil,
+            pauseUntil: pauseUntil,
             hasCompletedOnboarding: defaults.bool(forKey: Keys.hasCompletedOnboarding)
         )
     }
@@ -75,6 +103,15 @@ final class AppSettingsStore {
     var selectedSoundName: String {
         let value = defaults.string(forKey: Keys.selectedSoundName) ?? WarningSound.defaultSound.name
         return WarningSound.sound(named: value).name
+    }
+
+    private var activePauseUntil: Date? {
+        guard let date = defaults.object(forKey: Keys.pauseUntil) as? Date else { return nil }
+        if date > Date() {
+            return date
+        }
+        defaults.removeObject(forKey: Keys.pauseUntil)
+        return nil
     }
 
     func setThresholdPercentage(_ value: Int) {
@@ -112,8 +149,13 @@ final class AppSettingsStore {
         notify()
     }
 
-    func setPaused(_ paused: Bool) {
-        defaults.set(paused, forKey: Keys.isPaused)
+    func snoozeAlarm(for duration: TimeInterval = AppConstants.alarmSnoozeDuration) {
+        defaults.set(Date().addingTimeInterval(duration), forKey: Keys.pauseUntil)
+        notify()
+    }
+
+    func clearSnooze() {
+        defaults.removeObject(forKey: Keys.pauseUntil)
         notify()
     }
 
