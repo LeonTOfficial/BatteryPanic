@@ -59,6 +59,10 @@ final class AppCoordinator {
         overlayManager.hide()
     }
 
+    func showSettingsForReopen() {
+        showSettings()
+    }
+
     private func wireCallbacks() {
         menuBarController.onOpenSettings = { [weak self] in
             self?.showSettings()

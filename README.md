@@ -13,8 +13,8 @@ For normal users, use the direct app download below. Do **not** use the green **
 
 **Latest app download:**
 
-- [Download Battery Panic 0.5.1 DMG](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.1/Battery.Panic.0.5.1.dmg) - recommended macOS drag-and-drop installer
-- [Download Battery Panic 0.5.1 ZIP](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.1/Battery.Panic.0.5.1.zip) - fallback if the DMG does not work
+- [Download Battery Panic 0.5.2 DMG](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.2/Battery.Panic.0.5.2.dmg) - recommended macOS drag-and-drop installer
+- [Download Battery Panic 0.5.2 ZIP](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.2/Battery.Panic.0.5.2.zip) - fallback if the DMG does not work
 
 DMG install:
 

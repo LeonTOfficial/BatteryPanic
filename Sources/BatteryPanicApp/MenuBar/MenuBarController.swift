@@ -7,7 +7,7 @@ enum AlarmDisplayMode {
 
 final class MenuBarController: NSObject {
     private let settingsStore: AppSettingsStore
-    private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+    private var statusItem: NSStatusItem?
     private let menu = NSMenu()
     private let headerView = BatteryMenuHeaderView()
     private let detailsView = BatteryMenuDetailsView()
@@ -33,8 +33,10 @@ final class MenuBarController: NSObject {
     }
 
     func start() {
+        statusItem = NSStatusBar.system.statusItem(withLength: 72)
         configureMenu()
-        statusItem.menu = menu
+        statusItem?.menu = menu
+        statusItem?.isVisible = true
         updateSettings()
     }
 
@@ -67,7 +69,7 @@ final class MenuBarController: NSObject {
     }
 
     private func updateButton(for status: BatteryStatus) {
-        if let button = statusItem.button {
+        if let button = statusItem?.button {
             let snapshot = settingsStore.snapshot()
             let appearance = BatteryStatusAppearance.appearance(
                 for: status,
@@ -79,15 +81,18 @@ final class MenuBarController: NSObject {
                 for: status,
                 threshold: snapshot.thresholdPercentage
             )
+            button.font = NSFont.monospacedDigitSystemFont(ofSize: 12, weight: .semibold)
         }
     }
 
     private func configureMenu() {
-        if let button = statusItem.button {
-            button.title = "BP --"
+        if let button = statusItem?.button {
+            button.title = " BP"
             button.toolTip = "Battery Panic"
             button.image = MenuBarIconFactory.image(isLow: false, isPaused: false)
             button.imagePosition = .imageLeading
+            button.font = NSFont.monospacedDigitSystemFont(ofSize: 12, weight: .semibold)
+            button.setAccessibilityLabel("Battery Panic")
         }
 
         headerItem.view = headerView
