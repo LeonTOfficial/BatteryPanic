@@ -17,4 +17,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         coordinator?.showSettingsForReopen()
         return true
     }
+
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        false
+    }
 }

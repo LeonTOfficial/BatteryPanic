@@ -7,8 +7,8 @@ BUNDLE_ID="com.leontofficial.batterypanic"
 WIDGET_NAME="BatteryPanicWidgetExtension"
 WIDGET_DISPLAY_NAME="Battery Panic Widget"
 WIDGET_BUNDLE_ID="$BUNDLE_ID.widget"
-VERSION="0.5.2"
-BUILD_NUMBER="7"
+VERSION="0.5.3"
+BUILD_NUMBER="8"
 BUILD_CONFIG="${BUILD_CONFIG:-release}"
 DMG_VOLUME_NAME="$APP_NAME $VERSION"
 SPARKLE_FEED_URL="${SPARKLE_FEED_URL:-https://raw.githubusercontent.com/LeonTOfficial/BatteryPanic/main/appcast.xml}"
@@ -122,8 +122,6 @@ cat > "$APP_BUNDLE/Contents/Info.plist" <<PLIST
     <string>$BUILD_NUMBER</string>
     <key>LSMinimumSystemVersion</key>
     <string>13.0</string>
-    <key>LSUIElement</key>
-    <true/>
     <key>NSHighResolutionCapable</key>
     <true/>
     <key>SUEnableInstallerLauncherService</key>

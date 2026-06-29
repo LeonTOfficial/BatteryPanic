@@ -49,7 +49,7 @@ final class AppCoordinator {
             self?.handleBatteryStatus(status)
         }
         batteryMonitor.start()
-        showOnboardingIfNeeded()
+        showLaunchWindow()
         appUpdater.checkForUpdatesInBackgroundAfterLaunch()
     }
 
@@ -182,10 +182,15 @@ final class AppCoordinator {
         NSWorkspace.shared.open(url)
     }
 
-    private func showOnboardingIfNeeded() {
-        guard !settingsStore.snapshot().hasCompletedOnboarding else { return }
+    private func showLaunchWindow() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
-            self?.onboardingWindowController.show()
+            guard let self else { return }
+            if settingsStore.snapshot().hasCompletedOnboarding {
+                settingsWindowController.show()
+            } else {
+                onboardingWindowController.show()
+            }
+            NSApp.activate(ignoringOtherApps: true)
         }
     }
 
