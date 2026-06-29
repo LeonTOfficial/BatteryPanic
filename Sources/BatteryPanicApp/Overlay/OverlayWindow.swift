@@ -9,14 +9,29 @@ final class OverlayWindow: NSWindow {
         return overlayView
     }
 
-    init(screen: NSScreen) {
-        super.init(
+    override init(
+        contentRect: NSRect,
+        styleMask style: NSWindow.StyleMask,
+        backing backingStoreType: NSWindow.BackingStoreType,
+        defer flag: Bool
+    ) {
+        super.init(contentRect: contentRect, styleMask: style, backing: backingStoreType, defer: flag)
+        commonInit()
+    }
+
+    convenience init(screen: NSScreen) {
+        self.init(
             contentRect: screen.frame,
             styleMask: .borderless,
             backing: .buffered,
             defer: false
         )
+        let overlayView = OverlayView(frame: NSRect(origin: .zero, size: screen.frame.size))
+        overlayView.autoresizingMask = [.width, .height]
+        self.contentView = overlayView
+    }
 
+    private func commonInit() {
         isOpaque = false
         backgroundColor = .clear
         ignoresMouseEvents = true
@@ -31,8 +46,5 @@ final class OverlayWindow: NSWindow {
             .ignoresCycle,
             .stationary
         ]
-        let overlayView = OverlayView(frame: NSRect(origin: .zero, size: screen.frame.size))
-        overlayView.autoresizingMask = [.width, .height]
-        contentView = overlayView
     }
 }
