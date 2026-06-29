@@ -180,29 +180,42 @@ final class SettingsWindowController: NSWindowController {
 
     private func makeBehaviorSection() -> NSView {
         configureCheckboxes()
+        launchAtLoginCheckbox.controlSize = .large
+
         pauseButton.target = self
         pauseButton.action = #selector(pauseChanged)
         pauseButton.bezelStyle = .rounded
         pauseButton.controlSize = .large
+        pauseButton.widthAnchor.constraint(equalToConstant: 240).isActive = true
 
         pauseInfoLabel.font = NSFont.systemFont(ofSize: 12, weight: .regular)
         pauseInfoLabel.textColor = .secondaryLabelColor
         pauseInfoLabel.lineBreakMode = .byWordWrapping
         pauseInfoLabel.maximumNumberOfLines = 2
-        pauseInfoLabel.widthAnchor.constraint(equalToConstant: 420).isActive = true
+        pauseInfoLabel.widthAnchor.constraint(equalToConstant: 328).isActive = true
+
+        let loginRow = NSStackView()
+        loginRow.orientation = .horizontal
+        loginRow.alignment = .centerY
+        loginRow.spacing = 0
+        loginRow.addArrangedSubview(launchAtLoginCheckbox)
+        loginRow.widthAnchor.constraint(equalToConstant: 596).isActive = true
+        loginRow.heightAnchor.constraint(greaterThanOrEqualToConstant: 32).isActive = true
 
         let pauseRow = NSStackView()
         pauseRow.orientation = .horizontal
         pauseRow.alignment = .centerY
-        pauseRow.spacing = 12
+        pauseRow.spacing = 18
         pauseRow.addArrangedSubview(pauseButton)
         pauseRow.addArrangedSubview(pauseInfoLabel)
+        pauseRow.widthAnchor.constraint(equalToConstant: 596).isActive = true
+        pauseRow.heightAnchor.constraint(greaterThanOrEqualToConstant: 42).isActive = true
 
         let stack = NSStackView()
         stack.orientation = .vertical
         stack.alignment = .leading
-        stack.spacing = 10
-        stack.addArrangedSubview(launchAtLoginCheckbox)
+        stack.spacing = 12
+        stack.addArrangedSubview(loginRow)
         stack.addArrangedSubview(pauseRow)
 
         return makeSection(

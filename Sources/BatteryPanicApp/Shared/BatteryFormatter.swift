@@ -1,10 +1,12 @@
 import Foundation
 
 enum BatteryFormatter {
+    static let pendingMenuTitle = "--%"
+
     static func menuTitle(for status: BatteryStatus, threshold: Int) -> String {
-        guard status.hasBattery else { return "BP --" }
+        guard status.hasBattery else { return pendingMenuTitle }
         if status.isPluggedIn {
-            return "⚡ \(status.percentage)%"
+            return "\(status.percentage)%"
         }
         if status.percentage <= threshold {
             return "\(status.percentage)%"
