@@ -199,6 +199,9 @@ final class SettingsWindowController: NSWindowController {
         loginRow.alignment = .centerY
         loginRow.spacing = 0
         loginRow.addArrangedSubview(launchAtLoginCheckbox)
+        let loginSpacer = NSView()
+        loginSpacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        loginRow.addArrangedSubview(loginSpacer)
         loginRow.widthAnchor.constraint(equalToConstant: 596).isActive = true
         loginRow.heightAnchor.constraint(greaterThanOrEqualToConstant: 32).isActive = true
 
@@ -213,7 +216,7 @@ final class SettingsWindowController: NSWindowController {
 
         let stack = NSStackView()
         stack.orientation = .vertical
-        stack.alignment = .leading
+        stack.alignment = .centerX
         stack.spacing = 12
         stack.addArrangedSubview(loginRow)
         stack.addArrangedSubview(pauseRow)

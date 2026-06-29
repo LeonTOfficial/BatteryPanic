@@ -55,12 +55,12 @@ Vendor/Sparkle/bin/generate_keys --account BatteryPanic -p
 
 4. Commit `appcast.xml` and release notes.
 5. Push to GitHub.
-6. Create a GitHub release tag matching the version, for example `v0.5.5`.
+6. Create a GitHub release tag matching the version, for example `v0.5.6`.
 7. Upload:
 
 ```text
-outputs/Battery.Panic.0.5.5.zip
-outputs/Battery.Panic.0.5.5.dmg
+outputs/Battery.Panic.0.5.6.zip
+outputs/Battery.Panic.0.5.6.dmg
 ```
 
 The appcast should point to the ZIP because Sparkle installs app updates from the ZIP archive. The DMG is still useful for first-time manual installation.

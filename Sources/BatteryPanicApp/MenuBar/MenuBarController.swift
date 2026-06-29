@@ -71,18 +71,12 @@ final class MenuBarController: NSObject {
     private func updateButton(for status: BatteryStatus) {
         if let button = statusItem?.button {
             let snapshot = settingsStore.snapshot()
-            let appearance = BatteryStatusAppearance.appearance(
-                for: status,
-                threshold: snapshot.thresholdPercentage
-            )
             setStatusButton(
                 button,
                 title: BatteryFormatter.menuTitle(
                     for: status,
                     threshold: snapshot.thresholdPercentage
                 ),
-                symbolName: menuBarSymbolName(for: status, appearance: appearance),
-                tintColor: appearance.color,
                 accessibilityLabel: "Battery Panic, \(BatteryFormatter.longStatus(for: status))"
             )
         }
@@ -94,8 +88,6 @@ final class MenuBarController: NSObject {
             setStatusButton(
                 button,
                 title: BatteryFormatter.pendingMenuTitle,
-                symbolName: "battery.100",
-                tintColor: .secondaryLabelColor,
                 accessibilityLabel: "Battery Panic, loading battery status"
             )
         }
@@ -144,28 +136,14 @@ final class MenuBarController: NSObject {
     private func setStatusButton(
         _ button: NSStatusBarButton,
         title: String,
-        symbolName: String,
-        tintColor: NSColor,
         accessibilityLabel: String
     ) {
-        button.image = NSImage(systemSymbolName: symbolName, accessibilityDescription: "Battery")
-            ?? NSImage(systemSymbolName: "battery.100", accessibilityDescription: "Battery")
-        button.image?.isTemplate = true
-        button.imagePosition = .imageLeading
-        button.title = " \(title)"
+        button.image = nil
+        button.imagePosition = .noImage
+        button.title = title
         button.font = NSFont.monospacedDigitSystemFont(ofSize: 12, weight: .semibold)
-        button.contentTintColor = tintColor
+        button.contentTintColor = nil
         button.setAccessibilityLabel(accessibilityLabel)
-    }
-
-    private func menuBarSymbolName(for status: BatteryStatus, appearance: BatteryStatusAppearance) -> String {
-        guard status.hasBattery else { return "battery.0" }
-        if appearance.showsBolt { return "battery.100.bolt" }
-        if appearance.showsCriticalDot { return "battery.25" }
-        if status.percentage >= 80 { return "battery.100" }
-        if status.percentage >= 50 { return "battery.75" }
-        if status.percentage >= 25 { return "battery.50" }
-        return "battery.25"
     }
 
     private func updateDetails() {

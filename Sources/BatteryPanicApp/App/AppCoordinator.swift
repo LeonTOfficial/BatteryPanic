@@ -10,7 +10,6 @@ final class AppCoordinator {
     private let menuBarController: MenuBarController
     private let settingsWindowController: SettingsWindowController
     private let onboardingWindowController: OnboardingWindowController
-    private let widgetSnapshotPublisher = WidgetSnapshotPublisher()
     private let appUpdater = AppUpdater()
 
     private var latestStatus: BatteryStatus?
@@ -118,7 +117,6 @@ final class AppCoordinator {
             guard let self else { return }
             latestStatus = status
             menuBarController.update(status: status)
-            widgetSnapshotPublisher.publish(status: status, settings: settingsStore.snapshot())
             evaluateAlarm(for: status)
         }
     }
@@ -126,7 +124,6 @@ final class AppCoordinator {
     private func handleSettingsChanged() {
         menuBarController.updateSettings()
         guard let latestStatus else { return }
-        widgetSnapshotPublisher.publish(status: latestStatus, settings: settingsStore.snapshot())
         evaluateAlarm(for: latestStatus)
     }
 
