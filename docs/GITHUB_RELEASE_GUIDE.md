@@ -100,7 +100,7 @@ What's new:
 - Continuous audio warnings while a real low-battery alarm is active.
 - One-time alarm pause from the menu bar during an active alarm.
 - Sparkle updater with Check for Updates support.
-- Small, medium, and large Battery Panic widgets.
+- Widget runtime paused in the main app path so the menu bar app stays reliable.
 - Short 4-second preview from Welcome, Settings, and the menu bar.
 - Smoother pulsing overlay with less redraw work.
 - Improved welcome screen with a personal note from Leon.

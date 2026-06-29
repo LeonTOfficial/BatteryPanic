@@ -59,7 +59,6 @@ See the full install guide: [`docs/INSTALL.md`](docs/INSTALL.md).
 - Test buttons for both the red overlay and the selected sound.
 - Live in-settings overlay preview that updates while you move pulse controls.
 - Fixed short 4-second red-screen preview for safe testing.
-- macOS WidgetKit extension with small, medium, and large Battery Panic widgets.
 - Built-in Sparkle updater with a **Check for Updates...** menu item.
 - Optional launch at login.
 - First-run welcome/setup window.
@@ -92,12 +91,6 @@ Battery Panic only shows the real warning when the Mac has a battery, is unplugg
 - **Preview Red Screen / Preview 4s Alarm:** shows the overlay for about four seconds using a safe simulated low-battery state.
 - **Start at login:** registers Battery Panic as a macOS login item.
 - **Pause alarm:** temporarily disables real low-battery warnings. From the menu bar during an active alarm, pause is one-time and resets after the Mac is charging again or the battery returns above the threshold.
-
-## Widgets
-
-Battery Panic includes a WidgetKit extension for macOS. The widget shows your current battery percentage, warning state, threshold, and power connection status in a cleaner Battery Panic style.
-
-For details, see [`docs/WIDGETS.md`](docs/WIDGETS.md).
 
 ## Updates
 
@@ -153,7 +146,7 @@ Open the project in Xcode:
 open Package.swift
 ```
 
-Use the `BatteryPanicApp` scheme for the app and `BatteryPanicWidgetExtension` for the widget source. More details: [`docs/XCODE.md`](docs/XCODE.md).
+Use the `BatteryPanicApp` scheme for the app. More details: [`docs/XCODE.md`](docs/XCODE.md).
 
 Generate the app icon and README screenshots:
 
@@ -172,10 +165,7 @@ Sources/BatteryPanicApp/
 ├── Overlay/
 ├── Settings/
 ├── Shared/
-├── Sound/
-└── Widgets/
-Sources/BatteryPanicWidgetExtension/
-Sources/BatteryPanicWidgetShared/
+└── Sound/
 ```
 
 ## Credits

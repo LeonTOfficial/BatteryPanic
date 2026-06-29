@@ -20,7 +20,7 @@ Battery Panic 0.5.6 focuses on reliability: the menu bar battery status is now s
   - The Settings window is shown after launch so users can see that the app is running.
 - Removed launch-time blocking work:
   - Battery status polling no longer blocks the main app startup.
-  - Widget snapshot updates now run in the background instead of freezing the UI.
+  - Widget snapshot updates are not run by the main app while the widget feature is paused.
   - The live overlay preview starts after the Settings window is visible.
 - Cleaner Battery Panic icon:
   - More breathing room in the app icon.
@@ -54,10 +54,6 @@ Battery Panic 0.5.6 focuses on reliability: the menu bar battery status is now s
   - No secrets or tokens found in the repository scan.
   - Privacy model documented.
   - Build and tests verified.
-- WidgetKit preview:
-  - Small, medium, and large Battery Panic widgets.
-  - Local snapshot sharing from the menu bar app to the widget.
-  - Widget extension embedded into the local app bundle by the build script.
 - Sparkle updater:
   - Adds a menu bar **Check for Updates...** item.
   - Prepares signed GitHub release updates through `appcast.xml`.

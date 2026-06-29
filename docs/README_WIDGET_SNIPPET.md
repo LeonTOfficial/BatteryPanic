@@ -1,9 +1,9 @@
 ## Widgets
 
-Battery Panic includes a macOS WidgetKit extension:
+Battery Panic keeps experimental macOS WidgetKit source code in the repository, but the widget runtime is paused in the main app path for the current release:
 
 - Small: quick battery percentage and status.
 - Medium: battery ring with threshold and power state.
 - Large: full Battery Panic dashboard style.
 
-The widget reads a local battery snapshot written by the app. No network calls, no accounts, no analytics. The release build embeds the widget extension into `Battery Panic.app`.
+The widget code is local-only and uses no network calls, accounts, or analytics. It needs a future polish pass before it should be advertised as a normal user-facing feature again.
