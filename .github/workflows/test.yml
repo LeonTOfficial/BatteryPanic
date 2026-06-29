@@ -33,11 +33,15 @@ jobs:
         run: |
           rm -rf /tmp/BatteryPanicZipCheck
           mkdir -p /tmp/BatteryPanicZipCheck
-          ditto -x -k "outputs/Battery.Panic.0.5.0.zip" /tmp/BatteryPanicZipCheck
+          release_zip="$(ls outputs/Battery.Panic.*.zip | head -n 1)"
+          release_dmg="$(ls outputs/Battery.Panic.*.dmg | head -n 1)"
+          echo "Checking $release_zip"
+          echo "Checking $release_dmg"
+          ditto -x -k "$release_zip" /tmp/BatteryPanicZipCheck
           test -d "/tmp/BatteryPanicZipCheck/Battery Panic.app/Contents/PlugIns/BatteryPanicWidgetExtension.appex"
           test -d "/tmp/BatteryPanicZipCheck/Battery Panic.app/Contents/Frameworks/Sparkle.framework"
           codesign --verify --deep --strict --verbose=2 "/tmp/BatteryPanicZipCheck/Battery Panic.app"
-          test -f "outputs/Battery.Panic.0.5.0.dmg"
+          test -f "$release_dmg"
 
       - name: Scan for committed secret-looking values
         run: |
