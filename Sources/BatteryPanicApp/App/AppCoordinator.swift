@@ -45,11 +45,11 @@ final class AppCoordinator {
 
     func start() {
         menuBarController.start()
+        showLaunchWindow()
         batteryMonitor.onStatusUpdate = { [weak self] status in
             self?.handleBatteryStatus(status)
         }
         batteryMonitor.start()
-        showLaunchWindow()
         appUpdater.checkForUpdatesInBackgroundAfterLaunch()
     }
 

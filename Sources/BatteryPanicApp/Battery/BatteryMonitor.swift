@@ -29,6 +29,12 @@ final class BatteryMonitor {
     }
 
     private func publishStatus() {
-        onStatusUpdate?(provider.currentStatus())
+        DispatchQueue.global(qos: .utility).async { [weak self] in
+            guard let self else { return }
+            let status = provider.currentStatus()
+            DispatchQueue.main.async { [weak self] in
+                self?.onStatusUpdate?(status)
+            }
+        }
     }
 }

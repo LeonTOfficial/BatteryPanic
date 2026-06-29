@@ -3,15 +3,15 @@ import Foundation
 import Sparkle
 
 final class AppUpdater: NSObject {
-    private let updaterController = SPUStandardUpdaterController(
+    private lazy var updaterController = SPUStandardUpdaterController(
         startingUpdater: true,
         updaterDelegate: nil,
         userDriverDelegate: nil
     )
 
     func wireCheckForUpdatesMenuItem(_ item: NSMenuItem) {
-        item.target = updaterController
-        item.action = #selector(SPUStandardUpdaterController.checkForUpdates(_:))
+        item.target = self
+        item.action = #selector(checkForUpdatesFromMenu)
     }
 
     func checkForUpdates() {
@@ -19,11 +19,16 @@ final class AppUpdater: NSObject {
     }
 
     func checkForUpdatesInBackgroundAfterLaunch() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [updaterController] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 8.0) { [weak self] in
+            guard let self else { return }
             let updater = updaterController.updater
             if updater.automaticallyChecksForUpdates {
                 updater.checkForUpdatesInBackground()
             }
         }
+    }
+
+    @objc private func checkForUpdatesFromMenu(_ sender: Any?) {
+        checkForUpdates()
     }
 }

@@ -3,6 +3,8 @@ import WidgetKit
 import BatteryPanicWidgetShared
 
 final class WidgetSnapshotPublisher {
+    private let queue = DispatchQueue(label: "com.leontofficial.batterypanic.widget-snapshot", qos: .utility)
+
     func publish(status: BatteryStatus, settings: AlarmSettingsSnapshot) {
         let snapshot = BatteryPanicWidgetSnapshot(
             percentage: status.percentage,
@@ -14,7 +16,9 @@ final class WidgetSnapshotPublisher {
             updatedAt: Date()
         )
 
-        BatteryPanicWidgetStorage.writeSnapshot(snapshot)
-        WidgetCenter.shared.reloadAllTimelines()
+        queue.async {
+            BatteryPanicWidgetStorage.writeSnapshot(snapshot)
+            WidgetCenter.shared.reloadAllTimelines()
+        }
     }
 }

@@ -5,6 +5,17 @@
         <link>https://github.com/LeonTOfficial/BatteryPanic</link>
         <description>Battery Panic app updates.</description>
         <item>
+            <title>0.5.4</title>
+            <pubDate>Mon, 29 Jun 2026 15:16:02 +0200</pubDate>
+            <link>https://github.com/LeonTOfficial/BatteryPanic</link>
+            <sparkle:version>9</sparkle:version>
+            <sparkle:shortVersionString>0.5.4</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+            <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
+            <sparkle:releaseNotesLink>https://raw.githubusercontent.com/LeonTOfficial/BatteryPanic/main/Battery.Panic.0.5.4.md</sparkle:releaseNotesLink>
+            <enclosure url="https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.4/Battery.Panic.0.5.4.zip" length="1324243" type="application/octet-stream" sparkle:edSignature="ja2zsF8DCU6brhbpkgIinf5UjJkjJLlerhwfMRl86dxTst6Ruee06ozkHUwWlFZUHNc2VBMEBYFsI4dBfoqtDQ=="/>
+        </item>
+        <item>
             <title>0.5.3</title>
             <pubDate>Mon, 29 Jun 2026 14:44:34 +0200</pubDate>
             <link>https://github.com/LeonTOfficial/BatteryPanic</link>
@@ -25,17 +36,6 @@
             <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
             <sparkle:releaseNotesLink>https://raw.githubusercontent.com/LeonTOfficial/BatteryPanic/main/Battery.Panic.0.5.2.md</sparkle:releaseNotesLink>
             <enclosure url="https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.2/Battery.Panic.0.5.2.zip" length="1318160" type="application/octet-stream" sparkle:edSignature="ceVU2eev27zEyz1A4uUNGO39mYMb+1gNjpIEUoyqbtxZl9/1/rBiO5MYoHiW+Rj3+I/PD/cmf8CglJz939e2CA=="/>
-        </item>
-        <item>
-            <title>0.5.1</title>
-            <pubDate>Mon, 29 Jun 2026 09:28:22 +0200</pubDate>
-            <link>https://github.com/LeonTOfficial/BatteryPanic</link>
-            <sparkle:version>6</sparkle:version>
-            <sparkle:shortVersionString>0.5.1</sparkle:shortVersionString>
-            <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
-            <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
-            <sparkle:releaseNotesLink>https://raw.githubusercontent.com/LeonTOfficial/BatteryPanic/main/Battery.Panic.0.5.1.md</sparkle:releaseNotesLink>
-            <enclosure url="https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.1/Battery.Panic.0.5.1.zip" length="1317520" type="application/octet-stream" sparkle:edSignature="9IGZVJzanMR9tUrap0kUC5Pfes8khtVrXILpRmabBSYef3YvUkvq4KbrD9sWgxd96XNbxZob63z0bRZ4tuzsAQ=="/>
         </item>
     </channel>
 </rss>

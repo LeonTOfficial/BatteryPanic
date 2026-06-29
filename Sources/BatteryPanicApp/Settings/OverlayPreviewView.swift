@@ -24,7 +24,6 @@ final class OverlayPreviewView: NSView {
         super.init(frame: frameRect)
         wantsLayer = true
         layer?.cornerRadius = 12
-        startAnimation()
     }
 
     required init?(coder: NSCoder) {
@@ -32,13 +31,26 @@ final class OverlayPreviewView: NSView {
     }
 
     deinit {
-        timer?.invalidate()
+        stopAnimation()
     }
 
     func configure(pulseEnabled: Bool, pulseSpeed: Double, pulseIntensity: Double) {
         self.pulseEnabled = pulseEnabled
         self.pulseSpeed = pulseSpeed
         self.pulseIntensity = pulseIntensity
+    }
+
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        if window == nil {
+            stopAnimation()
+            return
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [weak self] in
+            guard let self, self.window != nil else { return }
+            self.startAnimation()
+        }
     }
 
     override func draw(_ dirtyRect: NSRect) {
@@ -99,11 +111,17 @@ final class OverlayPreviewView: NSView {
     }
 
     private func startAnimation() {
-        let timer = Timer(timeInterval: 1.0 / 24.0, repeats: true) { [weak self] _ in
+        guard timer == nil else { return }
+        let timer = Timer(timeInterval: 1.0 / 8.0, repeats: true) { [weak self] _ in
             self?.tick()
         }
         RunLoop.main.add(timer, forMode: .common)
         self.timer = timer
+    }
+
+    private func stopAnimation() {
+        timer?.invalidate()
+        timer = nil
     }
 
     private func tick() {

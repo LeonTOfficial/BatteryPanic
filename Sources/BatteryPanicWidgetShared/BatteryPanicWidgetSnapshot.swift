@@ -142,8 +142,15 @@ public struct BatteryPanicWidgetSnapshot: Codable, Equatable, Sendable {
 public enum BatteryPanicWidgetStorage {
     public static let appGroupIdentifier = "group.com.leontofficial.batterypanic"
     public static let snapshotKey = "BatteryPanicWidgetSnapshot.v1"
+    private static let snapshotFileName = "BatteryPanicWidgetSnapshot.v1.json"
 
     public static func readSnapshot() -> BatteryPanicWidgetSnapshot {
+        if let url = snapshotFileURL,
+           let data = try? Data(contentsOf: url),
+           let snapshot = try? JSONDecoder().decode(BatteryPanicWidgetSnapshot.self, from: data) {
+            return snapshot
+        }
+
         guard let data = defaults.data(forKey: snapshotKey),
               let snapshot = try? JSONDecoder().decode(BatteryPanicWidgetSnapshot.self, from: data)
         else {
@@ -155,10 +162,21 @@ public enum BatteryPanicWidgetStorage {
 
     public static func writeSnapshot(_ snapshot: BatteryPanicWidgetSnapshot) {
         guard let data = try? JSONEncoder().encode(snapshot) else { return }
-        defaults.set(data, forKey: snapshotKey)
+        guard let url = snapshotFileURL else { return }
+        try? FileManager.default.createDirectory(
+            at: url.deletingLastPathComponent(),
+            withIntermediateDirectories: true
+        )
+        try? data.write(to: url, options: .atomic)
     }
 
     private static var defaults: UserDefaults {
         UserDefaults(suiteName: appGroupIdentifier) ?? .standard
+    }
+
+    private static var snapshotFileURL: URL? {
+        FileManager.default
+            .containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier)?
+            .appendingPathComponent(snapshotFileName)
     }
 }

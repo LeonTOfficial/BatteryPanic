@@ -190,22 +190,13 @@ final class SettingsWindowController: NSWindowController {
         pauseInfoLabel.lineBreakMode = .byWordWrapping
         pauseInfoLabel.maximumNumberOfLines = 2
         pauseInfoLabel.widthAnchor.constraint(equalToConstant: 420).isActive = true
-        let pauseInfoContainer = NSView()
-        pauseInfoContainer.translatesAutoresizingMaskIntoConstraints = false
-        pauseInfoContainer.addSubview(pauseInfoLabel)
-        NSLayoutConstraint.activate([
-            pauseInfoLabel.leadingAnchor.constraint(equalTo: pauseInfoContainer.leadingAnchor),
-            pauseInfoLabel.trailingAnchor.constraint(equalTo: pauseInfoContainer.trailingAnchor),
-            pauseInfoLabel.centerYAnchor.constraint(equalTo: pauseInfoContainer.centerYAnchor),
-            pauseInfoContainer.heightAnchor.constraint(greaterThanOrEqualTo: pauseButton.heightAnchor)
-        ])
 
         let pauseRow = NSStackView()
         pauseRow.orientation = .horizontal
         pauseRow.alignment = .centerY
         pauseRow.spacing = 12
         pauseRow.addArrangedSubview(pauseButton)
-        pauseRow.addArrangedSubview(pauseInfoContainer)
+        pauseRow.addArrangedSubview(pauseInfoLabel)
 
         let stack = NSStackView()
         stack.orientation = .vertical
