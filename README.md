@@ -46,6 +46,15 @@ If the direct settings link does not open, open **System Settings -> Privacy & S
 
 This happens because Battery Panic is not Apple-notarized yet. Removing this warning completely requires Apple Developer ID signing and notarization, which is planned for a later public distribution step.
 
+If Battery Panic opens but no icon appears in the menu bar:
+
+1. Open **System Settings**.
+2. Go to **Control Center -> Menu Bar**.
+3. Find **Battery Panic**.
+4. Turn the switch on.
+
+macOS can hide third-party menu bar apps here. When this switch is off, Battery Panic may still be running, but its battery icon will not appear in the menu bar.
+
 See the full install guide: [`docs/INSTALL.md`](docs/INSTALL.md).
 
 ## Features

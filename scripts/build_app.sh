@@ -21,7 +21,6 @@ RELEASE_DMG="$OUTPUT_DIR/$RELEASE_BASE.dmg"
 STAGING_DIR="${TMPDIR:-/tmp}/BatteryPanicBuild.$$"
 DMG_STAGING_DIR="${TMPDIR:-/tmp}/BatteryPanicDmg.$$"
 DMG_MOUNT_DIR="${TMPDIR:-/tmp}/BatteryPanicDmgMount.$$"
-DMG_FINDER_MOUNT_DIR="/Volumes/$DMG_VOLUME_NAME"
 DMG_RW="$STAGING_DIR/$RELEASE_BASE.rw.dmg"
 APP_BUNDLE="$STAGING_DIR/$APP_NAME.app"
 BINARY_SOURCE="$ROOT_DIR/.build/$BUILD_CONFIG/BatteryPanicApp"
@@ -36,10 +35,6 @@ cleanup() {
     if [[ -d "$DMG_MOUNT_DIR" ]]; then
         hdiutil detach "$DMG_MOUNT_DIR" >/dev/null 2>&1 || true
         rm -rf "$DMG_MOUNT_DIR"
-    fi
-    if [[ -d "$DMG_FINDER_MOUNT_DIR" ]]; then
-        hdiutil detach "$DMG_FINDER_MOUNT_DIR" >/dev/null 2>&1 || true
-        rmdir "$DMG_FINDER_MOUNT_DIR" >/dev/null 2>&1 || true
     fi
     rm -rf "$STAGING_DIR"
     rm -rf "$DMG_STAGING_DIR"
@@ -206,27 +201,27 @@ if [[ "${CI:-}" == "true" ]]; then
     hdiutil attach "$DMG_RW" -readwrite -noverify -noautoopen -mountpoint "$DMG_MOUNT_DIR" >/dev/null
     echo "Skipping Finder DMG layout in CI. The DMG still contains the app, Applications shortcut, and background asset."
 else
-    rmdir "$DMG_FINDER_MOUNT_DIR" >/dev/null 2>&1 || true
-    hdiutil attach "$DMG_RW" -readwrite -noverify -mountpoint "$DMG_FINDER_MOUNT_DIR" >/dev/null
-    DMG_MOUNT_DIR="$DMG_FINDER_MOUNT_DIR"
+    mkdir -p "$DMG_MOUNT_DIR"
+    hdiutil attach "$DMG_RW" -readwrite -noverify -mountpoint "$DMG_MOUNT_DIR" >/dev/null
     if ! osascript <<APPLESCRIPT
 tell application "Finder"
-    tell disk "$DMG_VOLUME_NAME"
-        open
-        set current view of container window to icon view
-        set toolbar visible of container window to false
-        set statusbar visible of container window to false
-        set bounds of container window to {120, 120, 800, 540}
-        set viewOptions to icon view options of container window
-        set icon size of viewOptions to 96
-        set text size of viewOptions to 13
-        set background picture of viewOptions to (POSIX file "$DMG_MOUNT_DIR/.background/background.png" as alias)
-        set position of item "$APP_NAME.app" to {190, 230}
-        set position of item "Applications" to {490, 230}
-        update without registering applications
-        delay 1
-        close
-    end tell
+    set dmgFolder to POSIX file "$DMG_MOUNT_DIR" as alias
+    open dmgFolder
+    delay 1
+    set dmgWindow to container window of dmgFolder
+    set current view of dmgWindow to icon view
+    set toolbar visible of dmgWindow to false
+    set statusbar visible of dmgWindow to false
+    set bounds of dmgWindow to {120, 120, 800, 540}
+    set viewOptions to icon view options of dmgWindow
+    set icon size of viewOptions to 96
+    set text size of viewOptions to 13
+    set background picture of viewOptions to (POSIX file "$DMG_MOUNT_DIR/.background/background.png" as alias)
+    set position of item "$APP_NAME.app" of dmgFolder to {190, 230}
+    set position of item "Applications" of dmgFolder to {490, 230}
+    update dmgFolder without registering applications
+    delay 1
+    close dmgWindow
 end tell
 APPLESCRIPT
     then

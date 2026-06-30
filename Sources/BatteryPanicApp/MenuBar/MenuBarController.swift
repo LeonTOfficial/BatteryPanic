@@ -33,16 +33,20 @@ final class MenuBarController: NSObject {
     }
 
     func start() {
-        ensureStatusItemVisible()
+        statusItem = NSStatusBar.system.statusItem(withLength: 72)
+        configureMenu()
+        statusItem?.menu = menu
+        statusItem?.isVisible = true
         updateSettings()
     }
 
     func ensureStatusItemVisible() {
         if statusItem == nil {
-            statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+            statusItem = NSStatusBar.system.statusItem(withLength: 72)
             configureMenu()
+            statusItem?.menu = menu
         }
-        statusItem?.length = NSStatusItem.squareLength
+        statusItem?.length = 72
         statusItem?.isVisible = true
         statusItem?.button?.isHidden = false
         if let latestStatus {
@@ -161,9 +165,36 @@ final class MenuBarController: NSObject {
         title: String,
         accessibilityLabel: String
     ) {
-        button.image = nil
-        button.imagePosition = .noImage
-        button.title = "BP"
+        let percentage = latestStatus?.percentage ?? 80
+        let isLow = latestStatus.map { status in
+            status.hasBattery && !status.isPluggedIn && status.percentage <= settingsStore.snapshot().thresholdPercentage
+        } ?? false
+        let appearance = latestStatus.map { status in
+            BatteryStatusAppearance.appearance(
+                for: status,
+                threshold: settingsStore.snapshot().thresholdPercentage
+            )
+        } ?? BatteryStatusAppearance(
+            level: .healthy,
+            color: .systemGreen,
+            title: "",
+            subtitle: "",
+            showsBolt: false,
+            showsCriticalDot: false
+        )
+        button.image = MenuBarIconFactory.image(
+            appearance: isLow ? BatteryStatusAppearance(
+                level: .critical,
+                color: .systemRed,
+                title: "",
+                subtitle: "",
+                showsBolt: false,
+                showsCriticalDot: true
+            ) : appearance,
+            percentage: percentage
+        )
+        button.imagePosition = .imageLeading
+        button.title = title
         button.font = NSFont.monospacedDigitSystemFont(ofSize: 12, weight: .semibold)
         button.contentTintColor = nil
         button.setAccessibilityLabel(accessibilityLabel)

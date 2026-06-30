@@ -13,7 +13,7 @@
             <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
             <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
             <sparkle:releaseNotesLink>https://raw.githubusercontent.com/LeonTOfficial/BatteryPanic/main/Battery.Panic.0.5.7.md</sparkle:releaseNotesLink>
-            <enclosure url="https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.7/Battery.Panic.0.5.7.zip" length="1323391" type="application/octet-stream" sparkle:edSignature="e9zF5pAjFZEGc/AQQplMQxPPKtCykyxjlVyKsgmnGIFIRse3tcc9DpziPZC3xoy84sGnLnK6TpBLHq8QfVVVDA=="/>
+            <enclosure url="https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.7/Battery.Panic.0.5.7.zip" length="1323996" type="application/octet-stream" sparkle:edSignature="Hl1jq84hFJpvKyPhX1/rZO3lZZlDNQZu+9ifhpjt6maBshjwuhEZEYR3T9m0sXA3xRtm1VlsK/KpMYOOrbaSCA=="/>
         </item>
         <item>
             <title>0.5.7</title>

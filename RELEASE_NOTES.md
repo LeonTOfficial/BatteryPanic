@@ -5,8 +5,8 @@ Battery Panic 0.5.7 fixes the first-launch flow and makes the menu bar indicator
 ## What's New
 
 - More reliable menu bar battery display:
-  - Battery Panic now uses a compact `BP` menu bar mark so it is visible even when image-based status icons fail to render.
-  - The battery percentage and status remain visible inside the click menu.
+  - Battery Panic uses the earlier compact battery icon again, with the current percentage in the menu bar.
+  - The click menu still shows the full battery and alarm status.
   - The menu bar item is re-ensured when the app starts, reopens, or opens Settings/Welcome.
 - Better first launch behavior:
   - A newly downloaded app version now opens the Welcome window first.

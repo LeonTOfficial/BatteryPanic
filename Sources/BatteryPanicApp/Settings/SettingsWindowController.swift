@@ -190,6 +190,7 @@ final class SettingsWindowController: NSWindowController {
 
         pauseInfoLabel.font = NSFont.systemFont(ofSize: 12, weight: .regular)
         pauseInfoLabel.textColor = .secondaryLabelColor
+        pauseInfoLabel.alignment = .left
         pauseInfoLabel.lineBreakMode = .byWordWrapping
         pauseInfoLabel.maximumNumberOfLines = 2
         pauseInfoLabel.widthAnchor.constraint(equalToConstant: 328).isActive = true
@@ -199,10 +200,6 @@ final class SettingsWindowController: NSWindowController {
         loginRow.alignment = .centerY
         loginRow.spacing = 0
         loginRow.addArrangedSubview(launchAtLoginCheckbox)
-        let loginSpacer = NSView()
-        loginSpacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        loginRow.addArrangedSubview(loginSpacer)
-        loginRow.widthAnchor.constraint(equalToConstant: 596).isActive = true
         loginRow.heightAnchor.constraint(greaterThanOrEqualToConstant: 32).isActive = true
 
         let pauseRow = NSStackView()
@@ -211,13 +208,13 @@ final class SettingsWindowController: NSWindowController {
         pauseRow.spacing = 18
         pauseRow.addArrangedSubview(pauseButton)
         pauseRow.addArrangedSubview(pauseInfoLabel)
-        pauseRow.widthAnchor.constraint(equalToConstant: 596).isActive = true
         pauseRow.heightAnchor.constraint(greaterThanOrEqualToConstant: 42).isActive = true
 
         let stack = NSStackView()
         stack.orientation = .vertical
-        stack.alignment = .centerX
+        stack.alignment = .leading
         stack.spacing = 12
+        stack.widthAnchor.constraint(equalToConstant: 596).isActive = true
         stack.addArrangedSubview(loginRow)
         stack.addArrangedSubview(pauseRow)
 

@@ -48,6 +48,17 @@ This is the normal macOS flow for opening a non-notarized open-source app. The w
 
 You can inspect the source code on GitHub before running the app.
 
+## If the Menu Bar Icon Does Not Appear
+
+If Battery Panic opens but you do not see its battery icon in the menu bar, macOS may have disabled the menu bar item:
+
+1. Open **System Settings**.
+2. Go to **Control Center -> Menu Bar**.
+3. Find **Battery Panic**.
+4. Turn the switch on.
+
+Battery Panic can still be running while this switch is off, but macOS will hide the menu bar icon until you enable it again.
+
 ## Uninstall
 
 1. Quit Battery Panic from the menu bar.
