@@ -17,9 +17,9 @@
     <key>CFBundlePackageType</key>
     <string>XPC!</string>
     <key>CFBundleShortVersionString</key>
-    <string>0.5.7</string>
+    <string>0.5.8</string>
     <key>CFBundleVersion</key>
-    <string>12</string>
+    <string>13</string>
     <key>LSMinimumSystemVersion</key>
     <string>13.0</string>
     <key>NSExtension</key>
@@ -27,7 +27,7 @@
         <key>NSExtensionAttributes</key>
         <dict>
             <key>WKAppBundleIdentifier</key>
-            <string>com.leontofficial.batterypanic</string>
+            <string>com.leontofficial.batterypanic.mac</string>
         </dict>
         <key>NSExtensionPointIdentifier</key>
         <string>com.apple.widgetkit-extension</string>

@@ -5,7 +5,15 @@ final class OverlayPreviewView: NSView {
     private var animationStart = Date()
 
     var pulseEnabled = true {
-        didSet { needsDisplay = true }
+        didSet {
+            if pulseEnabled {
+                startAnimation()
+            } else {
+                stopAnimation()
+                pulseValue = 1
+            }
+            needsDisplay = true
+        }
     }
 
     var pulseSpeed: Double = 1.0 {
@@ -111,8 +119,8 @@ final class OverlayPreviewView: NSView {
     }
 
     private func startAnimation() {
-        guard timer == nil else { return }
-        let timer = Timer(timeInterval: 1.0 / 8.0, repeats: true) { [weak self] _ in
+        guard timer == nil, pulseEnabled, window != nil else { return }
+        let timer = Timer(timeInterval: 1.0 / 4.0, repeats: true) { [weak self] _ in
             self?.tick()
         }
         RunLoop.main.add(timer, forMode: .common)
@@ -125,7 +133,15 @@ final class OverlayPreviewView: NSView {
     }
 
     private func tick() {
+        guard pulseEnabled else {
+            stopAnimation()
+            return
+        }
+
         let elapsed = Date().timeIntervalSince(animationStart)
-        pulseValue = CGFloat((sin(elapsed * 2.4 * pulseSpeed) + 1) / 2)
+        let nextValue = CGFloat((sin(elapsed * 2.4 * pulseSpeed) + 1) / 2)
+        if abs(nextValue - pulseValue) > 0.025 {
+            pulseValue = nextValue
+        }
     }
 }

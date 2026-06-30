@@ -185,11 +185,12 @@ final class AppCoordinator {
     private func showLaunchWindow() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
             guard let self else { return }
-            if settingsStore.snapshot().hasCompletedOnboarding {
-                settingsWindowController.show()
-            } else {
-                onboardingWindowController.show()
+            guard !settingsStore.snapshot().hasCompletedOnboarding else {
+                menuBarController.ensureStatusItemVisible()
+                return
             }
+
+            onboardingWindowController.show()
             NSApp.activate(ignoringOtherApps: true)
         }
     }

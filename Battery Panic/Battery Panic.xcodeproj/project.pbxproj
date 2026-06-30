@@ -605,7 +605,7 @@
 				INFOPLIST_FILE = "../Config/BatteryPanicWidgetExtension-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.leontofficial.batterypanic.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.leontofficial.batterypanic.mac.widget;
 				PRODUCT_NAME = BatteryPanicWidgetExtension;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -632,7 +632,7 @@
 				INFOPLIST_FILE = "../Config/BatteryPanicApp-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.leontofficial.batterypanic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.leontofficial.batterypanic.mac;
 				PRODUCT_NAME = "Battery Panic";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
@@ -711,7 +711,7 @@
 				EXECUTABLE_PREFIX = lib;
 				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.leontofficial.batterypanic.widgetshared;
+				PRODUCT_BUNDLE_IDENTIFIER = com.leontofficial.batterypanic.mac.widgetshared;
 				PRODUCT_NAME = BatteryPanicWidgetShared;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -738,7 +738,7 @@
 				INFOPLIST_FILE = "../Config/BatteryPanicApp-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.leontofficial.batterypanic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.leontofficial.batterypanic.mac;
 				PRODUCT_NAME = "Battery Panic";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
@@ -758,7 +758,7 @@
 				INFOPLIST_FILE = "../Config/BatteryPanicWidgetExtension-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.leontofficial.batterypanic.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.leontofficial.batterypanic.mac.widget;
 				PRODUCT_NAME = BatteryPanicWidgetExtension;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -777,7 +777,7 @@
 				EXECUTABLE_PREFIX = lib;
 				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.leontofficial.batterypanic.widgetshared;
+				PRODUCT_BUNDLE_IDENTIFIER = com.leontofficial.batterypanic.mac.widgetshared;
 				PRODUCT_NAME = BatteryPanicWidgetShared;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;

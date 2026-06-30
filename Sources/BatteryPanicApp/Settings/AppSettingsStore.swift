@@ -50,7 +50,10 @@ final class AppSettingsStore {
         static let pauseUntil = "pauseUntil"
         static let hasCompletedOnboarding = "hasCompletedOnboarding"
         static let completedOnboardingVersion = "completedOnboardingVersion"
+        static let migratedLegacyBundleSettings = "migratedLegacyBundleSettings"
     }
+
+    private static let legacyBundleIdentifier = "com.leontofficial.batterypanic"
 
     private let defaults: UserDefaults
 
@@ -68,6 +71,7 @@ final class AppSettingsStore {
             Keys.launchAtLoginEnabled: false,
             Keys.hasCompletedOnboarding: false
         ])
+        migrateLegacyBundleSettingsIfNeeded()
         defaults.removeObject(forKey: Keys.legacyIsPaused)
     }
 
@@ -117,6 +121,38 @@ final class AppSettingsStore {
 
     private var currentAppVersion: String {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown"
+    }
+
+    private func migrateLegacyBundleSettingsIfNeeded() {
+        guard !defaults.bool(forKey: Keys.migratedLegacyBundleSettings),
+              let legacyDefaults = UserDefaults(suiteName: Self.legacyBundleIdentifier)
+        else {
+            return
+        }
+
+        let keysToMigrate = [
+            Keys.thresholdPercentage,
+            Keys.pulseEnabled,
+            Keys.pulseSpeed,
+            Keys.pulseIntensity,
+            Keys.soundEnabled,
+            Keys.selectedSoundName,
+            Keys.launchAtLoginEnabled,
+            Keys.pauseUntil,
+            Keys.hasCompletedOnboarding,
+            Keys.completedOnboardingVersion
+        ]
+
+        let currentDomain = Bundle.main.bundleIdentifier
+            .flatMap { defaults.persistentDomain(forName: $0) } ?? [:]
+
+        for key in keysToMigrate where currentDomain[key] == nil {
+            if let value = legacyDefaults.object(forKey: key) {
+                defaults.set(value, forKey: key)
+            }
+        }
+
+        defaults.set(true, forKey: Keys.migratedLegacyBundleSettings)
     }
 
     private var hasCompletedOnboardingForCurrentVersion: Bool {
