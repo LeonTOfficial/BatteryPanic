@@ -28,12 +28,14 @@ final class IOKitBatteryProvider: BatteryProviding {
             let percentage = Self.percentage(current: currentCapacity, max: maxCapacity)
             let stateValue = description[kIOPSPowerSourceStateKey] as? String
             let isCharging = description[kIOPSIsChargingKey] as? Bool ?? false
+            let timeRemaining = Self.timeRemainingMinutes(from: description, isCharging: isCharging)
 
             return BatteryStatus(
                 percentage: percentage,
                 powerSource: Self.powerSource(from: stateValue),
                 isCharging: isCharging,
-                hasBattery: true
+                hasBattery: true,
+                timeRemainingMinutes: timeRemaining
             )
         }
 
@@ -54,5 +56,13 @@ final class IOKitBatteryProvider: BatteryProviding {
         default:
             return .unknown
         }
+    }
+
+    private static func timeRemainingMinutes(from description: [String: Any], isCharging: Bool) -> Int? {
+        let key = isCharging ? kIOPSTimeToFullChargeKey : kIOPSTimeToEmptyKey
+        guard let minutes = description[key] as? Int, minutes > 0 else {
+            return nil
+        }
+        return minutes
     }
 }

@@ -9,12 +9,12 @@ The app is built with Swift and AppKit, stays local to your Mac, and is designed
 
 ## Download & Install
 
-For normal users, use the direct app download below. Do **not** use the green **Code -> Download ZIP** button, because that downloads the source code, not the finished app.
+For normal users, use the direct app download below. Do **not** use GitHub's **Code -> Download ZIP** button at the top of the repository, because that downloads the source code, not the finished app.
 
 **Latest app download:**
 
-- [Download Battery Panic 0.5.8 DMG](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.8/Battery.Panic.0.5.8.dmg) - recommended macOS drag-and-drop installer
-- [Download Battery Panic 0.5.8 ZIP](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.8/Battery.Panic.0.5.8.zip) - fallback if the DMG does not work
+- [Download Battery Panic 0.5.9 DMG](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.9/Battery.Panic.0.5.9.dmg) - recommended macOS drag-and-drop installer
+- [Download Battery Panic 0.5.9 ZIP](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.9/Battery.Panic.0.5.9.zip) - fallback if the DMG does not work
 
 DMG install:
 
@@ -62,6 +62,7 @@ See the full install guide: [`docs/INSTALL.md`](docs/INSTALL.md).
 - Native macOS menu bar app.
 - Green, orange, red, and charging-aware menu bar battery states.
 - Red pulsing full-screen overlay across connected displays.
+- Estimated battery time in the red warning overlay when macOS provides it.
 - Adjustable low-battery threshold.
 - Adjustable overlay pulse speed and pulse intensity.
 - Built-in continuous Battery Panic siren plus selectable macOS system warning sounds.
@@ -99,7 +100,7 @@ Battery Panic only shows the real warning when the Mac has a battery, is unplugg
 - **Test Sound:** plays the selected warning sound immediately.
 - **Preview Red Screen / Preview 4s Alarm:** shows the overlay for about four seconds using a safe simulated low-battery state.
 - **Start at login:** registers Battery Panic as a macOS login item.
-- **Pause alarm:** temporarily disables real low-battery warnings. From the menu bar during an active alarm, pause is one-time and resets after the Mac is charging again or the battery returns above the threshold.
+- **Pause alarm:** temporarily disables real low-battery warnings for 30 minutes. After that, Battery Panic automatically turns the alarm back on.
 
 ## Updates
 

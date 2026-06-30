@@ -11,6 +11,7 @@ struct BatteryStatus: Equatable {
     let powerSource: PowerSource
     let isCharging: Bool
     let hasBattery: Bool
+    let timeRemainingMinutes: Int?
     let timestamp: Date
 
     init(
@@ -18,12 +19,14 @@ struct BatteryStatus: Equatable {
         powerSource: PowerSource,
         isCharging: Bool,
         hasBattery: Bool,
+        timeRemainingMinutes: Int? = nil,
         timestamp: Date = Date()
     ) {
         self.percentage = percentage.clamped(to: 0...100)
         self.powerSource = powerSource
         self.isCharging = isCharging
         self.hasBattery = hasBattery
+        self.timeRemainingMinutes = timeRemainingMinutes
         self.timestamp = timestamp
     }
 

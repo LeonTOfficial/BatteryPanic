@@ -75,6 +75,7 @@ final class OverlayManager: NSObject {
             window.setFrame(targetFrame, display: true)
             window.overlayView.frame = NSRect(origin: .zero, size: targetFrame.size)
             window.overlayView.percentage = currentStatus.percentage
+            window.overlayView.timeRemainingText = BatteryFormatter.timeRemainingText(for: currentStatus)
             window.overlayView.pulseEnabled = currentPulseEnabled
             window.overlayView.pulseIntensity = CGFloat(currentPulseIntensity)
             window.overlayView.isTest = currentIsTest

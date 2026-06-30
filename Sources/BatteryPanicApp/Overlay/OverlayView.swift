@@ -5,6 +5,10 @@ final class OverlayView: NSView {
         didSet { needsDisplay = true }
     }
 
+    var timeRemainingText: String? {
+        didSet { needsDisplay = true }
+    }
+
     var isTest: Bool = false {
         didSet { needsDisplay = true }
     }
@@ -129,7 +133,9 @@ final class OverlayView: NSView {
     private func drawWarningText(in cardRect: NSRect) {
         let eyebrow = isTest ? "PREVIEW MODE" : "LOW BATTERY WARNING"
         let title = "\(percentage)% battery left"
-        let subtitle = isTest ? "This preview stops automatically after a few seconds." : "Connect your charger to dismiss this alert."
+        let subtitle = isTest
+            ? "This preview stops automatically after a few seconds."
+            : (timeRemainingText ?? "Connect your charger to dismiss this alert.")
         let textOriginX = cardRect.minX + 124
 
         drawText(
