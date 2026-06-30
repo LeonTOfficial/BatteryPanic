@@ -5,15 +5,26 @@
         <link>https://github.com/LeonTOfficial/BatteryPanic</link>
         <description>Battery Panic app updates.</description>
         <item>
-            <title>0.5.6</title>
+            <title>0.5.7</title>
+            <pubDate>Tue, 30 Jun 2026 13:13:30 +0200</pubDate>
+            <link>https://github.com/LeonTOfficial/BatteryPanic</link>
+            <sparkle:version>12</sparkle:version>
+            <sparkle:shortVersionString>0.5.7</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+            <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
+            <sparkle:releaseNotesLink>https://raw.githubusercontent.com/LeonTOfficial/BatteryPanic/main/Battery.Panic.0.5.7.md</sparkle:releaseNotesLink>
+            <enclosure url="https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.7/Battery.Panic.0.5.7.zip" length="1323391" type="application/octet-stream" sparkle:edSignature="e9zF5pAjFZEGc/AQQplMQxPPKtCykyxjlVyKsgmnGIFIRse3tcc9DpziPZC3xoy84sGnLnK6TpBLHq8QfVVVDA=="/>
+        </item>
+        <item>
+            <title>0.5.7</title>
             <pubDate>Mon, 29 Jun 2026 21:30:06 +0200</pubDate>
             <link>https://github.com/LeonTOfficial/BatteryPanic</link>
             <sparkle:version>11</sparkle:version>
-            <sparkle:shortVersionString>0.5.6</sparkle:shortVersionString>
+            <sparkle:shortVersionString>0.5.7</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
             <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
-            <sparkle:releaseNotesLink>https://raw.githubusercontent.com/LeonTOfficial/BatteryPanic/main/Battery.Panic.0.5.6.md</sparkle:releaseNotesLink>
-            <enclosure url="https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.6/Battery.Panic.0.5.6.zip" length="1322792" type="application/octet-stream" sparkle:edSignature="MO5nfFynU1xcC37Esv3bPz08iDqiP+dRMlJcUiP16scsbBxTC1PsR5nH9LIHMQjg8bPMZIOuEEIAwJO5hVhABw=="/>
+            <sparkle:releaseNotesLink>https://raw.githubusercontent.com/LeonTOfficial/BatteryPanic/main/Battery.Panic.0.5.7.md</sparkle:releaseNotesLink>
+            <enclosure url="https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.7/Battery.Panic.0.5.7.zip" length="1322792" type="application/octet-stream" sparkle:edSignature="MO5nfFynU1xcC37Esv3bPz08iDqiP+dRMlJcUiP16scsbBxTC1PsR5nH9LIHMQjg8bPMZIOuEEIAwJO5hVhABw=="/>
         </item>
         <item>
             <title>0.5.5</title>
@@ -25,17 +36,6 @@
             <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
             <sparkle:releaseNotesLink>https://raw.githubusercontent.com/LeonTOfficial/BatteryPanic/main/Battery.Panic.0.5.5.md</sparkle:releaseNotesLink>
             <enclosure url="https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.5/Battery.Panic.0.5.5.zip" length="1325071" type="application/octet-stream" sparkle:edSignature="nbPVgEPttHPF+Dwmv3db++erQyhbBgdsfprksDwbz0PerWpu7PsNHtTubm6SpLv1EKq2Y6JmwO3buOFehMlMDA=="/>
-        </item>
-        <item>
-            <title>0.5.4</title>
-            <pubDate>Mon, 29 Jun 2026 15:16:02 +0200</pubDate>
-            <link>https://github.com/LeonTOfficial/BatteryPanic</link>
-            <sparkle:version>9</sparkle:version>
-            <sparkle:shortVersionString>0.5.4</sparkle:shortVersionString>
-            <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
-            <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
-            <sparkle:releaseNotesLink>https://raw.githubusercontent.com/LeonTOfficial/BatteryPanic/main/Battery.Panic.0.5.4.md</sparkle:releaseNotesLink>
-            <enclosure url="https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.4/Battery.Panic.0.5.4.zip" length="1324243" type="application/octet-stream" sparkle:edSignature="ja2zsF8DCU6brhbpkgIinf5UjJkjJLlerhwfMRl86dxTst6Ruee06ozkHUwWlFZUHNc2VBMEBYFsI4dBfoqtDQ=="/>
         </item>
     </channel>
 </rss>

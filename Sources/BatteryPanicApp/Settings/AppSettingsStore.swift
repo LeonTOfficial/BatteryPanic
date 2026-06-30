@@ -49,6 +49,7 @@ final class AppSettingsStore {
         static let legacyIsPaused = "isPaused"
         static let pauseUntil = "pauseUntil"
         static let hasCompletedOnboarding = "hasCompletedOnboarding"
+        static let completedOnboardingVersion = "completedOnboardingVersion"
     }
 
     private let defaults: UserDefaults
@@ -82,7 +83,7 @@ final class AppSettingsStore {
             launchAtLoginEnabled: defaults.bool(forKey: Keys.launchAtLoginEnabled),
             isPaused: pauseUntil != nil,
             pauseUntil: pauseUntil,
-            hasCompletedOnboarding: defaults.bool(forKey: Keys.hasCompletedOnboarding)
+            hasCompletedOnboarding: hasCompletedOnboardingForCurrentVersion
         )
     }
 
@@ -112,6 +113,15 @@ final class AppSettingsStore {
         }
         defaults.removeObject(forKey: Keys.pauseUntil)
         return nil
+    }
+
+    private var currentAppVersion: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown"
+    }
+
+    private var hasCompletedOnboardingForCurrentVersion: Bool {
+        guard defaults.bool(forKey: Keys.hasCompletedOnboarding) else { return false }
+        return defaults.string(forKey: Keys.completedOnboardingVersion) == currentAppVersion
     }
 
     func setThresholdPercentage(_ value: Int) {
@@ -161,6 +171,11 @@ final class AppSettingsStore {
 
     func setHasCompletedOnboarding(_ completed: Bool) {
         defaults.set(completed, forKey: Keys.hasCompletedOnboarding)
+        if completed {
+            defaults.set(currentAppVersion, forKey: Keys.completedOnboardingVersion)
+        } else {
+            defaults.removeObject(forKey: Keys.completedOnboardingVersion)
+        }
         notify()
     }
 

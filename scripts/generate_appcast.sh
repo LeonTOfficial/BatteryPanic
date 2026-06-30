@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-VERSION="${VERSION:-0.5.6}"
+VERSION="${VERSION:-0.5.7}"
 SPARKLE_ACCOUNT="${SPARKLE_ACCOUNT:-BatteryPanic}"
 RELEASE_FILE="$ROOT_DIR/outputs/Battery.Panic.$VERSION.zip"
 APPCAST_WORK_DIR="$ROOT_DIR/work/sparkle-appcast"

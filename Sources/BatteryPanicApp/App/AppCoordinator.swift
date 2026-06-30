@@ -59,6 +59,7 @@ final class AppCoordinator {
     }
 
     func showSettingsForReopen() {
+        menuBarController.ensureStatusItemVisible()
         showSettings()
     }
 
@@ -167,10 +168,12 @@ final class AppCoordinator {
     }
 
     private func showSettings() {
+        menuBarController.ensureStatusItemVisible()
         settingsWindowController.show()
     }
 
     private func showWelcome() {
+        menuBarController.ensureStatusItemVisible()
         onboardingWindowController.show()
     }
 

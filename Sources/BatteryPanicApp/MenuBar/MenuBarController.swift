@@ -33,11 +33,34 @@ final class MenuBarController: NSObject {
     }
 
     func start() {
-        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-        configureMenu()
+        ensureStatusItemVisible()
+        updateSettings()
+    }
+
+    func ensureStatusItemVisible() {
+        if statusItem == nil {
+            statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+            configureMenu()
+        }
+        statusItem?.length = NSStatusItem.squareLength
+        statusItem?.isVisible = true
+        statusItem?.button?.isHidden = false
+        if let latestStatus {
+            updateButton(for: latestStatus)
+        } else if let button = statusItem?.button {
+            setStatusButton(
+                button,
+                title: BatteryFormatter.pendingMenuTitle,
+                accessibilityLabel: "Battery Panic, loading battery status"
+            )
+        }
+    }
+
+    private func configureMenu() {
+        menu.removeAllItems()
+        configureMenuItems()
         statusItem?.menu = menu
         statusItem?.isVisible = true
-        updateSettings()
     }
 
     func update(status: BatteryStatus) {
@@ -82,7 +105,7 @@ final class MenuBarController: NSObject {
         }
     }
 
-    private func configureMenu() {
+    private func configureMenuItems() {
         if let button = statusItem?.button {
             button.toolTip = "Battery Panic"
             setStatusButton(
@@ -140,7 +163,7 @@ final class MenuBarController: NSObject {
     ) {
         button.image = nil
         button.imagePosition = .noImage
-        button.title = title
+        button.title = "BP"
         button.font = NSFont.monospacedDigitSystemFont(ofSize: 12, weight: .semibold)
         button.contentTintColor = nil
         button.setAccessibilityLabel(accessibilityLabel)

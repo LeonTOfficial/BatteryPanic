@@ -3,6 +3,6 @@ import AppKit
 private let appDelegate = AppDelegate()
 
 let app = NSApplication.shared
-app.setActivationPolicy(.regular)
+app.setActivationPolicy(.accessory)
 app.delegate = appDelegate
 app.run()
