@@ -6,6 +6,11 @@ enum AlarmDisplayMode {
 }
 
 final class MenuBarController: NSObject {
+    private enum Layout {
+        static let minimumStatusItemLength: CGFloat = 58
+        static let statusItemPadding: CGFloat = 32
+    }
+
     private let settingsStore: AppSettingsStore
     private var statusItem: NSStatusItem?
     private let menu = NSMenu()
@@ -33,7 +38,7 @@ final class MenuBarController: NSObject {
     }
 
     func start() {
-        statusItem = NSStatusBar.system.statusItem(withLength: 72)
+        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         configureMenu()
         statusItem?.menu = menu
         statusItem?.isVisible = true
@@ -42,11 +47,11 @@ final class MenuBarController: NSObject {
 
     func ensureStatusItemVisible() {
         if statusItem == nil {
-            statusItem = NSStatusBar.system.statusItem(withLength: 72)
+            statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
             configureMenu()
             statusItem?.menu = menu
         }
-        statusItem?.length = 72
+        statusItem?.length = NSStatusItem.variableLength
         statusItem?.isVisible = true
         statusItem?.button?.isHidden = false
         if let latestStatus {
@@ -197,7 +202,13 @@ final class MenuBarController: NSObject {
         button.title = title
         button.font = NSFont.monospacedDigitSystemFont(ofSize: 12, weight: .semibold)
         button.contentTintColor = nil
+        statusItem?.length = preferredStatusItemLength(for: title, font: button.font ?? NSFont.systemFont(ofSize: 12))
         button.setAccessibilityLabel(accessibilityLabel)
+    }
+
+    private func preferredStatusItemLength(for title: String, font: NSFont) -> CGFloat {
+        let titleWidth = (title as NSString).size(withAttributes: [.font: font]).width
+        return max(Layout.minimumStatusItemLength, ceil(titleWidth + Layout.statusItemPadding))
     }
 
     private func updateDetails() {
