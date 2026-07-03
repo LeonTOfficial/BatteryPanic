@@ -6,6 +6,8 @@ final class SettingsWindowController: NSWindowController {
 
     private let thresholdSlider = NSSlider(value: 10, minValue: 1, maxValue: 50, target: nil, action: nil)
     private let thresholdValueLabel = NSTextField(labelWithString: "10%")
+    private let chargeReminderSlider = NSSlider(value: 80, minValue: 50, maxValue: 100, target: nil, action: nil)
+    private let chargeReminderValueLabel = NSTextField(labelWithString: "80%")
     private let pulseSpeedSlider = NSSlider(value: 1.0, minValue: 0.4, maxValue: 2.4, target: nil, action: nil)
     private let pulseSpeedValueLabel = NSTextField(labelWithString: "1.0x")
     private let pulseIntensitySlider = NSSlider(value: 1.0, minValue: 0.45, maxValue: 1.6, target: nil, action: nil)
@@ -13,6 +15,7 @@ final class SettingsWindowController: NSWindowController {
     private let overlayPreviewView = OverlayPreviewView(frame: NSRect(x: 0, y: 0, width: 498, height: 128))
     private let soundPopup = NSPopUpButton(frame: .zero, pullsDown: false)
     private let pulseCheckbox = NSButton(checkboxWithTitle: "Pulse red overlay", target: nil, action: nil)
+    private let chargeReminderCheckbox = NSButton(checkboxWithTitle: "Remind me while charging", target: nil, action: nil)
     private let soundCheckbox = NSButton(checkboxWithTitle: "Play warning sound", target: nil, action: nil)
     private let launchAtLoginCheckbox = NSButton(checkboxWithTitle: "Start at login", target: nil, action: nil)
     private let pauseButton = NSButton(title: "Pause Alarms for 30 Minutes", target: nil, action: nil)
@@ -29,7 +32,7 @@ final class SettingsWindowController: NSWindowController {
         self.loginItemService = loginItemService
 
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 720, height: 820),
+            contentRect: NSRect(x: 0, y: 0, width: 720, height: 860),
             styleMask: [.titled, .closable, .miniaturizable],
             backing: .buffered,
             defer: false
@@ -81,6 +84,7 @@ final class SettingsWindowController: NSWindowController {
 
         stack.addArrangedSubview(makeHeader())
         stack.addArrangedSubview(makeThresholdSection())
+        stack.addArrangedSubview(makeChargingReminderSection())
         stack.addArrangedSubview(makeOverlaySection())
         stack.addArrangedSubview(makeSoundSection())
         stack.addArrangedSubview(makeBehaviorSection())
@@ -175,6 +179,39 @@ final class SettingsWindowController: NSWindowController {
             title: "Battery threshold",
             subtitle: "Default is 10%. The alarm appears only while the Mac is unplugged.",
             content: row
+        )
+    }
+
+    private func makeChargingReminderSection() -> NSView {
+        chargeReminderSlider.target = self
+        chargeReminderSlider.action = #selector(chargeReminderThresholdChanged)
+        chargeReminderSlider.numberOfTickMarks = 6
+        chargeReminderSlider.allowsTickMarkValuesOnly = false
+
+        chargeReminderValueLabel.font = NSFont.monospacedDigitSystemFont(ofSize: 18, weight: .semibold)
+        chargeReminderValueLabel.alignment = .right
+        chargeReminderValueLabel.widthAnchor.constraint(equalToConstant: 54).isActive = true
+
+        let row = NSStackView()
+        row.orientation = .horizontal
+        row.alignment = .centerY
+        row.spacing = 12
+        row.addArrangedSubview(NSTextField(labelWithString: "Remind at"))
+        row.addArrangedSubview(chargeReminderSlider)
+        row.addArrangedSubview(chargeReminderValueLabel)
+        chargeReminderSlider.widthAnchor.constraint(equalToConstant: 404).isActive = true
+
+        let stack = NSStackView()
+        stack.orientation = .vertical
+        stack.alignment = .leading
+        stack.spacing = 10
+        stack.addArrangedSubview(chargeReminderCheckbox)
+        stack.addArrangedSubview(row)
+
+        return makeSection(
+            title: "Charging reminder",
+            subtitle: "Get a short, friendly reminder while charging. Default is 80%; it is a helpful hint, not a battery-health guarantee.",
+            content: stack
         )
     }
 
@@ -463,6 +500,8 @@ final class SettingsWindowController: NSWindowController {
     private func configureCheckboxes() {
         pulseCheckbox.target = self
         pulseCheckbox.action = #selector(pulseChanged)
+        chargeReminderCheckbox.target = self
+        chargeReminderCheckbox.action = #selector(chargeReminderChanged)
         soundCheckbox.target = self
         soundCheckbox.action = #selector(soundChanged)
         launchAtLoginCheckbox.target = self
@@ -473,6 +512,10 @@ final class SettingsWindowController: NSWindowController {
         let settings = settingsStore.snapshot()
         thresholdSlider.integerValue = settings.thresholdPercentage
         thresholdValueLabel.stringValue = "\(settings.thresholdPercentage)%"
+        chargeReminderCheckbox.state = settings.chargeReminderEnabled ? .on : .off
+        chargeReminderSlider.integerValue = settings.chargeReminderThresholdPercentage
+        chargeReminderValueLabel.stringValue = "\(settings.chargeReminderThresholdPercentage)%"
+        chargeReminderSlider.isEnabled = settings.chargeReminderEnabled
         pulseSpeedSlider.doubleValue = settings.pulseSpeed
         pulseSpeedValueLabel.stringValue = String(format: "%.1fx", settings.pulseSpeed)
         pulseIntensitySlider.doubleValue = settings.pulseIntensity
@@ -491,6 +534,20 @@ final class SettingsWindowController: NSWindowController {
         thresholdValueLabel.stringValue = "\(value)%"
         settingsStore.setThresholdPercentage(value)
         statusLabel.stringValue = "Threshold set to \(value)%"
+    }
+
+    @objc private func chargeReminderChanged() {
+        let enabled = chargeReminderCheckbox.state == .on
+        settingsStore.setChargeReminderEnabled(enabled)
+        chargeReminderSlider.isEnabled = enabled
+        statusLabel.stringValue = enabled ? "Charging reminder enabled" : "Charging reminder disabled"
+    }
+
+    @objc private func chargeReminderThresholdChanged() {
+        let value = chargeReminderSlider.integerValue.clamped(to: 50...100)
+        chargeReminderValueLabel.stringValue = "\(value)%"
+        settingsStore.setChargeReminderThresholdPercentage(value)
+        statusLabel.stringValue = "Charging reminder set to \(value)%"
     }
 
     @objc private func pulseChanged() {

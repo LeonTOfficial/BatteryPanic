@@ -10,6 +10,7 @@ final class OverlayManager: NSObject {
     private var currentPulseSpeed = 1.0
     private var currentPulseIntensity = 1.0
     private var currentIsTest = false
+    private var currentDisplayMode = OverlayDisplayMode.lowBattery
 
     override init() {
         super.init()
@@ -30,12 +31,14 @@ final class OverlayManager: NSObject {
         pulseEnabled: Bool,
         pulseSpeed: Double,
         pulseIntensity: Double,
+        displayMode: OverlayDisplayMode = .lowBattery,
         isTest: Bool
     ) {
         currentStatus = status
         currentPulseEnabled = pulseEnabled
         currentPulseSpeed = pulseSpeed.clamped(to: 0.4...2.4)
         currentPulseIntensity = pulseIntensity.clamped(to: 0.45...1.6)
+        currentDisplayMode = displayMode
         currentIsTest = isTest
 
         if windows.count != NSScreen.screens.count {
@@ -78,6 +81,7 @@ final class OverlayManager: NSObject {
             window.overlayView.timeRemainingText = BatteryFormatter.timeRemainingText(for: currentStatus)
             window.overlayView.pulseEnabled = currentPulseEnabled
             window.overlayView.pulseIntensity = CGFloat(currentPulseIntensity)
+            window.overlayView.displayMode = currentDisplayMode
             window.overlayView.isTest = currentIsTest
             window.overlayView.needsDisplay = true
         }
@@ -116,6 +120,7 @@ final class OverlayManager: NSObject {
                 pulseEnabled: currentPulseEnabled,
                 pulseSpeed: currentPulseSpeed,
                 pulseIntensity: currentPulseIntensity,
+                displayMode: currentDisplayMode,
                 isTest: currentIsTest
             )
         }

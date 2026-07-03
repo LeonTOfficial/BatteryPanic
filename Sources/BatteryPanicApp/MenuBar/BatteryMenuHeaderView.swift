@@ -23,7 +23,10 @@ final class BatteryMenuHeaderView: NSView {
         )
         iconView.image = MenuBarIconFactory.image(appearance: appearance, percentage: status.percentage)
         titleLabel.stringValue = appearance.title
-        subtitleLabel.stringValue = "\(appearance.subtitle) Threshold: \(settings.thresholdPercentage)%"
+        let chargeText = settings.chargeReminderEnabled
+            ? "Charge: \(settings.chargeReminderThresholdPercentage)%"
+            : "Charge: off"
+        subtitleLabel.stringValue = "\(appearance.subtitle) Low: \(settings.thresholdPercentage)% - \(chargeText)"
     }
 
     private func setup() {

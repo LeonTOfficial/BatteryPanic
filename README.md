@@ -2,7 +2,7 @@
 
 ![Battery Panic redoverlay preview](docs/screenshots/overlay-preview.png)
 
-Battery Panic is a native macOS menu bar app that makes low battery warnings impossible to miss. When your MacBook drops below your chosen battery threshold, Battery Panic shows a red pulsing screen overlay, plays an optional warning sound, and keeps the status visible in the menu bar.
+Battery Panic is a native macOS menu bar app that makes low battery warnings impossible to miss. When your MacBook drops below your chosen battery threshold, Battery Panic shows a red pulsing screen overlay, plays an optional warning sound, and keeps the status visible in the menu bar. It can also show a short reminder when your Mac reaches a chosen percentage while charging.
 
 The app is built with Swift and AppKit, stays local to your Mac, and is designed as a clean open-source project rather than a one-file demo.
 
@@ -13,8 +13,8 @@ For normal users, use the direct app download below. Do **not** use GitHub's **C
 
 **Latest app download:**
 
-- [Download Battery Panic 0.5.10 DMG](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.10/Battery.Panic.0.5.10.dmg) - recommended macOS drag-and-drop installer
-- [Download Battery Panic 0.5.10 ZIP](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.10/Battery.Panic.0.5.10.zip) - fallback if the DMG does not work
+- [Download Battery Panic 0.5.11 DMG](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.11/Battery.Panic.0.5.11.dmg) - recommended macOS drag-and-drop installer
+- [Download Battery Panic 0.5.11 ZIP](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.11/Battery.Panic.0.5.11.zip) - fallback if the DMG does not work
 
 DMG install:
 
@@ -64,6 +64,8 @@ See the full install guide: [`docs/INSTALL.md`](docs/INSTALL.md).
 - Red pulsing full-screen overlay across connected displays.
 - Estimated battery time in the red warning overlay when macOS provides it.
 - Adjustable low-battery threshold.
+- Charging reminder while plugged in, enabled by default at 80%.
+- Automatic critical mode at 2% or below with stronger warning text and glow.
 - Adjustable overlay pulse speed and pulse intensity.
 - Built-in continuous Battery Panic siren plus selectable macOS system warning sounds.
 - Test buttons for both the red overlay and the selected sound.
@@ -88,11 +90,14 @@ See the full install guide: [`docs/INSTALL.md`](docs/INSTALL.md).
 4. Click **Preview 4s Alarm** to test the visual warning.
 5. Open **Settings** from the menu bar item to adjust threshold, overlay, and sound behavior.
 
-Battery Panic only shows the real warning when the Mac has a battery, is unplugged, and the current percentage is at or below your configured threshold.
+Battery Panic shows the red warning when the Mac has a battery, is unplugged, and the current percentage is at or below your configured threshold. At 2% or below, the app automatically switches to a stronger critical warning.
+
+The charging reminder is separate: when enabled, it shows one short green/blue reminder while the Mac is plugged in and reaches your chosen charging percentage. It resets after unplugging or after the battery drops clearly below that level again.
 
 ## Settings
 
 - **Battery threshold:** default is 10%, adjustable from 1% to 50%.
+- **Charging reminder:** default is enabled at 80%, adjustable from 50% to 100%. It is a helpful reminder for battery-care habits, not a battery-health guarantee.
 - **Pulse red overlay:** enables or disables the animated overlay pulse.
 - **Pulse speed:** controls how fast the warning breathes.
 - **Pulse intensity:** controls how strong the red wash and glow are.

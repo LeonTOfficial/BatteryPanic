@@ -4,6 +4,7 @@ final class BatteryMenuDetailsView: NSView {
     private let batteryValue = NSTextField(labelWithString: "--")
     private let powerValue = NSTextField(labelWithString: "--")
     private let thresholdValue = NSTextField(labelWithString: "--")
+    private let chargeReminderValue = NSTextField(labelWithString: "--")
     private let alarmValue = NSTextField(labelWithString: "Idle")
     private let overlayValue = NSTextField(labelWithString: "--")
     private let soundValue = NSTextField(labelWithString: "--")
@@ -28,6 +29,9 @@ final class BatteryMenuDetailsView: NSView {
         }
 
         thresholdValue.stringValue = "\(settings.thresholdPercentage)%"
+        chargeReminderValue.stringValue = settings.chargeReminderEnabled
+            ? "\(settings.chargeReminderThresholdPercentage)%"
+            : "Off"
         alarmValue.stringValue = pausedDescription(for: settings) ?? alarmSummary
         overlayValue.stringValue = String(
             format: "%.1fx pulse · %d%% intensity",
@@ -40,7 +44,7 @@ final class BatteryMenuDetailsView: NSView {
     }
 
     private func setup() {
-        frame = NSRect(x: 0, y: 0, width: 318, height: 154)
+        frame = NSRect(x: 0, y: 0, width: 318, height: 176)
 
         let root = NSStackView()
         root.orientation = .vertical
@@ -51,7 +55,8 @@ final class BatteryMenuDetailsView: NSView {
 
         root.addArrangedSubview(makeRow(label: "Battery", value: batteryValue))
         root.addArrangedSubview(makeRow(label: "Power", value: powerValue))
-        root.addArrangedSubview(makeRow(label: "Threshold", value: thresholdValue))
+        root.addArrangedSubview(makeRow(label: "Low alarm", value: thresholdValue))
+        root.addArrangedSubview(makeRow(label: "Charge at", value: chargeReminderValue))
         root.addArrangedSubview(makeRow(label: "Alarm", value: alarmValue))
         root.addArrangedSubview(makeRow(label: "Overlay", value: overlayValue))
         root.addArrangedSubview(makeRow(label: "Sound", value: soundValue))

@@ -14,6 +14,9 @@ final class AppCoordinator {
 
     private var latestStatus: BatteryStatus?
     private var alarmVisible = false
+    private var chargeReminderVisible = false
+    private var chargeReminderShownThisSession = false
+    private var chargeReminderToken = UUID()
     private var testAlarmVisible = false
     private var testAlarmToken = UUID()
 
@@ -132,38 +135,86 @@ final class AppCoordinator {
         guard !testAlarmVisible else { return }
 
         let settings = settingsStore.snapshot()
-        let shouldShow = AlarmPolicy.shouldShowAlarm(status: status, settings: settings)
+        if AlarmPolicy.shouldResetChargeReminder(status: status, settings: settings) {
+            chargeReminderShownThisSession = false
+            hideChargeReminder()
+        }
 
         if settings.isPaused {
             hideActiveAlarm()
+            hideChargeReminder()
             return
         }
 
-        if !shouldShow {
-            hideActiveAlarm()
-            return
-        }
-
-        if shouldShow {
+        if AlarmPolicy.shouldShowAlarm(status: status, settings: settings) {
+            hideChargeReminder()
+            let isCritical = AlarmPolicy.isCriticalLowBattery(status: status)
             overlayManager.show(
                 status: status,
                 pulseEnabled: settings.pulseEnabled,
                 pulseSpeed: settings.pulseSpeed,
-                pulseIntensity: settings.pulseIntensity,
+                pulseIntensity: isCritical ? max(settings.pulseIntensity, 1.35) : settings.pulseIntensity,
+                displayMode: isCritical ? .criticalBattery : .lowBattery,
                 isTest: false
             )
             if !alarmVisible {
                 playWarningSound(using: settings, looping: true)
             }
             alarmVisible = true
-            menuBarController.setAlarmVisible(true)
+            menuBarController.setAlarmVisible(true, mode: isCritical ? .critical : .active)
+            return
+        }
+
+        if alarmVisible {
+            hideActiveAlarm()
+        }
+
+        if AlarmPolicy.shouldShowChargeReminder(
+            status: status,
+            settings: settings,
+            alreadyShownThisSession: chargeReminderShownThisSession
+        ) {
+            showChargeReminder(status: status, settings: settings)
         }
     }
 
     private func hideActiveAlarm() {
-        overlayManager.hide()
+        if alarmVisible {
+            overlayManager.hide()
+        }
         soundPlayer.stop()
         alarmVisible = false
+        menuBarController.setAlarmVisible(false)
+    }
+
+    private func showChargeReminder(status: BatteryStatus, settings: AlarmSettingsSnapshot) {
+        let token = UUID()
+        chargeReminderToken = token
+        chargeReminderVisible = true
+        chargeReminderShownThisSession = true
+
+        overlayManager.show(
+            status: status,
+            pulseEnabled: true,
+            pulseSpeed: 0.85,
+            pulseIntensity: 0.95,
+            displayMode: .chargeReminder,
+            isTest: false
+        )
+        menuBarController.setAlarmVisible(true, mode: .chargeReminder)
+        playWarningSound(using: settings, looping: false)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + AppConstants.previewAlarmDuration) { [weak self] in
+            guard let self, self.chargeReminderVisible, self.chargeReminderToken == token else { return }
+            self.hideChargeReminder()
+        }
+    }
+
+    private func hideChargeReminder() {
+        guard chargeReminderVisible else { return }
+        chargeReminderVisible = false
+        overlayManager.hide()
+        soundPlayer.stop()
         menuBarController.setAlarmVisible(false)
     }
 
@@ -206,6 +257,7 @@ final class AppCoordinator {
 
         settingsStore.snoozeAlarm()
         hideActiveAlarm()
+        hideChargeReminder()
     }
 
     private func showTestAlarm() {
@@ -222,6 +274,7 @@ final class AppCoordinator {
             pulseEnabled: settings.pulseEnabled,
             pulseSpeed: settings.pulseSpeed,
             pulseIntensity: settings.pulseIntensity,
+            displayMode: .lowBattery,
             isTest: true
         )
         if settings.soundEnabled {

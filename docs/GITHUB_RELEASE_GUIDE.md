@@ -53,41 +53,41 @@ Before creating a GitHub Release:
 
 ```text
 Battery Panic.app
-Battery.Panic.0.5.10.zip
-Battery.Panic.0.5.10.dmg
+Battery.Panic.0.5.11.zip
+Battery.Panic.0.5.11.dmg
 ```
 
 4. Confirm the ZIP contains the finished `.app`, not source code.
 5. Confirm the DMG opens and supports the normal drag-and-drop install flow: `Battery Panic.app` -> `Applications`.
 6. Upload both files to the GitHub Release before relying on the direct README links.
 7. After uploading, the README links should resolve:
-   - `https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.10/Battery.Panic.0.5.10.dmg`
-   - `https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.10/Battery.Panic.0.5.10.zip`
+   - `https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.11/Battery.Panic.0.5.11.dmg`
+   - `https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.11/Battery.Panic.0.5.11.zip`
 
 ## Release Fields
 
 Create a new release with these values:
 
-- Tag: `v0.5.10`
-- Release title: `Battery Panic 0.5.10`
+- Tag: `v0.5.11`
+- Release title: `Battery Panic 0.5.11`
 - Release label: leave as `None` for a normal release. Use `Pre-release` only if you want to clearly mark it as a test build.
 - Attached binaries:
-  - `outputs/Battery.Panic.0.5.10.dmg`
-  - `outputs/Battery.Panic.0.5.10.zip`
+  - `outputs/Battery.Panic.0.5.11.dmg`
+  - `outputs/Battery.Panic.0.5.11.zip`
 
 Do not upload only GitHub's automatically generated source code archives as the main user download. Those are useful for developers, but normal users need the `.dmg` or `.zip` app package.
 
 Suggested release description:
 
 ```markdown
-Battery Panic 0.5.10 focuses on polish, stability, and a smoother first-run experience.
+Battery Panic 0.5.11 adds a helpful charging reminder and a stronger automatic critical mode for the last 2% of battery.
 
 Download:
-- Recommended: `Battery.Panic.0.5.10.dmg`
-- Fallback: `Battery.Panic.0.5.10.zip`
+- Recommended: `Battery.Panic.0.5.11.dmg`
+- Fallback: `Battery.Panic.0.5.11.zip`
 
 Install with DMG:
-1. Download `Battery.Panic.0.5.10.dmg`.
+1. Download `Battery.Panic.0.5.11.dmg`.
 2. Open it.
 3. Drag `Battery Panic.app` into Applications.
 4. Open Battery Panic from Applications.
@@ -95,17 +95,14 @@ Install with DMG:
 If macOS warns that the developer cannot be verified, open [Privacy & Security settings](x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension), scroll to the bottom, and click Open Anyway / Dennoch öffnen.
 
 What's new:
-- Cleaner Battery Panic icon with more breathing room.
-- Fixed Battery Panic Siren playback.
-- Continuous audio warnings while a real low-battery alarm is active.
-- One-time alarm pause from the menu bar during an active alarm.
-- Sparkle updater with Check for Updates support.
-- Widget runtime paused in the main app path so the menu bar app stays reliable.
-- Short 4-second preview from Welcome, Settings, and the menu bar.
-- Smoother pulsing overlay with less redraw work.
-- Improved welcome screen with a personal note from Leon.
-- Modern green, orange, red, and charging-aware menu bar states.
-- Privacy-friendly model and security check documentation.
+- New charging reminder while plugged in, enabled by default at 80%.
+- Charging reminder threshold can be adjusted from 50% to 100%.
+- Short green/blue overlay when the charging reminder appears.
+- Charging reminder appears once per charging session and resets after unplugging or dropping clearly below the threshold again.
+- Automatic critical battery mode at 2% or below.
+- Critical mode uses stronger red wording, pulse, and glow.
+- Menu details now show both the low-battery alarm threshold and charging reminder threshold.
+- README, release notes, appcast, and release package version updated to 0.5.11.
 
 Privacy:
 - No analytics.
@@ -122,8 +119,8 @@ After uploading the ZIP, regenerate and commit the Sparkle appcast if needed:
 
 ```bash
 ./scripts/generate_appcast.sh
-git add appcast.xml Battery.Panic.0.5.10.md
-git commit -m "Update Sparkle appcast for 0.5.10"
+git add appcast.xml Battery.Panic.0.5.11.md
+git commit -m "Update Sparkle appcast for 0.5.11"
 git push origin main
 ```
 

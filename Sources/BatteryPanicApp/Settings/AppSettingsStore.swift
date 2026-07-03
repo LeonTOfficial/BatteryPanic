@@ -2,6 +2,8 @@ import Foundation
 
 struct AlarmSettingsSnapshot: Equatable {
     let thresholdPercentage: Int
+    let chargeReminderEnabled: Bool
+    let chargeReminderThresholdPercentage: Int
     let pulseEnabled: Bool
     let pulseSpeed: Double
     let pulseIntensity: Double
@@ -14,6 +16,8 @@ struct AlarmSettingsSnapshot: Equatable {
 
     init(
         thresholdPercentage: Int,
+        chargeReminderEnabled: Bool,
+        chargeReminderThresholdPercentage: Int,
         pulseEnabled: Bool,
         pulseSpeed: Double,
         pulseIntensity: Double,
@@ -25,6 +29,8 @@ struct AlarmSettingsSnapshot: Equatable {
         hasCompletedOnboarding: Bool
     ) {
         self.thresholdPercentage = thresholdPercentage
+        self.chargeReminderEnabled = chargeReminderEnabled
+        self.chargeReminderThresholdPercentage = chargeReminderThresholdPercentage
         self.pulseEnabled = pulseEnabled
         self.pulseSpeed = pulseSpeed
         self.pulseIntensity = pulseIntensity
@@ -40,6 +46,8 @@ struct AlarmSettingsSnapshot: Equatable {
 final class AppSettingsStore {
     private enum Keys {
         static let thresholdPercentage = "thresholdPercentage"
+        static let chargeReminderEnabled = "chargeReminderEnabled"
+        static let chargeReminderThresholdPercentage = "chargeReminderThresholdPercentage"
         static let pulseEnabled = "pulseEnabled"
         static let pulseSpeed = "pulseSpeed"
         static let pulseIntensity = "pulseIntensity"
@@ -63,6 +71,8 @@ final class AppSettingsStore {
         self.defaults = defaults
         defaults.register(defaults: [
             Keys.thresholdPercentage: AppConstants.defaultThreshold,
+            Keys.chargeReminderEnabled: true,
+            Keys.chargeReminderThresholdPercentage: AppConstants.defaultChargeReminderThreshold,
             Keys.pulseEnabled: true,
             Keys.pulseSpeed: 1.0,
             Keys.pulseIntensity: 1.0,
@@ -79,6 +89,8 @@ final class AppSettingsStore {
         let pauseUntil = activePauseUntil
         return AlarmSettingsSnapshot(
             thresholdPercentage: thresholdPercentage,
+            chargeReminderEnabled: defaults.bool(forKey: Keys.chargeReminderEnabled),
+            chargeReminderThresholdPercentage: chargeReminderThresholdPercentage,
             pulseEnabled: defaults.bool(forKey: Keys.pulseEnabled),
             pulseSpeed: pulseSpeed,
             pulseIntensity: pulseIntensity,
@@ -93,6 +105,11 @@ final class AppSettingsStore {
 
     var thresholdPercentage: Int {
         defaults.integer(forKey: Keys.thresholdPercentage).clamped(to: 1...50)
+    }
+
+    var chargeReminderThresholdPercentage: Int {
+        let value = defaults.integer(forKey: Keys.chargeReminderThresholdPercentage)
+        return (value == 0 ? AppConstants.defaultChargeReminderThreshold : value).clamped(to: 50...100)
     }
 
     var pulseSpeed: Double {
@@ -132,6 +149,8 @@ final class AppSettingsStore {
 
         let keysToMigrate = [
             Keys.thresholdPercentage,
+            Keys.chargeReminderEnabled,
+            Keys.chargeReminderThresholdPercentage,
             Keys.pulseEnabled,
             Keys.pulseSpeed,
             Keys.pulseIntensity,
@@ -162,6 +181,16 @@ final class AppSettingsStore {
 
     func setThresholdPercentage(_ value: Int) {
         defaults.set(value.clamped(to: 1...50), forKey: Keys.thresholdPercentage)
+        notify()
+    }
+
+    func setChargeReminderEnabled(_ enabled: Bool) {
+        defaults.set(enabled, forKey: Keys.chargeReminderEnabled)
+        notify()
+    }
+
+    func setChargeReminderThresholdPercentage(_ value: Int) {
+        defaults.set(value.clamped(to: 50...100), forKey: Keys.chargeReminderThresholdPercentage)
         notify()
     }
 

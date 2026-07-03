@@ -76,6 +76,124 @@ struct AlarmPolicyTestRunner {
         )
 
         do {
+            let status = BatteryStatus(
+                percentage: 80,
+                powerSource: .acPower,
+                isCharging: true,
+                hasBattery: true
+            )
+            suite.expect(
+                "shows charging reminder at exact threshold while plugged in",
+                AlarmPolicy.shouldShowChargeReminder(
+                    status: status,
+                    settings: settings(threshold: 10, chargeThreshold: 80),
+                    alreadyShownThisSession: false
+                )
+            )
+        }
+
+        do {
+            let status = BatteryStatus(
+                percentage: 79,
+                powerSource: .acPower,
+                isCharging: true,
+                hasBattery: true
+            )
+            suite.expect(
+                "does not show charging reminder below threshold",
+                !AlarmPolicy.shouldShowChargeReminder(
+                    status: status,
+                    settings: settings(threshold: 10, chargeThreshold: 80),
+                    alreadyShownThisSession: false
+                )
+            )
+        }
+
+        do {
+            let status = BatteryStatus(
+                percentage: 85,
+                powerSource: .batteryPower,
+                isCharging: false,
+                hasBattery: true
+            )
+            suite.expect(
+                "does not show charging reminder while unplugged",
+                !AlarmPolicy.shouldShowChargeReminder(
+                    status: status,
+                    settings: settings(threshold: 10, chargeThreshold: 80),
+                    alreadyShownThisSession: false
+                )
+            )
+        }
+
+        do {
+            let status = BatteryStatus(
+                percentage: 86,
+                powerSource: .acPower,
+                isCharging: true,
+                hasBattery: true
+            )
+            suite.expect(
+                "does not repeat charging reminder in the same charging session",
+                !AlarmPolicy.shouldShowChargeReminder(
+                    status: status,
+                    settings: settings(threshold: 10, chargeThreshold: 80),
+                    alreadyShownThisSession: true
+                )
+            )
+        }
+
+        do {
+            let status = BatteryStatus(
+                percentage: 85,
+                powerSource: .batteryPower,
+                isCharging: false,
+                hasBattery: true
+            )
+            suite.expect(
+                "resets charging reminder after unplugging",
+                AlarmPolicy.shouldResetChargeReminder(status: status, settings: settings(threshold: 10, chargeThreshold: 80))
+            )
+        }
+
+        do {
+            let status = BatteryStatus(
+                percentage: 75,
+                powerSource: .acPower,
+                isCharging: true,
+                hasBattery: true
+            )
+            suite.expect(
+                "resets charging reminder after dropping clearly below threshold",
+                AlarmPolicy.shouldResetChargeReminder(status: status, settings: settings(threshold: 10, chargeThreshold: 80))
+            )
+        }
+
+        do {
+            let status = BatteryStatus(
+                percentage: 2,
+                powerSource: .batteryPower,
+                isCharging: false,
+                hasBattery: true
+            )
+            suite.expect("critical mode activates at 2%", AlarmPolicy.isCriticalLowBattery(status: status))
+        }
+
+        do {
+            let status = BatteryStatus(
+                percentage: 3,
+                powerSource: .batteryPower,
+                isCharging: false,
+                hasBattery: true
+            )
+            suite.expect(
+                "normal low-battery mode still works above critical threshold",
+                AlarmPolicy.shouldShowAlarm(status: status, settings: settings(threshold: 10))
+                    && !AlarmPolicy.isCriticalLowBattery(status: status)
+            )
+        }
+
+        do {
             let status = BatteryStatus.lowBatteryPreview(threshold: 10)
             suite.expect("preview uses a low unplugged battery", status.percentage == 9 && !status.isPluggedIn)
         }
@@ -83,9 +201,16 @@ struct AlarmPolicyTestRunner {
         suite.finish()
     }
 
-    private static func settings(threshold: Int, isPaused: Bool = false) -> AlarmSettingsSnapshot {
+    private static func settings(
+        threshold: Int,
+        chargeReminderEnabled: Bool = true,
+        chargeThreshold: Int = 80,
+        isPaused: Bool = false
+    ) -> AlarmSettingsSnapshot {
         AlarmSettingsSnapshot(
             thresholdPercentage: threshold,
+            chargeReminderEnabled: chargeReminderEnabled,
+            chargeReminderThresholdPercentage: chargeThreshold,
             pulseEnabled: true,
             pulseSpeed: 1.0,
             pulseIntensity: 1.0,

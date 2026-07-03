@@ -1,5 +1,11 @@
 import AppKit
 
+enum OverlayDisplayMode {
+    case lowBattery
+    case criticalBattery
+    case chargeReminder
+}
+
 final class OverlayView: NSView {
     var percentage: Int = 10 {
         didSet { needsDisplay = true }
@@ -25,6 +31,10 @@ final class OverlayView: NSView {
         didSet { needsDisplay = true }
     }
 
+    var displayMode: OverlayDisplayMode = .lowBattery {
+        didSet { needsDisplay = true }
+    }
+
     override var isFlipped: Bool {
         true
     }
@@ -38,29 +48,43 @@ final class OverlayView: NSView {
 
     private func drawRedWash(in rect: NSRect) {
         let pulse = pulseEnabled ? pulseValue : 1
-        let baseAlpha: CGFloat = isTest ? 0.12 : 0.085
-        NSColor.systemRed.withAlphaComponent((baseAlpha + (0.11 * pulse)) * pulseIntensity).setFill()
+        let baseAlpha: CGFloat
+        let pulseAlpha: CGFloat
+
+        switch displayMode {
+        case .criticalBattery:
+            baseAlpha = isTest ? 0.14 : 0.12
+            pulseAlpha = 0.16
+        case .chargeReminder:
+            baseAlpha = 0.07
+            pulseAlpha = 0.07
+        case .lowBattery:
+            baseAlpha = isTest ? 0.12 : 0.085
+            pulseAlpha = 0.11
+        }
+
+        accentColor.withAlphaComponent((baseAlpha + (pulseAlpha * pulse)) * effectivePulseIntensity).setFill()
         rect.fill()
     }
 
     private func drawRedVignette(in rect: NSRect) {
         let pulse = pulseEnabled ? pulseValue : 1
-        let maxSteps = 34
+        let maxSteps = displayMode == .chargeReminder ? 24 : 34
 
         for step in 0..<maxSteps {
             let progress = CGFloat(step) / CGFloat(maxSteps)
-            let alpha = (0.55 + (0.22 * pulse)) * pow(1 - progress, 2.0) * pulseIntensity
+            let alpha = (0.50 + (0.22 * pulse)) * pow(1 - progress, 2.0) * effectivePulseIntensity
             let inset = progress * min(rect.width, rect.height) * 0.14
             let strokeRect = rect.insetBy(dx: inset, dy: inset)
             let path = NSBezierPath(roundedRect: strokeRect, xRadius: 26, yRadius: 26)
             path.lineWidth = 2.1
-            NSColor.systemRed.withAlphaComponent(alpha * 0.13).setStroke()
+            accentColor.withAlphaComponent(alpha * 0.13).setStroke()
             path.stroke()
         }
 
         let edgePath = NSBezierPath(roundedRect: rect.insetBy(dx: 8, dy: 8), xRadius: 24, yRadius: 24)
-        edgePath.lineWidth = 4
-        NSColor.systemRed.withAlphaComponent((0.20 + (0.14 * pulse)) * pulseIntensity).setStroke()
+        edgePath.lineWidth = displayMode == .criticalBattery ? 5 : 4
+        accentColor.withAlphaComponent((0.18 + (0.14 * pulse)) * effectivePulseIntensity).setStroke()
         edgePath.stroke()
     }
 
@@ -76,20 +100,20 @@ final class OverlayView: NSView {
         )
 
         let shadow = NSShadow()
-        shadow.shadowBlurRadius = 26 + ((pulse * 18) * pulseIntensity)
+        shadow.shadowBlurRadius = 24 + ((pulse * 20) * effectivePulseIntensity)
         shadow.shadowOffset = .zero
-        shadow.shadowColor = NSColor.systemRed.withAlphaComponent((0.30 + (pulse * 0.18)) * pulseIntensity)
+        shadow.shadowColor = accentColor.withAlphaComponent((0.28 + (pulse * 0.20)) * effectivePulseIntensity)
 
         NSGraphicsContext.saveGraphicsState()
         shadow.set()
         let cardPath = NSBezierPath(roundedRect: cardRect, xRadius: 32, yRadius: 32)
-        NSColor(calibratedWhite: 0.075, alpha: 0.95).setFill()
+        cardBackgroundColor.setFill()
         cardPath.fill()
         NSGraphicsContext.restoreGraphicsState()
 
         let outline = NSBezierPath(roundedRect: cardRect, xRadius: 32, yRadius: 32)
         outline.lineWidth = 1.8
-        NSColor.systemRed.withAlphaComponent(0.64 + (pulse * 0.24)).setStroke()
+        accentColor.withAlphaComponent(0.60 + (pulse * 0.26)).setStroke()
         outline.stroke()
 
         drawWarningIcon(in: cardRect, pulse: pulse)
@@ -99,18 +123,22 @@ final class OverlayView: NSView {
     private func drawWarningIcon(in cardRect: NSRect, pulse: CGFloat) {
         let badgeRect = NSRect(x: cardRect.minX + 28, y: cardRect.midY - 34, width: 76, height: 68)
         let badge = NSBezierPath(roundedRect: badgeRect, xRadius: 20, yRadius: 20)
-        NSColor.systemRed.withAlphaComponent(0.12 + (pulse * 0.04)).setFill()
+        accentColor.withAlphaComponent(0.12 + (pulse * 0.05)).setFill()
         badge.fill()
         badge.lineWidth = 1.5
-        NSColor.systemRed.withAlphaComponent(0.58).setStroke()
+        accentColor.withAlphaComponent(0.58).setStroke()
         badge.stroke()
 
         let innerGlow = NSBezierPath(roundedRect: badgeRect.insetBy(dx: 8, dy: 8), xRadius: 15, yRadius: 15)
         innerGlow.lineWidth = 1.2
-        NSColor.systemRed.withAlphaComponent(0.22).setStroke()
+        accentColor.withAlphaComponent(0.22).setStroke()
         innerGlow.stroke()
 
-        drawBatteryGlyph(in: NSRect(x: badgeRect.minX + 16, y: badgeRect.midY - 12, width: 42, height: 24), color: .systemRed, fillFraction: 0.24)
+        drawBatteryGlyph(
+            in: NSRect(x: badgeRect.minX + 16, y: badgeRect.midY - 12, width: 42, height: 24),
+            color: accentColor,
+            fillFraction: displayMode == .chargeReminder ? CGFloat(percentage) / 100.0 : 0.24
+        )
     }
 
     private func drawBatteryGlyph(in rect: NSRect, color: NSColor, fillFraction: CGFloat) {
@@ -131,25 +159,41 @@ final class OverlayView: NSView {
     }
 
     private func drawWarningText(in cardRect: NSRect) {
-        let eyebrow = isTest ? "PREVIEW MODE" : "LOW BATTERY WARNING"
-        let title = "\(percentage)% battery left"
-        let subtitle = isTest
-            ? "This preview stops automatically after a few seconds."
-            : (timeRemainingText ?? "Connect your charger to dismiss this alert.")
+        let eyebrow: String
+        let title: String
+        let subtitle: String
+
+        switch displayMode {
+        case .chargeReminder:
+            eyebrow = "CHARGING REMINDER"
+            title = "Battery reached \(percentage)%"
+            subtitle = "You can unplug now if you want to preserve battery health."
+        case .criticalBattery:
+            eyebrow = isTest ? "PREVIEW MODE" : "CRITICAL BATTERY"
+            title = "\(percentage)% battery left"
+            subtitle = timeRemainingText ?? "Plug in now. Your Mac may shut down soon."
+        case .lowBattery:
+            eyebrow = isTest ? "PREVIEW MODE" : "LOW BATTERY WARNING"
+            title = "\(percentage)% battery left"
+            subtitle = isTest
+                ? "This preview stops automatically after a few seconds."
+                : (timeRemainingText ?? "Connect your charger to dismiss this alert.")
+        }
+
         let textOriginX = cardRect.minX + 124
 
         drawText(
             eyebrow,
             at: NSPoint(x: textOriginX, y: cardRect.minY + 25),
             font: .systemFont(ofSize: 11, weight: .black),
-            color: NSColor.systemRed.withAlphaComponent(0.72),
+            color: accentColor.withAlphaComponent(0.78),
             kern: 1.0
         )
         drawText(
             title,
             at: NSPoint(x: textOriginX, y: cardRect.minY + 47),
             font: .systemFont(ofSize: 31, weight: .black),
-            color: .systemRed
+            color: accentColor
         )
         drawText(
             subtitle,
@@ -168,5 +212,34 @@ final class OverlayView: NSView {
                 .kern: kern
             ]
         ).draw(at: point)
+    }
+
+    private var accentColor: NSColor {
+        switch displayMode {
+        case .chargeReminder:
+            return .systemTeal
+        case .criticalBattery, .lowBattery:
+            return .systemRed
+        }
+    }
+
+    private var cardBackgroundColor: NSColor {
+        switch displayMode {
+        case .chargeReminder:
+            return NSColor(calibratedRed: 0.04, green: 0.12, blue: 0.12, alpha: 0.95)
+        case .criticalBattery, .lowBattery:
+            return NSColor(calibratedWhite: 0.075, alpha: 0.95)
+        }
+    }
+
+    private var effectivePulseIntensity: CGFloat {
+        switch displayMode {
+        case .criticalBattery:
+            return min(pulseIntensity * 1.25, 1.9)
+        case .chargeReminder:
+            return min(pulseIntensity * 0.72, 1.0)
+        case .lowBattery:
+            return pulseIntensity
+        }
     }
 }

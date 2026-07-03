@@ -40,11 +40,22 @@ struct BatteryStatusAppearance {
         }
 
         let warningThreshold = max(threshold + 8, min(35, threshold * 2))
-        if status.percentage <= threshold {
+        if status.percentage <= AppConstants.criticalBatteryThreshold {
             return BatteryStatusAppearance(
                 level: .critical,
                 color: .systemRed,
                 title: "\(status.percentage)% critical",
+                subtitle: "Plug in now. Your Mac may shut down soon.",
+                showsBolt: false,
+                showsCriticalDot: true
+            )
+        }
+
+        if status.percentage <= threshold {
+            return BatteryStatusAppearance(
+                level: .critical,
+                color: .systemRed,
+                title: "\(status.percentage)% low battery",
                 subtitle: "Plug in your charger to recover.",
                 showsBolt: false,
                 showsCriticalDot: true

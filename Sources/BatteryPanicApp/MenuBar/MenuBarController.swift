@@ -2,7 +2,9 @@ import AppKit
 
 enum AlarmDisplayMode {
     case active
+    case critical
     case preview
+    case chargeReminder
 }
 
 final class MenuBarController: NSObject {
@@ -92,7 +94,16 @@ final class MenuBarController: NSObject {
     func setAlarmVisible(_ visible: Bool, mode: AlarmDisplayMode = .active) {
         alarmVisible = visible
         if visible {
-            alarmSummary = mode == .preview ? "Preview running" : "Visible"
+            switch mode {
+            case .active:
+                alarmSummary = "Visible"
+            case .critical:
+                alarmSummary = "Critical"
+            case .preview:
+                alarmSummary = "Preview running"
+            case .chargeReminder:
+                alarmSummary = "Charge reminder"
+            }
         } else {
             alarmSummary = "Idle"
         }

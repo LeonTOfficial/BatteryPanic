@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.11
+
+- Added a charging reminder that appears once per charging session when the Mac reaches the configured charging percentage.
+- Added charging reminder settings with an enabled toggle and an adjustable 50% to 100% threshold, defaulting to 80%.
+- Added automatic critical battery mode at 2% or below with stronger red overlay wording and pulse intensity.
+- Added logic tests for charging reminders, session reset behavior, and critical low-battery mode.
+- Updated README, release notes, appcast, and release package versions.
+
 ## 0.4.0
 
 - Reworked the app and menu bar icon so the critical state is cleaner and no longer uses a squeezed exclamation mark.
