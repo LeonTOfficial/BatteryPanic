@@ -52,3 +52,7 @@ outputs/Battery.Panic.0.5.11.dmg
 ## Distribution Note
 
 The local build is ad-hoc signed. Upload the ZIP package for Sparkle/GitHub update testing and the DMG for normal drag-and-drop installation.
+
+## Special Thanks
+
+Thank you to Anni3 for early feedback and for suggesting a charging reminder when the Mac reaches a chosen percentage.

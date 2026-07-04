@@ -49,3 +49,6 @@ Battery Panic is open source and locally/ad-hoc signed. It is not Apple-notarize
 
 Discord:
 https://discord.gg/JPjrw3ft
+
+Special thanks:
+Thank you to Anni3 for early feedback and for suggesting a charging reminder when the Mac reaches a chosen percentage.

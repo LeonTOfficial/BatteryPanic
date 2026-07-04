@@ -70,19 +70,24 @@ jobs:
           set -euo pipefail
           test -f Battery.Panic.0.5.11.md
           test -f docs/index.html
+          test -f docs/download/index.html
           test -f docs/release-notes/0.5.11/index.html
           test -f docs/.nojekyll
           grep -q "Battery Panic 0.5.11 Release Notes" Battery.Panic.0.5.11.md
           grep -q "Battery Panic Siren keeps its original one-shot" Battery.Panic.0.5.11.md
+          grep -q "Thank you to Anni3" Battery.Panic.0.5.11.md
           grep -q "Battery.Panic.0.5.11.dmg" README.md
           grep -q "Battery.Panic.0.5.11.zip" README.md
           grep -q "Visible battery alerts for macOS" docs/index.html
           grep -q "Download Battery Panic" docs/index.html
+          grep -q "Install Battery Panic" docs/download/index.html
+          grep -q "Download Latest Release" docs/download/index.html
           grep -q "Developed by LeonTOfficial" docs/index.html
           grep -q "discord.gg/JPjrw3ft" docs/index.html
           grep -q "assets/battery-panic-icon.png" docs/index.html
           grep -q "Charging reminders and stronger critical alerts" docs/release-notes/0.5.11/index.html
           grep -q "Battery Panic Siren keeps its original one-shot" docs/release-notes/0.5.11/index.html
+          grep -q "Thank you to Anni3" docs/release-notes/0.5.11/index.html
           grep -q "discord.gg/JPjrw3ft" README.md
           test -f docs/RELEASE_0.5.11_TEXT.md
           test -f docs/assets/battery-panic-icon.png
