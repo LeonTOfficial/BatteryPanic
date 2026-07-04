@@ -210,7 +210,7 @@ final class SettingsWindowController: NSWindowController {
 
         return makeSection(
             title: "Charging reminder",
-            subtitle: "Get a short, friendly reminder while charging. Default is 80%; it is a helpful hint, not a battery-health guarantee.",
+            subtitle: "Get a short, friendly reminder while charging. Default is 80%, and you can adjust it anytime.",
             content: stack
         )
     }

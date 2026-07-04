@@ -152,7 +152,8 @@ final class OverlayView: NSView {
         color.setFill()
         nub.fill()
 
-        let fillWidth = max(bodyRect.width * 0.16, bodyRect.width * fillFraction)
+        let innerWidth = max(3, bodyRect.width - 10)
+        let fillWidth = min(innerWidth, max(innerWidth * 0.16, innerWidth * fillFraction))
         let fill = NSBezierPath(roundedRect: NSRect(x: bodyRect.minX + 5, y: bodyRect.minY + 5, width: fillWidth, height: max(3, bodyRect.height - 10)), xRadius: 3, yRadius: 3)
         color.withAlphaComponent(0.72).setFill()
         fill.fill()
@@ -167,7 +168,7 @@ final class OverlayView: NSView {
         case .chargeReminder:
             eyebrow = "CHARGING REMINDER"
             title = "Battery reached \(percentage)%"
-            subtitle = "You can unplug now if you want to preserve battery health."
+            subtitle = "You can unplug now, or keep charging if you need more power."
         case .criticalBattery:
             eyebrow = isTest ? "PREVIEW MODE" : "CRITICAL BATTERY"
             title = "\(percentage)% battery left"

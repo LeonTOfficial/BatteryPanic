@@ -97,7 +97,7 @@ The charging reminder is separate: when enabled, it shows one short green/blue r
 ## Settings
 
 - **Battery threshold:** default is 10%, adjustable from 1% to 50%.
-- **Charging reminder:** default is enabled at 80%, adjustable from 50% to 100%. It is a helpful reminder for battery-care habits, not a battery-health guarantee.
+- **Charging reminder:** default is enabled at 80%, adjustable from 50% to 100%.
 - **Pulse red overlay:** enables or disables the animated overlay pulse.
 - **Pulse speed:** controls how fast the warning breathes.
 - **Pulse intensity:** controls how strong the red wash and glow are.

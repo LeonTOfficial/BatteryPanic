@@ -80,7 +80,7 @@ Do not upload only GitHub's automatically generated source code archives as the 
 Suggested release description:
 
 ```markdown
-Battery Panic 0.5.11 adds a helpful charging reminder and a stronger automatic critical mode for the last 2% of battery.
+Battery Panic 0.5.11 adds a charging reminder, a stronger critical battery mode, and final polish fixes before the public release.
 
 Download:
 - Recommended: `Battery.Panic.0.5.11.dmg`
@@ -101,8 +101,11 @@ What's new:
 - Charging reminder appears once per charging session and resets after unplugging or dropping clearly below the threshold again.
 - Automatic critical battery mode at 2% or below.
 - Critical mode uses stronger red wording, pulse, and glow.
+- Apple system sounds such as Basso, Blow, Funk, and Ping now repeat reliably during looping alarms.
+- Preview Red Screen now always stops the overlay and sound after about four seconds.
+- Charging reminder battery icon alignment is cleaner at high percentages such as 100%.
+- Cleaner release notes for the updater What's New view.
 - Menu details now show both the low-battery alarm threshold and charging reminder threshold.
-- README, release notes, appcast, and release package version updated to 0.5.11.
 
 Privacy:
 - No analytics.

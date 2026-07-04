@@ -19,6 +19,7 @@ final class AppCoordinator {
     private var chargeReminderToken = UUID()
     private var testAlarmVisible = false
     private var testAlarmToken = UUID()
+    private var soundPreviewToken = UUID()
 
     init(
         settingsStore: AppSettingsStore = AppSettingsStore(),
@@ -93,7 +94,7 @@ final class AppCoordinator {
             self?.showTestAlarm()
         }
         settingsWindowController.onTestSound = { [weak self] soundName in
-            self?.soundPlayer.playWarning(named: soundName)
+            self?.previewWarningSound(named: soundName)
         }
         settingsWindowController.onOpenGitHub = { [weak self] in
             self?.openGitHub()
@@ -278,19 +279,29 @@ final class AppCoordinator {
             isTest: true
         )
         if settings.soundEnabled {
-            soundPlayer.playWarning(named: settings.selectedSoundName)
+            soundPlayer.playLoopingWarning(named: settings.selectedSoundName)
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + AppConstants.previewAlarmDuration) { [weak self] in
             guard let self, self.testAlarmVisible, self.testAlarmToken == token else { return }
             self.testAlarmVisible = false
             self.soundPlayer.stop()
+            self.overlayManager.hide()
+            self.menuBarController.setAlarmVisible(false)
             if let latestStatus = self.latestStatus {
                 self.evaluateAlarm(for: latestStatus)
-            } else {
-                self.overlayManager.hide()
-                self.menuBarController.setAlarmVisible(false)
             }
+        }
+    }
+
+    private func previewWarningSound(named soundName: String) {
+        let token = UUID()
+        soundPreviewToken = token
+        soundPlayer.playLoopingWarning(named: soundName)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + AppConstants.previewAlarmDuration) { [weak self] in
+            guard let self, self.soundPreviewToken == token else { return }
+            self.soundPlayer.stop()
         }
     }
 
