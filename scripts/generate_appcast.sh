@@ -38,6 +38,6 @@ else
         "$APPCAST_WORK_DIR"
 fi
 
-perl -0pi -e "s#https://raw.githubusercontent.com/LeonTOfficial/BatteryPanic/main/Battery\\.Panic\\.$VERSION\\.md#https://github.com/LeonTOfficial/BatteryPanic/releases/tag/v$VERSION#g" "$ROOT_DIR/appcast.xml"
+perl -0pi -e "s#https://raw.githubusercontent.com/LeonTOfficial/BatteryPanic/main/Battery\\.Panic\\.$VERSION\\.md#https://leontofficial.github.io/BatteryPanic/release-notes/$VERSION/#g" "$ROOT_DIR/appcast.xml"
 
 echo "Generated appcast: $ROOT_DIR/appcast.xml"

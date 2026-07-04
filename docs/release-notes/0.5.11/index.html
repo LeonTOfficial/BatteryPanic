@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Battery Panic 0.5.11 Release Notes</title>
+  <style>
+    :root {
+      --bg: #110d10;
+      --card: rgba(28, 22, 25, 0.86);
+      --text: #fff8f8;
+      --muted: #cbb8bc;
+      --red: #ff4050;
+      --teal: #2fd2cf;
+      --line: rgba(255,255,255,0.13);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(255, 64, 80, 0.30), transparent 34rem),
+        radial-gradient(circle at 88% 12%, rgba(47, 210, 207, 0.20), transparent 30rem),
+        linear-gradient(150deg, #190c11, #0e1016 58%, #061416);
+      font: 16px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+    }
+
+    a { color: inherit; }
+
+    .page {
+      width: min(980px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 42px 0 36px;
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 32px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 850;
+    }
+
+    .icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 64, 80, 0.48);
+      background: #0c0d11;
+      box-shadow: 0 0 26px rgba(255, 64, 80, 0.25);
+      position: relative;
+    }
+
+    .icon::before {
+      content: "";
+      position: absolute;
+      left: 9px;
+      top: 14px;
+      width: 20px;
+      height: 11px;
+      border: 3px solid var(--red);
+      border-radius: 4px;
+    }
+
+    .icon::after {
+      content: "";
+      position: absolute;
+      left: 32px;
+      top: 18px;
+      width: 3px;
+      height: 5px;
+      border-radius: 2px;
+      background: var(--red);
+    }
+
+    .top a {
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .hero {
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: linear-gradient(145deg, rgba(255, 64, 80, 0.18), rgba(25, 21, 26, 0.86));
+      padding: clamp(24px, 5vw, 48px);
+      box-shadow: 0 28px 80px rgba(0,0,0,0.34), inset 0 0 0 1px rgba(255,255,255,0.035);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 12px;
+      border-radius: 999px;
+      color: white;
+      background: rgba(255, 64, 80, 0.22);
+      border: 1px solid rgba(255, 64, 80, 0.34);
+      font-size: 13px;
+      font-weight: 850;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(38px, 6vw, 70px);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      max-width: 760px;
+      font-size: 18px;
+    }
+
+    .sections {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 22px;
+    }
+
+    section {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--card);
+      padding: 20px;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 20px;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+    }
+
+    li + li { margin-top: 8px; }
+
+    .download {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 18px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--line);
+      color: white;
+      text-decoration: none;
+      font-weight: 850;
+    }
+
+    .button.primary {
+      background: var(--red);
+      box-shadow: 0 16px 44px rgba(255, 64, 80, 0.26);
+    }
+
+    .teal { color: var(--teal); }
+
+    footer {
+      margin-top: 26px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 760px) {
+      .sections { grid-template-columns: 1fr; }
+      .top { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="top" aria-label="Release navigation">
+      <div class="brand"><span class="icon" aria-hidden="true"></span><span>Battery Panic</span></div>
+      <a href="../../">Back to project page</a>
+    </nav>
+
+    <article class="hero">
+      <span class="badge">Version 0.5.11</span>
+      <h1>Charging reminders and stronger critical alerts.</h1>
+      <p class="lead">This update adds a calm charging reminder, a more urgent 2% critical mode, stronger release checks, and final polish for the public 0.5.11 release.</p>
+      <div class="download">
+        <a class="button primary" href="https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.11/Battery.Panic.0.5.11.dmg">Download DMG</a>
+        <a class="button" href="https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.11/Battery.Panic.0.5.11.zip">Download ZIP</a>
+        <a class="button" href="https://github.com/LeonTOfficial/BatteryPanic">View GitHub</a>
+      </div>
+    </article>
+
+    <div class="sections">
+      <section>
+        <h2>Charging Reminder</h2>
+        <ul>
+          <li>New charging reminder setting.</li>
+          <li>Enabled by default at <strong>80%</strong>.</li>
+          <li>Adjustable from <strong>50%</strong> to <strong>100%</strong>.</li>
+          <li>Shows a short <span class="teal">green-blue</span> overlay while plugged in.</li>
+          <li>Appears once per charging session.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Critical 2% Mode</h2>
+        <ul>
+          <li>At <strong>2%</strong> or below, the overlay switches to <strong>CRITICAL BATTERY</strong>.</li>
+          <li>Stronger red pulse and glow.</li>
+          <li>Menu status can show the urgent critical state.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Sound Fixes</h2>
+        <ul>
+          <li>Apple system sounds such as Basso, Blow, Funk, and Ping repeat during active alarms.</li>
+          <li>Battery Panic Siren keeps its original one-shot sound.</li>
+          <li>Preview Red Screen stops overlay and sound after about four seconds.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Quality Checks</h2>
+        <ul>
+          <li>Expanded GitHub Actions coverage.</li>
+          <li>Swift and Xcode builds are checked.</li>
+          <li>ZIP, DMG, signing, appcast, release docs, and secrets are verified.</li>
+        </ul>
+      </section>
+    </div>
+
+    <footer>Created by LeonTOfficial. Battery Panic is open source under the MIT License.</footer>
+  </main>
+</body>
+</html>

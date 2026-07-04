@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Battery Panic</title>
+  <style>
+    :root {
+      --bg: #130d10;
+      --panel: rgba(31, 24, 27, 0.86);
+      --panel-2: rgba(48, 25, 31, 0.74);
+      --text: #fff7f7;
+      --muted: #c9b6ba;
+      --red: #ff4050;
+      --teal: #29d3d0;
+      --line: rgba(255, 255, 255, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(255, 64, 80, 0.28), transparent 32rem),
+        radial-gradient(circle at 84% 6%, rgba(41, 211, 208, 0.20), transparent 28rem),
+        linear-gradient(135deg, #170b10 0%, #100d13 52%, #071214 100%);
+      color: var(--text);
+      font: 16px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+    }
+
+    a { color: inherit; }
+
+    .shell {
+      width: min(1080px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 46px 0 34px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 44px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 64, 80, 0.42);
+      background: #0d0d11;
+      box-shadow: 0 0 28px rgba(255, 64, 80, 0.28);
+      position: relative;
+    }
+
+    .icon::before {
+      content: "";
+      position: absolute;
+      left: 9px;
+      top: 14px;
+      width: 21px;
+      height: 12px;
+      border: 3px solid var(--red);
+      border-radius: 4px;
+    }
+
+    .icon::after {
+      content: "";
+      position: absolute;
+      left: 33px;
+      top: 18px;
+      width: 3px;
+      height: 5px;
+      border-radius: 2px;
+      background: var(--red);
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 650;
+      margin-left: 18px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.06fr) minmax(330px, 0.94fr);
+      gap: 28px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      margin: 0 0 18px;
+      font-size: clamp(44px, 7vw, 78px);
+      line-height: 0.95;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 620px;
+      font-size: 18px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 18px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 800;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .button.primary {
+      background: var(--red);
+      color: white;
+      border-color: rgba(255, 255, 255, 0.18);
+      box-shadow: 0 16px 44px rgba(255, 64, 80, 0.28);
+    }
+
+    .preview {
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      background: linear-gradient(145deg, rgba(255, 64, 80, 0.22), rgba(18, 15, 18, 0.88));
+      padding: 22px;
+      min-height: 360px;
+      display: grid;
+      place-items: center;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04), 0 30px 80px rgba(0, 0, 0, 0.35);
+    }
+
+    .overlay-card {
+      width: min(390px, 100%);
+      border-radius: 28px;
+      border: 1px solid rgba(255, 64, 80, 0.54);
+      background: rgba(20, 18, 18, 0.94);
+      padding: 24px 26px;
+      box-shadow: 0 0 48px rgba(255, 64, 80, 0.33);
+    }
+
+    .eyebrow {
+      color: var(--red);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .overlay-card strong {
+      display: block;
+      color: var(--red);
+      font-size: 32px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 34px;
+    }
+
+    .tile {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--panel);
+      padding: 18px;
+    }
+
+    .tile h2 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .tile p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    footer {
+      margin-top: 38px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 820px) {
+      .hero, .grid { grid-template-columns: 1fr; }
+      .nav { align-items: flex-start; flex-direction: column; }
+      .nav a { margin-left: 0; margin-right: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <nav class="nav" aria-label="Main navigation">
+      <div class="brand"><span class="icon" aria-hidden="true"></span><span>Battery Panic</span></div>
+      <div>
+        <a href="release-notes/0.5.11/">Version History</a>
+        <a href="https://github.com/LeonTOfficial/BatteryPanic">GitHub</a>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div>
+        <h1>Visible battery alerts for macOS.</h1>
+        <p>Battery Panic is a native menu bar app that makes low battery warnings impossible to miss, with a red pulsing overlay, optional audio alerts, and a calm charging reminder.</p>
+        <div class="actions">
+          <a class="button primary" href="https://github.com/LeonTOfficial/BatteryPanic/releases/latest">Download latest release</a>
+          <a class="button" href="release-notes/0.5.11/">What's new in 0.5.11</a>
+        </div>
+      </div>
+      <div class="preview" aria-label="Battery Panic preview">
+        <div class="overlay-card">
+          <div class="eyebrow">Low Battery Warning</div>
+          <strong>9% battery left</strong>
+          <span>Connect your charger to dismiss this alert.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid" aria-label="Features">
+      <article class="tile">
+        <h2>Red Screen Alarm</h2>
+        <p>A pulsing overlay appears when the battery reaches your chosen low-battery threshold.</p>
+      </article>
+      <article class="tile">
+        <h2>Charging Reminder</h2>
+        <p>A short green-blue reminder can appear when charging reaches your chosen percentage.</p>
+      </article>
+      <article class="tile">
+        <h2>Local First</h2>
+        <p>No account, no tracking, no analytics. Battery status stays on your Mac.</p>
+      </article>
+    </section>
+
+    <footer>Created by LeonTOfficial. Battery Panic is open source under the MIT License.</footer>
+  </main>
+</body>
+</html>
