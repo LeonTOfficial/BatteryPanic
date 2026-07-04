@@ -102,7 +102,7 @@ What's new:
 - Automatic critical battery mode at 2% or below.
 - Critical mode uses stronger red wording, pulse, and glow.
 - Apple system sounds such as Basso, Blow, Funk, and Ping now repeat reliably during looping alarms.
-- Battery Panic Siren keeps its original one-shot preview sound.
+- Battery Panic Siren keeps its original one-shot sound.
 - Preview Red Screen now always stops the overlay and sound after about four seconds.
 - Charging reminder battery icon alignment is cleaner at high percentages such as 100%.
 - Version History now opens this GitHub release page instead of a raw Markdown file.

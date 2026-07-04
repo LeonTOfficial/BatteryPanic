@@ -17,15 +17,15 @@ Battery Panic 0.5.11 adds a charging reminder, a stronger critical battery mode,
 
 - At **2% or below** while unplugged, Battery Panic switches to **CRITICAL BATTERY** wording.
 - The red overlay uses a stronger pulse and glow.
-- The selected warning sound continues looping until the alarm ends.
+- Apple system sounds continue repeating until the alarm ends. The Battery Panic Siren stays as a one-shot alarm tone.
 - The menu status can show the more urgent critical state.
 
 ### Sound And Preview Fixes
 
 - Apple system sounds such as Basso, Blow, Funk, Ping, and others now repeat reliably during looping alarms.
-- Battery Panic Siren keeps its original one-shot preview sound.
+- Battery Panic Siren keeps its original one-shot sound.
 - **Preview Red Screen** now always stops the overlay and sound after about four seconds.
-- The selected warning sound preview in Settings now repeats briefly and stops automatically.
+- Apple system sound previews repeat briefly and stop automatically.
 - Version History now opens the GitHub release page instead of the raw Markdown file.
 
 ### Visual Polish

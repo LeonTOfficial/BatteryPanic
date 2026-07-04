@@ -12,7 +12,7 @@
 
 - Reworked the app and menu bar icon so the critical state is cleaner and no longer uses a squeezed exclamation mark.
 - Fixed Battery Panic Siren playback by matching the generated audio buffer to the Mac output format.
-- Added repeated warning-sound playback while a real low-battery alarm remains active.
+- Added repeated playback for Apple system warning sounds while a real low-battery alarm remains active.
 - Made all red-screen previews a fixed short 4-second test.
 - Improved the first-run welcome screen with more spacing and a personal note from Leon.
 - Reduced overlay drawing work to keep the pulsing warning smoother over time.

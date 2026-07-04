@@ -7,7 +7,7 @@ Battery Panic is split by responsibility:
 - `Overlay`: full-screen red warning windows, distinct Battery Panic alert layout, pulse speed, and pulse intensity.
 - `MenuBar`: colored battery states, charging display, menu header, readable status summary, and commands.
 - `Settings`: persisted settings, first-run onboarding, settings window, creator links, and launch-at-login support.
-- `Sound`: built-in synthesized siren, looping warning playback, sound catalog, selection, preview, and playback.
+- `Sound`: built-in synthesized siren, repeating Apple system warning playback, sound catalog, selection, preview, and playback.
 - `Shared`: constants, formatters, and small helpers.
 - `Widgets`: publishes a local snapshot for the WidgetKit extension.
 - `BatteryPanicWidgetShared`: shared widget snapshot model and storage helper.

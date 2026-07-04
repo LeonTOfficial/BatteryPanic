@@ -101,7 +101,7 @@ The charging reminder is separate: when enabled, it shows one short green/blue r
 - **Pulse red overlay:** enables or disables the animated overlay pulse.
 - **Pulse speed:** controls how fast the warning breathes.
 - **Pulse intensity:** controls how strong the red wash and glow are.
-- **Warning sound:** choose the built-in Battery Panic Siren or macOS system sounds such as Basso, Ping, Glass, Hero, and more. During a real alarm, the selected sound loops until the alarm ends.
+- **Warning sound:** choose the built-in Battery Panic Siren or macOS system sounds such as Basso, Ping, Glass, Hero, and more. Apple system sounds repeat during a real alarm; the Battery Panic Siren keeps its original one-shot sound.
 - **Test Sound:** plays the selected warning sound immediately.
 - **Preview Red Screen / Preview 4s Alarm:** shows the overlay for about four seconds using a safe simulated low-battery state.
 - **Start at login:** registers Battery Panic as a macOS login item.

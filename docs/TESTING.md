@@ -21,7 +21,7 @@ Manual checks:
 - Confirm the live Settings preview changes while moving pulse controls.
 - Select the Battery Panic Siren and several macOS sounds, then use `Test Sound`.
 - Confirm red-screen previews stop after about four seconds.
-- Leave a real alarm active briefly and confirm the selected sound loops until the alarm ends.
+- Leave a real alarm active briefly and confirm Apple system sounds repeat until the alarm ends, while Battery Panic Siren stays one-shot.
 - During an active alarm, use `Pause Alarm` from the menu bar and confirm it silences only the current alarm state.
 - Set the threshold above the current battery level to trigger the real alarm.
 - Plug in the charger and confirm that the overlay disappears.
