@@ -81,7 +81,8 @@ jobs:
           grep -q "Visible battery alerts for macOS" docs/index.html
           grep -q "Download Battery Panic" docs/index.html
           grep -q "Install Battery Panic" docs/download/index.html
-          grep -q "Download Latest Release" docs/download/index.html
+          grep -q "Download DMG" docs/download/index.html
+          grep -q "releases/download/v0.5.11/Battery.Panic.0.5.11.dmg" docs/download/index.html
           grep -q "Developed by LeonTOfficial" docs/index.html
           grep -q "discord.gg/JPjrw3ft" docs/index.html
           grep -q "assets/battery-panic-icon.png" docs/index.html

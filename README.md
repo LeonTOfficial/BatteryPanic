@@ -9,17 +9,18 @@ The app is built with Swift and AppKit, stays local to your Mac, and is designed
 
 ## Download & Install
 
-For normal users, use the GitHub Releases page below. Do **not** use GitHub's **Code -> Download ZIP** button at the top of the repository, because that downloads the source code, not the finished app.
+For normal users, download the finished DMG below. Do **not** use GitHub's **Code -> Download ZIP** button at the top of the repository, because that downloads the source code, not the finished app.
 
 **Latest app download:**
 
-- [Open Battery Panic Releases](https://github.com/LeonTOfficial/BatteryPanic/releases)
+- [Download Battery Panic 0.5.11 DMG](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.11/Battery.Panic.0.5.11.dmg)
+- [All releases and fallback ZIP](https://github.com/LeonTOfficial/BatteryPanic/releases)
 
-When a release is published, download the attached `Battery.Panic.0.5.11.dmg` file. Use the `Battery.Panic.0.5.11.zip` file only as a fallback if the DMG does not work.
+Use `Battery.Panic.0.5.11.zip` only as a fallback if the DMG does not work.
 
 DMG install:
 
-1. Download the DMG from the release page above.
+1. Download the DMG from the link above.
 2. Open the DMG.
 3. Drag `Battery Panic.app` into **Applications**.
 4. Open Battery Panic from **Applications**.
