@@ -76,37 +76,16 @@
       font-weight: 850;
     }
 
-    .app-mark {
+    .app-icon {
       width: 38px;
       height: 38px;
+      display: block;
       flex: 0 0 auto;
       border-radius: 12px;
       border: 1px solid rgba(255, 64, 80, 0.48);
-      background: linear-gradient(145deg, #151317, #08090c);
+      background: #090a0d;
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05), 0 0 28px rgba(255, 64, 80, 0.26);
-      position: relative;
-    }
-
-    .app-mark::before {
-      content: "";
-      position: absolute;
-      left: 8px;
-      top: 13px;
-      width: 20px;
-      height: 12px;
-      border: 3px solid var(--red);
-      border-radius: 4px;
-    }
-
-    .app-mark::after {
-      content: "";
-      position: absolute;
-      left: 31px;
-      top: 17px;
-      width: 3px;
-      height: 6px;
-      border-radius: 2px;
-      background: var(--red);
+      object-fit: cover;
     }
 
     .navlinks {
@@ -141,9 +120,10 @@
       position: relative;
       overflow: hidden;
       background:
-        linear-gradient(90deg, rgba(10, 10, 12, 1) 0%, rgba(11, 11, 14, 1) 56%, rgba(11, 11, 14, 0.72) 78%, rgba(11, 11, 14, 0.25) 100%),
-        linear-gradient(0deg, rgba(14, 16, 20, 1) 0%, rgba(14, 16, 20, 0.16) 34%),
-        url("screenshots/overlay-preview.png") 96% center / cover no-repeat;
+        linear-gradient(0deg, rgba(14, 16, 20, 1) 0%, rgba(14, 16, 20, 0.10) 36%),
+        radial-gradient(circle at 18% 28%, rgba(255, 64, 80, 0.28), transparent 29rem),
+        radial-gradient(circle at 86% 56%, rgba(43, 212, 209, 0.16), transparent 26rem),
+        linear-gradient(150deg, #170b10 0%, #0d1015 54%, #071315 100%);
     }
 
     .hero::before {
@@ -156,6 +136,13 @@
       pointer-events: none;
     }
 
+    .hero-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(420px, 1.08fr);
+      gap: 44px;
+      align-items: end;
+    }
+
     .container {
       width: min(var(--max), calc(100% - 32px));
       margin: 0 auto;
@@ -164,6 +151,131 @@
 
     .hero-copy {
       width: min(730px, 100%);
+    }
+
+    .hero-art {
+      position: relative;
+      align-self: center;
+    }
+
+    .hero-art::before {
+      content: "";
+      position: absolute;
+      inset: -18px;
+      border-radius: 34px;
+      background:
+        radial-gradient(circle at 28% 20%, rgba(255, 64, 80, 0.25), transparent 28rem),
+        radial-gradient(circle at 80% 90%, rgba(43, 212, 209, 0.18), transparent 20rem);
+      filter: blur(8px);
+      opacity: 0.90;
+    }
+
+    .hero-art-card {
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: 32px;
+      background: rgba(255, 255, 255, 0.045);
+      padding: 12px;
+      box-shadow: 0 34px 100px rgba(0, 0, 0, 0.38);
+      overflow: hidden;
+    }
+
+    .hero-art-card img {
+      width: 100%;
+      border-radius: 23px;
+      object-fit: cover;
+      opacity: 0.82;
+    }
+
+    .hero-art-note {
+      position: absolute;
+      right: 28px;
+      bottom: 28px;
+      width: min(320px, calc(100% - 56px));
+      padding: 15px 16px;
+      border: 1px solid rgba(255, 64, 80, 0.30);
+      border-radius: 18px;
+      background: rgba(14, 13, 15, 0.74);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      color: #f6d9dd;
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .hero-art-warning {
+      position: absolute;
+      left: 50%;
+      top: 48%;
+      transform: translate(-50%, -50%);
+      width: min(410px, calc(100% - 54px));
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      align-items: center;
+      padding: 21px 24px;
+      border: 2px solid rgba(255, 64, 80, 0.78);
+      border-radius: 28px;
+      background: rgba(18, 16, 18, 0.86);
+      box-shadow: 0 0 60px rgba(255, 64, 80, 0.26);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .hero-art-battery {
+      width: 54px;
+      height: 32px;
+      border: 4px solid var(--red);
+      border-radius: 10px;
+      position: relative;
+      box-shadow: 0 0 24px rgba(255, 64, 80, 0.25);
+    }
+
+    .hero-art-battery::before {
+      content: "";
+      position: absolute;
+      left: 9px;
+      top: 8px;
+      width: 18px;
+      height: 9px;
+      border-radius: 3px;
+      background: var(--red);
+      opacity: 0.86;
+    }
+
+    .hero-art-battery::after {
+      content: "";
+      position: absolute;
+      right: -10px;
+      top: 9px;
+      width: 5px;
+      height: 11px;
+      border-radius: 3px;
+      background: var(--red);
+    }
+
+    .hero-art-warning small {
+      display: block;
+      color: var(--red);
+      font-size: 12px;
+      font-weight: 950;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .hero-art-warning strong {
+      display: block;
+      color: var(--red);
+      font-size: 27px;
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+
+    .hero-art-warning span {
+      display: block;
+      color: #d5c7ca;
+      font-size: 13px;
+      font-weight: 750;
     }
 
     .eyebrow {
@@ -323,17 +435,57 @@
     .feature-mark {
       width: 38px;
       height: 38px;
+      display: grid;
+      place-items: center;
       margin-bottom: 18px;
       border-radius: 12px;
       border: 1px solid rgba(255, 255, 255, 0.13);
       background: rgba(255, 255, 255, 0.07);
       position: relative;
+      color: white;
+      font-size: 13px;
+      font-weight: 950;
+      letter-spacing: 0;
     }
 
-    .feature-mark.red { box-shadow: inset 0 -16px 30px rgba(255, 64, 80, 0.18); }
-    .feature-mark.teal { box-shadow: inset 0 -16px 30px rgba(43, 212, 209, 0.18); }
-    .feature-mark.green { box-shadow: inset 0 -16px 30px rgba(56, 212, 106, 0.18); }
-    .feature-mark.orange { box-shadow: inset 0 -16px 30px rgba(255, 154, 50, 0.18); }
+    .feature-mark::before {
+      content: "";
+      position: absolute;
+      left: 8px;
+      top: 13px;
+      width: 18px;
+      height: 10px;
+      border: 2px solid currentColor;
+      border-radius: 4px;
+      opacity: 0.92;
+    }
+
+    .feature-mark::after {
+      content: "";
+      position: absolute;
+      left: 28px;
+      top: 16px;
+      width: 3px;
+      height: 5px;
+      border-radius: 2px;
+      background: currentColor;
+      opacity: 0.92;
+    }
+
+    .feature-mark .mark-label {
+      position: relative;
+      z-index: 1;
+      margin-top: 27px;
+      padding: 1px 5px;
+      border-radius: 999px;
+      background: rgba(10, 10, 12, 0.86);
+      box-shadow: 0 0 18px rgba(0, 0, 0, 0.38);
+    }
+
+    .feature-mark.red { color: var(--red); box-shadow: inset 0 -16px 30px rgba(255, 64, 80, 0.18), 0 0 26px rgba(255, 64, 80, 0.12); }
+    .feature-mark.teal { color: var(--teal); box-shadow: inset 0 -16px 30px rgba(43, 212, 209, 0.18), 0 0 26px rgba(43, 212, 209, 0.12); }
+    .feature-mark.green { color: var(--green); box-shadow: inset 0 -16px 30px rgba(56, 212, 106, 0.18), 0 0 26px rgba(56, 212, 106, 0.12); }
+    .feature-mark.orange { color: var(--orange); box-shadow: inset 0 -16px 30px rgba(255, 154, 50, 0.18), 0 0 26px rgba(255, 154, 50, 0.12); }
 
     .feature h3 {
       margin: 0 0 8px;
@@ -505,6 +657,39 @@
       margin-left: 16px;
     }
 
+    @media (prefers-reduced-motion: no-preference) {
+      .hero-copy,
+      .hero-art {
+        animation: heroIn 700ms ease both;
+      }
+
+      .hero-art {
+        animation-delay: 120ms;
+      }
+
+      body.reveal-ready [data-reveal] {
+        opacity: 0;
+        transform: translateY(22px);
+        transition: opacity 620ms ease, transform 620ms ease;
+      }
+
+      body.reveal-ready [data-reveal].is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @keyframes heroIn {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    }
+
     @media (max-width: 980px) {
       .feature-grid,
       .privacy-grid {
@@ -512,8 +697,13 @@
       }
 
       .showcase,
-      .download-panel {
+      .download-panel,
+      .hero-layout {
         grid-template-columns: 1fr;
+      }
+
+      .hero-art {
+        max-width: 760px;
       }
     }
 
@@ -541,8 +731,13 @@
         min-height: 760px;
         padding: 110px 0 56px;
         background:
-          linear-gradient(0deg, rgba(10, 10, 12, 1) 0%, rgba(10, 10, 12, 0.99) 64%, rgba(10, 10, 12, 0.94) 100%),
-          url("screenshots/overlay-preview.png") 100% center / cover no-repeat;
+          radial-gradient(circle at 20% 22%, rgba(255, 64, 80, 0.23), transparent 20rem),
+          radial-gradient(circle at 88% 88%, rgba(43, 212, 209, 0.16), transparent 17rem),
+          linear-gradient(150deg, #170b10 0%, #0d1015 54%, #071315 100%);
+      }
+
+      .hero-art {
+        display: none;
       }
 
       .feature-grid,
@@ -575,7 +770,7 @@
 <body>
   <header class="topbar">
     <a class="brand" href="#" aria-label="Battery Panic home">
-      <span class="app-mark" aria-hidden="true"></span>
+      <img class="app-icon" src="assets/battery-panic-icon.png" alt="" aria-hidden="true">
       <span>Battery Panic</span>
     </a>
     <nav class="navlinks" aria-label="Main navigation">
@@ -583,19 +778,20 @@
       <a href="#screenshots">Screenshots</a>
       <a href="release-notes/0.5.11/">Version History</a>
       <a href="https://github.com/LeonTOfficial/BatteryPanic">GitHub</a>
-      <a class="download-pill" href="https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.11/Battery.Panic.0.5.11.dmg">Download</a>
+      <a href="https://discord.gg/JPjrw3ft">Discord</a>
+      <a class="download-pill" href="https://github.com/LeonTOfficial/BatteryPanic/releases">Download</a>
     </nav>
   </header>
 
   <main>
     <section class="hero" aria-label="Battery Panic overview">
-      <div class="container">
+      <div class="container hero-layout">
         <div class="hero-copy">
           <span class="eyebrow">Native macOS menu bar app</span>
           <h1>Battery Panic</h1>
           <p>Visible battery alerts for macOS. Get a red pulsing screen warning before your MacBook dies, a calm charging reminder when it reaches your chosen level, and a menu bar battery state that is easy to read at a glance.</p>
           <div class="actions">
-            <a class="button primary" href="https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.11/Battery.Panic.0.5.11.dmg">Download Battery Panic 0.5.11</a>
+            <a class="button primary" href="https://github.com/LeonTOfficial/BatteryPanic/releases">Download Battery Panic</a>
             <a class="button" href="release-notes/0.5.11/">See what changed</a>
             <a class="button" href="https://github.com/LeonTOfficial/BatteryPanic">View source on GitHub</a>
           </div>
@@ -606,12 +802,26 @@
             <span>No analytics</span>
           </div>
         </div>
+        <div class="hero-art">
+          <div class="hero-art-card">
+            <img src="screenshots/overlay-preview.png" alt="Battery Panic red low-battery overlay shown as a polished product preview">
+            <div class="hero-art-warning" aria-hidden="true">
+              <div class="hero-art-battery"></div>
+              <div>
+                <small>Battery Panic</small>
+                <strong>Low power: 9%</strong>
+                <span>Plug in your charger to dismiss this alert</span>
+              </div>
+            </div>
+            <div class="hero-art-note">The full-screen warning is visible, but the app still stays quiet until your battery actually needs attention.</div>
+          </div>
+        </div>
       </div>
     </section>
 
     <section class="status-band" aria-label="Menu bar status preview">
       <div class="container">
-        <div class="status-frame">
+        <div class="status-frame" data-reveal>
           <img src="screenshots/status-bar-preview.png" alt="Battery Panic menu bar states with healthy, warning, low, and charging battery percentages">
         </div>
       </div>
@@ -619,30 +829,30 @@
 
     <section id="features" class="section compact">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head" data-reveal>
           <p class="kicker">What it does</p>
           <h2>A battery warning you actually notice.</h2>
           <p>Battery Panic stays quiet in the background until your MacBook battery needs attention. Then it becomes visible enough to save your work before the screen goes black.</p>
         </div>
 
         <div class="feature-grid">
-          <article class="feature">
-            <div class="feature-mark red" aria-hidden="true"></div>
+          <article class="feature" data-reveal>
+            <div class="feature-mark red" aria-hidden="true"><span class="mark-label">9%</span></div>
             <h3>Red low-battery overlay</h3>
             <p>A full-screen red pulse appears at your chosen low-battery percentage while your Mac is unplugged.</p>
           </article>
-          <article class="feature">
-            <div class="feature-mark orange" aria-hidden="true"></div>
+          <article class="feature" data-reveal>
+            <div class="feature-mark orange" aria-hidden="true"><span class="mark-label">2%</span></div>
             <h3>Critical 2% mode</h3>
             <p>At 2% or below, Battery Panic switches to stronger critical wording, glow, and urgency.</p>
           </article>
-          <article class="feature">
-            <div class="feature-mark teal" aria-hidden="true"></div>
+          <article class="feature" data-reveal>
+            <div class="feature-mark teal" aria-hidden="true"><span class="mark-label">80%</span></div>
             <h3>Charging reminder</h3>
             <p>A short green-blue reminder can appear once per charging session when your Mac reaches your chosen charging level.</p>
           </article>
-          <article class="feature">
-            <div class="feature-mark green" aria-hidden="true"></div>
+          <article class="feature" data-reveal>
+            <div class="feature-mark green" aria-hidden="true"><span class="mark-label">64%</span></div>
             <h3>Menu bar battery state</h3>
             <p>Healthy, warning, critical, and charging states use clear colors and percentage text in the macOS menu bar.</p>
           </article>
@@ -652,7 +862,7 @@
 
     <section id="screenshots" class="section split-band">
       <div class="container showcase">
-        <div>
+        <div data-reveal>
           <p class="kicker">Designed for quick control</p>
           <h2>Settings that feel native, not noisy.</h2>
           <div class="copy-list">
@@ -661,7 +871,7 @@
             <div class="copy-row">Choose sound behavior, test alerts, and pause alarms temporarily when needed.</div>
           </div>
         </div>
-        <div class="shot-frame">
+        <div class="shot-frame" data-reveal>
           <img src="screenshots/settings-preview.jpg" alt="Battery Panic settings window with threshold, pulsing overlay, audio warning, and general controls">
         </div>
       </div>
@@ -669,10 +879,10 @@
 
     <section class="section">
       <div class="container showcase">
-        <div class="shot-frame">
+        <div class="shot-frame" data-reveal>
           <img src="screenshots/overlay-preview.png" alt="Battery Panic red pulsing low battery overlay preview">
         </div>
-        <div>
+        <div data-reveal>
           <p class="kicker">Hard to miss, easy to dismiss</p>
           <h2>The red screen appears only when it matters.</h2>
           <div class="copy-list">
@@ -686,25 +896,25 @@
 
     <section id="download" class="section split-band">
       <div class="container download-panel">
-        <div class="download-copy">
+        <div class="download-copy" data-reveal>
           <p class="kicker">Download and install</p>
           <h2>Get the finished Mac app, not the source ZIP.</h2>
-          <p>Use the DMG for the normal drag-and-drop install. Battery Panic is open source and locally signed, so macOS may ask you to allow it in Privacy & Security on first launch.</p>
+          <p>Open the GitHub release page and download the attached DMG when the release is published. Battery Panic is open source and locally signed, so macOS may ask you to allow it in Privacy & Security on first launch.</p>
           <div class="actions">
-            <a class="button primary" href="https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.11/Battery.Panic.0.5.11.dmg">Download DMG</a>
-            <a class="button" href="https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.11/Battery.Panic.0.5.11.zip">Download ZIP fallback</a>
+            <a class="button primary" href="https://github.com/LeonTOfficial/BatteryPanic/releases">Open GitHub Releases</a>
+            <a class="button" href="release-notes/0.5.11/">Read version history</a>
           </div>
         </div>
         <div class="install-steps">
-          <div class="step">
+          <div class="step" data-reveal>
             <strong>1. Download the DMG</strong>
-            <span>Open the release package from GitHub.</span>
+            <span>Use the release page, not GitHub's source-code ZIP button.</span>
           </div>
-          <div class="step">
+          <div class="step" data-reveal>
             <strong>2. Drag into Applications</strong>
             <span>Move Battery Panic into your Applications folder.</span>
           </div>
-          <div class="step">
+          <div class="step" data-reveal>
             <strong>3. Allow first launch</strong>
             <span>If macOS blocks it, open Privacy & Security and click Open Anyway.</span>
           </div>
@@ -714,21 +924,21 @@
 
     <section class="section">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head" data-reveal>
           <p class="kicker">Privacy and updates</p>
           <h2>Local-first by design.</h2>
           <p>Battery Panic reads battery status through macOS power APIs. The alarm itself does not need an account, cloud service, analytics, or tracking.</p>
         </div>
         <div class="privacy-grid">
-          <article class="privacy-item">
+          <article class="privacy-item" data-reveal>
             <h3>No tracking</h3>
             <p>No telemetry, no analytics, no account, and no private user data collection.</p>
           </article>
-          <article class="privacy-item">
+          <article class="privacy-item" data-reveal>
             <h3>Optional update checks</h3>
             <p>Sparkle can check GitHub for updates when you use the update menu item.</p>
           </article>
-          <article class="privacy-item">
+          <article class="privacy-item" data-reveal>
             <h3>Open source</h3>
             <p>The project is available on GitHub so users can inspect how the app works.</p>
           </article>
@@ -738,12 +948,15 @@
 
     <section class="section compact">
       <div class="container">
-        <div class="creator">
+        <div class="creator" data-reveal>
           <div>
             <strong>Developed by LeonTOfficial</strong>
-            <span>Battery Panic was designed as a visible, privacy-friendly Mac battery alert by LeonTOfficial.</span>
+            <span>Battery Panic was designed as a visible, privacy-friendly Mac battery alert by LeonTOfficial. Feedback from early users helps shape the next release.</span>
           </div>
-          <a class="button" href="https://github.com/LeonTOfficial">Visit GitHub profile</a>
+          <div class="actions">
+            <a class="button" href="https://github.com/LeonTOfficial">Visit GitHub profile</a>
+            <a class="button" href="https://discord.gg/JPjrw3ft">Join Discord</a>
+          </div>
         </div>
       </div>
     </section>
@@ -754,8 +967,30 @@
     <span>
       <a href="release-notes/0.5.11/">Version History</a>
       <a href="https://github.com/LeonTOfficial/BatteryPanic">GitHub</a>
+      <a href="https://discord.gg/JPjrw3ft">Discord</a>
       <a href="https://github.com/LeonTOfficial/BatteryPanic/security">Security</a>
     </span>
   </footer>
+  <script>
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.body.classList.add("reveal-ready");
+      const observer = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        }
+      }, { threshold: 0.14, rootMargin: "0px 0px -8% 0px" });
+
+      document.querySelectorAll("[data-reveal]").forEach((element) => observer.observe(element));
+
+      window.setTimeout(() => {
+        document.querySelectorAll("[data-reveal]").forEach((element) => {
+          element.classList.add("is-visible");
+        });
+      }, 900);
+    }
+  </script>
 </body>
 </html>

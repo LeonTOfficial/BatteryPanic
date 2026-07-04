@@ -77,6 +77,12 @@ Create a new release with these values:
 
 Do not upload only GitHub's automatically generated source code archives as the main user download. Those are useful for developers, but normal users need the `.dmg` or `.zip` app package.
 
+You can copy the prepared release description from:
+
+```text
+docs/RELEASE_0.5.11_TEXT.md
+```
+
 Suggested release description:
 
 ```markdown
