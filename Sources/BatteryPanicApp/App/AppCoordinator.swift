@@ -279,7 +279,7 @@ final class AppCoordinator {
             isTest: true
         )
         if settings.soundEnabled {
-            soundPlayer.playLoopingWarning(named: settings.selectedSoundName)
+            playPreviewSound(named: settings.selectedSoundName)
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + AppConstants.previewAlarmDuration) { [weak self] in
@@ -297,11 +297,20 @@ final class AppCoordinator {
     private func previewWarningSound(named soundName: String) {
         let token = UUID()
         soundPreviewToken = token
-        soundPlayer.playLoopingWarning(named: soundName)
+        playPreviewSound(named: soundName)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + AppConstants.previewAlarmDuration) { [weak self] in
             guard let self, self.soundPreviewToken == token else { return }
             self.soundPlayer.stop()
+        }
+    }
+
+    private func playPreviewSound(named soundName: String) {
+        let warningSound = WarningSound.sound(named: soundName)
+        if warningSound.source == .siren {
+            soundPlayer.playWarning(named: soundName)
+        } else {
+            soundPlayer.playLoopingWarning(named: soundName)
         }
     }
 
