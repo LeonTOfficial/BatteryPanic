@@ -1,4 +1,4 @@
-# Battery Panic
+# Battery Panic <sub><a href="https://leontofficial.github.io/BatteryPanic/">Website</a></sub>
 
 ![Battery Panic redoverlay preview](docs/screenshots/overlay-preview.png)
 

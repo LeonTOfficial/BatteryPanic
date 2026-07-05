@@ -19,6 +19,7 @@ final class AppCoordinator {
     private var chargeReminderToken = UUID()
     private var testAlarmVisible = false
     private var testAlarmToken = UUID()
+    private var testAlarmTimer: Timer?
     private var soundPreviewToken = UUID()
 
     init(
@@ -58,6 +59,8 @@ final class AppCoordinator {
 
     func stop() {
         batteryMonitor.stop()
+        testAlarmTimer?.invalidate()
+        testAlarmTimer = nil
         soundPlayer.stop()
         overlayManager.hide()
     }
@@ -266,6 +269,9 @@ final class AppCoordinator {
         let status = BatteryStatus.lowBatteryPreview(threshold: settings.thresholdPercentage)
         let token = UUID()
 
+        testAlarmTimer?.invalidate()
+        hideActiveAlarm()
+        hideChargeReminder()
         soundPlayer.stop()
         testAlarmToken = token
         testAlarmVisible = true
@@ -282,15 +288,26 @@ final class AppCoordinator {
             playPreviewSound(named: settings.selectedSoundName)
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + AppConstants.previewAlarmDuration) { [weak self] in
-            guard let self, self.testAlarmVisible, self.testAlarmToken == token else { return }
-            self.testAlarmVisible = false
-            self.soundPlayer.stop()
-            self.overlayManager.hide()
-            self.menuBarController.setAlarmVisible(false)
-            if let latestStatus = self.latestStatus {
-                self.evaluateAlarm(for: latestStatus)
+        let timer = Timer(timeInterval: AppConstants.previewAlarmDuration, repeats: false) { [weak self] _ in
+            DispatchQueue.main.async {
+                self?.finishTestAlarm(token: token, reevaluateCurrentStatus: true)
             }
+        }
+        RunLoop.main.add(timer, forMode: .common)
+        testAlarmTimer = timer
+    }
+
+    private func finishTestAlarm(token: UUID, reevaluateCurrentStatus: Bool) {
+        guard testAlarmVisible, testAlarmToken == token else { return }
+        testAlarmTimer?.invalidate()
+        testAlarmTimer = nil
+        testAlarmVisible = false
+        soundPlayer.stop()
+        overlayManager.hide()
+        menuBarController.setAlarmVisible(false)
+
+        if reevaluateCurrentStatus, let latestStatus {
+            evaluateAlarm(for: latestStatus)
         }
     }
 
