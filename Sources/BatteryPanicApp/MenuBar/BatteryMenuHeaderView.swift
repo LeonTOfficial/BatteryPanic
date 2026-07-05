@@ -30,13 +30,13 @@ final class BatteryMenuHeaderView: NSView {
     }
 
     private func setup() {
-        frame = NSRect(x: 0, y: 0, width: 318, height: 74)
+        frame = NSRect(x: 0, y: 0, width: 344, height: 88)
 
         let root = NSStackView()
         root.orientation = .vertical
         root.alignment = .leading
         root.spacing = 8
-        root.edgeInsets = NSEdgeInsets(top: 12, left: 14, bottom: 10, right: 14)
+        root.edgeInsets = NSEdgeInsets(top: 18, left: 18, bottom: 14, right: 18)
         root.translatesAutoresizingMaskIntoConstraints = false
 
         let topRow = NSStackView()
@@ -45,18 +45,19 @@ final class BatteryMenuHeaderView: NSView {
         topRow.spacing = 10
 
         iconView.imageScaling = .scaleProportionallyUpOrDown
-        iconView.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        iconView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        iconView.widthAnchor.constraint(equalToConstant: 32).isActive = true
+        iconView.heightAnchor.constraint(equalToConstant: 32).isActive = true
 
         let labels = NSStackView()
         labels.orientation = .vertical
         labels.alignment = .leading
         labels.spacing = 2
 
-        titleLabel.font = NSFont.systemFont(ofSize: 15, weight: .semibold)
+        titleLabel.font = NSFont.systemFont(ofSize: 15, weight: .bold)
         subtitleLabel.font = NSFont.systemFont(ofSize: 11, weight: .regular)
         subtitleLabel.textColor = .secondaryLabelColor
         subtitleLabel.lineBreakMode = .byTruncatingTail
+        subtitleLabel.maximumNumberOfLines = 1
 
         labels.addArrangedSubview(titleLabel)
         labels.addArrangedSubview(subtitleLabel)

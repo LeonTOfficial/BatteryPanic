@@ -172,7 +172,7 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
         tile.addSubview(launchAtLoginSwitch)
         NSLayoutConstraint.activate([
             launchAtLoginSwitch.trailingAnchor.constraint(equalTo: tile.trailingAnchor, constant: -18),
-            launchAtLoginSwitch.bottomAnchor.constraint(equalTo: tile.bottomAnchor, constant: -18)
+            launchAtLoginSwitch.centerYAnchor.constraint(equalTo: tile.centerYAnchor)
         ])
         return tile
     }
@@ -195,10 +195,10 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
 
         NSLayoutConstraint.activate([
             icon.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 18),
-            icon.topAnchor.constraint(equalTo: card.topAnchor, constant: 18),
+            icon.centerYAnchor.constraint(equalTo: card.centerYAnchor),
             labels.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 12),
             labels.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -18),
-            labels.topAnchor.constraint(equalTo: card.topAnchor, constant: 18)
+            labels.centerYAnchor.constraint(equalTo: card.centerYAnchor)
         ])
         return card
     }
