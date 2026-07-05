@@ -188,6 +188,16 @@ ditto --norsrc "$APP_BUNDLE" "$DMG_STAGING_DIR/$APP_NAME.app"
 cp "$ROOT_DIR/Resources/DMGBackground.png" "$DMG_STAGING_DIR/.background/background.png"
 sips -z 420 680 "$DMG_STAGING_DIR/.background/background.png" >/dev/null
 ln -s /Applications "$DMG_STAGING_DIR/Applications"
+printf '%s\n' \
+    '<?xml version="1.0" encoding="UTF-8"?>' \
+    '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' \
+    '<plist version="1.0">' \
+    '<dict>' \
+    '    <key>URL</key>' \
+    '    <string>x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension</string>' \
+    '</dict>' \
+    '</plist>' \
+    > "$DMG_STAGING_DIR/Open Privacy & Security.webloc"
 
 hdiutil create \
     -volname "$DMG_VOLUME_NAME" \
@@ -219,6 +229,9 @@ tell application "Finder"
     set background picture of viewOptions to (POSIX file "$DMG_MOUNT_DIR/.background/background.png" as alias)
     set position of item "$APP_NAME.app" of dmgFolder to {190, 230}
     set position of item "Applications" of dmgFolder to {490, 230}
+    try
+        set position of file "Open Privacy & Security.webloc" of dmgFolder to {340, 332}
+    end try
     update dmgFolder without registering applications
     delay 1
     close dmgWindow

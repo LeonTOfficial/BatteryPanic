@@ -667,14 +667,24 @@
         animation-delay: 120ms;
       }
 
+      .hero-art-warning {
+        animation: warningPulse 2.8s ease-in-out infinite;
+      }
+
       body.reveal-ready [data-reveal] {
         opacity: 0;
-        transform: translateY(22px);
-        transition: opacity 620ms ease, transform 620ms ease;
+        filter: blur(7px);
+        transform: translateY(30px) scale(0.985);
+        transition:
+          opacity 720ms ease,
+          filter 720ms ease,
+          transform 720ms cubic-bezier(0.2, 0.75, 0.2, 1);
+        transition-delay: var(--reveal-delay, 0ms);
       }
 
       body.reveal-ready [data-reveal].is-visible {
         opacity: 1;
+        filter: blur(0);
         transform: translateY(0);
       }
 
@@ -686,6 +696,17 @@
         to {
           opacity: 1;
           transform: translateY(0);
+        }
+      }
+
+      @keyframes warningPulse {
+        0%, 100% {
+          box-shadow: 0 0 42px rgba(255, 64, 80, 0.20);
+          transform: translate(-50%, -50%) scale(1);
+        }
+        50% {
+          box-shadow: 0 0 76px rgba(255, 64, 80, 0.36);
+          transform: translate(-50%, -50%) scale(1.015);
         }
       }
     }
@@ -983,7 +1004,10 @@
         }
       }, { threshold: 0.14, rootMargin: "0px 0px -8% 0px" });
 
-      document.querySelectorAll("[data-reveal]").forEach((element) => observer.observe(element));
+      document.querySelectorAll("[data-reveal]").forEach((element, index) => {
+        element.style.setProperty("--reveal-delay", `${Math.min(index * 45, 240)}ms`);
+        observer.observe(element);
+      });
 
       window.setTimeout(() => {
         document.querySelectorAll("[data-reveal]").forEach((element) => {

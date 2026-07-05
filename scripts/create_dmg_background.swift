@@ -76,9 +76,9 @@ let noteRect = rect(38, 26, 604, 32)
 NSColor.white.withAlphaComponent(0.08).setFill()
 NSBezierPath(roundedRect: noteRect, xRadius: px(12), yRadius: px(12)).fill()
 drawText(
-    "If macOS blocks the first launch, open Privacy & Security and click Open Anyway.",
+    "If macOS blocks first launch, use the Privacy & Security shortcut, scroll down, then click Open Anyway.",
     at: point(55, 36),
-    font: .systemFont(ofSize: px(9.5), weight: .medium),
+    font: .systemFont(ofSize: px(8.8), weight: .medium),
     color: NSColor.white.withAlphaComponent(0.70)
 )
 

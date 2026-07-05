@@ -8,6 +8,7 @@ Battery Panic is meant to be installed like a normal macOS app. You do not need 
 2. Open the downloaded DMG file.
 3. Drag `Battery Panic.app` into the **Applications** shortcut.
 4. Open Battery Panic from **Applications**.
+5. If macOS blocks the first launch, use the `Open Privacy & Security` shortcut inside the DMG or the link below.
 
 ## Alternative: Install with the ZIP
 

@@ -24,6 +24,7 @@ DMG install:
 2. Open the DMG.
 3. Drag `Battery Panic.app` into **Applications**.
 4. Open Battery Panic from **Applications**.
+5. If macOS blocks the first launch, use the `Open Privacy & Security` shortcut inside the DMG or the link below.
 
 ZIP fallback:
 

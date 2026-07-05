@@ -165,12 +165,31 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
     }
 
     private func makeLoginTile() -> NSView {
-        let tile = makeInfoTile(symbolName: "power", title: "Start at login", body: "Keep Battery Panic ready automatically.", tint: .systemGreen)
+        let tile = makeCard(width: 258, height: 118, radius: 18)
+
+        let icon = makeSymbol("power", tint: .systemGreen)
+        icon.translatesAutoresizingMaskIntoConstraints = false
+        tile.addSubview(icon)
+
+        let labels = NSStackView()
+        labels.orientation = .vertical
+        labels.alignment = .leading
+        labels.spacing = 4
+        labels.translatesAutoresizingMaskIntoConstraints = false
+        labels.addArrangedSubview(makeLabel("Start at login", size: 13, weight: .semibold, color: .labelColor, lines: 1))
+        labels.addArrangedSubview(makeLabel("Keep Battery Panic ready automatically.", size: 12, weight: .regular, color: .secondaryLabelColor, lines: 2))
+        tile.addSubview(labels)
+
         launchAtLoginSwitch.target = self
         launchAtLoginSwitch.action = #selector(launchAtLoginChanged)
         launchAtLoginSwitch.translatesAutoresizingMaskIntoConstraints = false
         tile.addSubview(launchAtLoginSwitch)
         NSLayoutConstraint.activate([
+            icon.leadingAnchor.constraint(equalTo: tile.leadingAnchor, constant: 18),
+            icon.centerYAnchor.constraint(equalTo: tile.centerYAnchor),
+            labels.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 12),
+            labels.trailingAnchor.constraint(lessThanOrEqualTo: launchAtLoginSwitch.leadingAnchor, constant: -14),
+            labels.centerYAnchor.constraint(equalTo: tile.centerYAnchor),
             launchAtLoginSwitch.trailingAnchor.constraint(equalTo: tile.trailingAnchor, constant: -18),
             launchAtLoginSwitch.centerYAnchor.constraint(equalTo: tile.centerYAnchor)
         ])
