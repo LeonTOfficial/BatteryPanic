@@ -24,17 +24,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: pnpm
-          cache-dependency-path: website/pnpm-lock.yaml
 
       - name: Build website source
         run: |
           set -euo pipefail
           corepack enable
-          corepack pnpm install --dir website --frozen-lockfile --ignore-scripts
+          corepack prepare pnpm@11.7.0 --activate
+          pnpm install --dir website --frozen-lockfile --ignore-scripts
           cd website
-          corepack pnpm run lint
-          corepack pnpm run build
+          pnpm run lint
+          pnpm run build
 
       - name: Check website links and built pages
         run: |
