@@ -19,9 +19,7 @@ RELEASE_BASE="Battery.Panic.$VERSION"
 RELEASE_ZIP="$OUTPUT_DIR/$RELEASE_BASE.zip"
 RELEASE_DMG="$OUTPUT_DIR/$RELEASE_BASE.dmg"
 STAGING_DIR="${TMPDIR:-/tmp}/BatteryPanicBuild.$$"
-DMG_STAGING_DIR="${TMPDIR:-/tmp}/BatteryPanicDmg.$$"
 DMG_MOUNT_DIR="${TMPDIR:-/tmp}/BatteryPanicDmgMount.$$"
-DMG_RW="$STAGING_DIR/$RELEASE_BASE.rw.dmg"
 APP_BUNDLE="$STAGING_DIR/$APP_NAME.app"
 BINARY_SOURCE="$ROOT_DIR/.build/$BUILD_CONFIG/BatteryPanicApp"
 BINARY_DEST="$APP_BUNDLE/Contents/MacOS/$APP_NAME"
@@ -30,6 +28,7 @@ WIDGET_BINARY_SOURCE="$ROOT_DIR/.build/$BUILD_CONFIG/$WIDGET_NAME"
 WIDGET_BINARY_DEST="$WIDGET_BUNDLE/Contents/MacOS/$WIDGET_NAME"
 SPARKLE_FRAMEWORK_SOURCE="$ROOT_DIR/Vendor/Sparkle/Sparkle.xcframework/macos-arm64_x86_64/Sparkle.framework"
 SPARKLE_FRAMEWORK_DEST="$APP_BUNDLE/Contents/Frameworks/Sparkle.framework"
+DMGBUILD_PYTHON="python3"
 
 cleanup() {
     if [[ -d "$DMG_MOUNT_DIR" ]]; then
@@ -37,7 +36,6 @@ cleanup() {
         rm -rf "$DMG_MOUNT_DIR"
     fi
     rm -rf "$STAGING_DIR"
-    rm -rf "$DMG_STAGING_DIR"
 }
 trap cleanup EXIT
 
@@ -62,15 +60,19 @@ clean_output_bundle_attributes() {
 }
 
 ensure_dmgbuild() {
-    if python3 - <<'PY' >/dev/null 2>&1
+    if "$DMGBUILD_PYTHON" - <<'PY' >/dev/null 2>&1
 import dmgbuild
 PY
     then
         return
     fi
 
-    echo "Installing dmgbuild for styled DMG packaging..."
-    python3 -m pip install --user dmgbuild
+    local venv_dir="$STAGING_DIR/dmgbuild-venv"
+    echo "Preparing dmgbuild for styled DMG packaging..."
+    python3 -m venv "$venv_dir"
+    "$venv_dir/bin/python" -m pip install --upgrade pip >/dev/null
+    "$venv_dir/bin/python" -m pip install dmgbuild >/dev/null
+    DMGBUILD_PYTHON="$venv_dir/bin/python"
 }
 
 cd "$ROOT_DIR"
@@ -83,7 +85,6 @@ rm -f "$OUTPUT_DIR"/Battery.Panic.*.zip
 rm -f "$OUTPUT_DIR"/Battery.Panic.*.dmg
 rm -f "$OUTPUT_DIR/$APP_NAME $VERSION.zip"
 rm -f "$OUTPUT_DIR/$APP_NAME $VERSION.dmg"
-rm -rf "$DMG_STAGING_DIR"
 rm -rf "$DMG_MOUNT_DIR"
 mkdir -p "$APP_BUNDLE/Contents/MacOS"
 mkdir -p "$APP_BUNDLE/Contents/Resources"
@@ -196,7 +197,7 @@ fi
 (cd "$STAGING_DIR" && ditto -c -k --keepParent --norsrc "$APP_NAME.app" "$RELEASE_ZIP")
 
 ensure_dmgbuild
-python3 -m dmgbuild \
+"$DMGBUILD_PYTHON" -m dmgbuild \
     --no-hidpi \
     --settings "$ROOT_DIR/scripts/dmgbuild_settings.py" \
     -D "app=$APP_BUNDLE" \
