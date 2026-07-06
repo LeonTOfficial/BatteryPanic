@@ -65,6 +65,14 @@ outputs/Battery.Panic.0.5.11.dmg
 
 The appcast should point to the ZIP because Sparkle installs app updates from the ZIP archive. The DMG is still useful for first-time manual installation.
 
+8. Verify the uploaded GitHub ZIP against the committed Sparkle appcast:
+
+```bash
+swift scripts/verify_appcast_update.swift
+```
+
+If this fails, do not publish the release as ready. Regenerate `appcast.xml` from the exact ZIP that is uploaded to GitHub, then commit and push the fixed appcast.
+
 ## CI / another Mac
 
 If the private Sparkle key is not in the local Keychain, pass it through an environment variable:
