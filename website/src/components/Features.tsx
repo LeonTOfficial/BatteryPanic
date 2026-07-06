@@ -27,18 +27,18 @@ export function Features() {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center mb-32">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-14 lg:gap-20 items-center mb-32">
           <motion.div 
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="order-2 lg:order-1 relative rounded-3xl border border-white/10 bg-white/[0.02] p-2 overflow-hidden shadow-2xl shadow-black/50"
+            className="order-2 lg:order-1 relative rounded-3xl border border-white/10 bg-white/[0.02] p-1.5 overflow-hidden shadow-2xl shadow-black/50 lg:scale-[1.04]"
           >
             <img 
               src={assets.settings} 
               alt="Battery Panic Settings" 
-              className="w-full h-auto rounded-2xl"
+              className="w-full h-auto rounded-[1.35rem]"
             />
             <div className="absolute inset-0 bg-gradient-to-tr from-brand-red/5 to-transparent pointer-events-none rounded-3xl" />
           </motion.div>
@@ -76,7 +76,7 @@ export function Features() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-14 lg:gap-20 items-center">
           <div className="space-y-12">
             <motion.div
               initial={{ opacity: 0, x: -40 }}
@@ -114,13 +114,13 @@ export function Features() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="relative rounded-3xl border border-white/10 bg-white/[0.02] p-8 md:p-12 flex items-center justify-center min-h-[440px] overflow-hidden shadow-2xl shadow-black/50"
+            className="relative rounded-3xl border border-white/10 bg-white/[0.02] p-5 md:p-8 flex items-center justify-center min-h-[480px] overflow-hidden shadow-2xl shadow-black/50 lg:scale-[1.04]"
           >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03),transparent_70%)]" />
             <img 
               src={assets.statusBar} 
               alt="Status Bar Preview" 
-              className="w-full max-w-[560px] h-auto rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/20 relative z-10"
+              className="w-full max-w-[760px] h-auto rounded-2xl shadow-[0_22px_60px_rgba(0,0,0,0.55)] border border-white/20 relative z-10"
             />
           </motion.div>
         </div>

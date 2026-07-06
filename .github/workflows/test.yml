@@ -20,6 +20,41 @@ jobs:
           swift --version
           xcodebuild -version
 
+      - name: Setup website Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: website/pnpm-lock.yaml
+
+      - name: Build website source
+        run: |
+          set -euo pipefail
+          corepack enable
+          corepack pnpm install --dir website --frozen-lockfile --ignore-scripts
+          cd website
+          corepack pnpm run lint
+          corepack pnpm run build
+
+      - name: Check website links and built pages
+        run: |
+          set -euo pipefail
+          test -f docs/index.html
+          test -f docs/download/index.html
+          test -f docs/updates/index.html
+          test -f docs/release-notes/0.5.11/index.html
+          test -d docs/web-assets
+          grep -q "/BatteryPanic/web-assets/" docs/index.html
+          grep -q "/BatteryPanic/web-assets/" docs/download/index.html
+          grep -q "/BatteryPanic/web-assets/" docs/updates/index.html
+          grep -q "/BatteryPanic/web-assets/" docs/release-notes/0.5.11/index.html
+          site_bundle="$(ls docs/web-assets/*.js | sort | tail -n 1)"
+          grep -q "What gets checked" "$site_bundle"
+          grep -q "Release notes remain available on this page" "$site_bundle"
+          grep -q "Download DMG" "$site_bundle"
+          grep -q "Free and open source" "$site_bundle"
+          grep -q "Thank you to Anni3" "$site_bundle"
+
       - name: Run logic tests
         run: ./scripts/run_tests.sh
 

@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { RefreshCw, Sparkles, BatteryCharging, BellRing, ShieldCheck } from "lucide-react";
+import { RefreshCw, Sparkles, BatteryCharging, BellRing, ShieldCheck, FileText, Radio } from "lucide-react";
 import { links } from "../content";
 
 const latest = [
@@ -39,30 +39,53 @@ export function UpdatesPage() {
         </motion.div>
 
         <div className="mt-16 grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
-          <motion.div
-            initial={{ opacity: 0, x: -26 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 shadow-2xl shadow-black/35"
-          >
-            <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl border border-brand-teal/30 bg-brand-teal/10 text-brand-teal">
-              <RefreshCw className="h-7 w-7" />
-            </div>
-            <h2 className="font-display text-3xl font-bold text-white">How updates appear</h2>
-            <p className="mt-4 leading-relaxed text-white/60">
-              Open the Battery Panic menu bar item and choose <strong className="text-white">Check for Updates...</strong>.
-              If a newer release is available, Sparkle shows the update window and handles the download.
-            </p>
-            <a
-              href={links.latestRelease}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-8 inline-flex items-center justify-center rounded-full bg-brand-red px-7 py-4 font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-brand-red-dark"
+          <div className="grid gap-6">
+            <motion.div
+              initial={{ opacity: 0, x: -26 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 shadow-2xl shadow-black/35"
             >
-              View latest GitHub release
-            </a>
-          </motion.div>
+              <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl border border-brand-teal/30 bg-brand-teal/10 text-brand-teal">
+                <RefreshCw className="h-7 w-7" />
+              </div>
+              <h2 className="font-display text-3xl font-bold text-white">How updates appear</h2>
+              <p className="mt-4 leading-relaxed text-white/60">
+                Open the Battery Panic menu bar item and choose <strong className="text-white">Check for Updates...</strong>.
+                If a newer release is available, Sparkle shows the update window and handles the download.
+              </p>
+              <a
+                href={links.latestRelease}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-8 inline-flex items-center justify-center rounded-full bg-brand-red px-7 py-4 font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-brand-red-dark"
+              >
+                View latest GitHub release
+              </a>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: -26 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.08 }}
+              className="rounded-[2rem] border border-brand-teal/20 bg-brand-teal/[0.045] p-8 shadow-2xl shadow-black/25"
+            >
+              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-teal/30 bg-brand-teal/10 text-brand-teal">
+                <Radio className="h-6 w-6" />
+              </div>
+              <h2 className="font-display text-2xl font-bold text-white">What gets checked</h2>
+              <p className="mt-4 leading-relaxed text-white/60">
+                Update checks only read the public GitHub appcast and release notes. Battery warnings
+                stay local, and no analytics or personal battery data are sent.
+              </p>
+              <div className="mt-6 flex items-center gap-3 rounded-2xl border border-white/10 bg-black/20 p-4">
+                <FileText className="h-5 w-5 text-brand-teal" />
+                <span className="text-sm font-semibold text-white/70">Release notes remain available on this page.</span>
+              </div>
+            </motion.div>
+          </div>
 
           <motion.div
             initial={{ opacity: 0, x: 26 }}
