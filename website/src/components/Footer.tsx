@@ -18,6 +18,9 @@ export function Footer() {
         
         <div className="text-center text-sm text-white/40">
           <p>Developed by LeonTOfficial. Open source, local-first, and built for macOS.</p>
+          <p className="mt-1 text-white/35">
+            Created with <span className="text-brand-red">❤️</span> by Leon.T in Germany.
+          </p>
           <a
             href="https://discord.gg/JPjrw3ft"
             target="_blank"

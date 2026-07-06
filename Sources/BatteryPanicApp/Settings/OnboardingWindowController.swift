@@ -171,14 +171,15 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
         icon.translatesAutoresizingMaskIntoConstraints = false
         tile.addSubview(icon)
 
-        let labels = NSStackView()
-        labels.orientation = .vertical
-        labels.alignment = .leading
-        labels.spacing = 4
-        labels.translatesAutoresizingMaskIntoConstraints = false
-        labels.addArrangedSubview(makeLabel("Start at login", size: 13, weight: .semibold, color: .labelColor, lines: 1))
-        labels.addArrangedSubview(makeLabel("Keep Battery Panic ready automatically.", size: 12, weight: .regular, color: .secondaryLabelColor, lines: 2))
-        tile.addSubview(labels)
+        let title = makeLabel("Start at login", size: 13, weight: .semibold, color: .labelColor, lines: 1)
+        title.translatesAutoresizingMaskIntoConstraints = false
+        title.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        tile.addSubview(title)
+
+        let body = makeLabel("Keep Battery Panic ready automatically.", size: 12, weight: .regular, color: .secondaryLabelColor, lines: 2)
+        body.translatesAutoresizingMaskIntoConstraints = false
+        body.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        tile.addSubview(body)
 
         launchAtLoginSwitch.target = self
         launchAtLoginSwitch.action = #selector(launchAtLoginChanged)
@@ -187,11 +188,15 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
         NSLayoutConstraint.activate([
             icon.leadingAnchor.constraint(equalTo: tile.leadingAnchor, constant: 18),
             icon.centerYAnchor.constraint(equalTo: tile.centerYAnchor),
-            labels.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 12),
-            labels.trailingAnchor.constraint(lessThanOrEqualTo: launchAtLoginSwitch.leadingAnchor, constant: -14),
-            labels.centerYAnchor.constraint(equalTo: tile.centerYAnchor),
+            title.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 12),
+            title.trailingAnchor.constraint(lessThanOrEqualTo: launchAtLoginSwitch.leadingAnchor, constant: -12),
+            title.topAnchor.constraint(equalTo: tile.topAnchor, constant: 36),
+            body.leadingAnchor.constraint(equalTo: title.leadingAnchor),
+            body.trailingAnchor.constraint(equalTo: tile.trailingAnchor, constant: -18),
+            body.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 4),
+            body.bottomAnchor.constraint(lessThanOrEqualTo: tile.bottomAnchor, constant: -18),
             launchAtLoginSwitch.trailingAnchor.constraint(equalTo: tile.trailingAnchor, constant: -18),
-            launchAtLoginSwitch.centerYAnchor.constraint(equalTo: tile.centerYAnchor)
+            launchAtLoginSwitch.centerYAnchor.constraint(equalTo: title.centerYAnchor)
         ])
         return tile
     }
