@@ -1,0 +1,6 @@
+{
+  "name": "BatteryPanic",
+  "description": "Landing page for BatteryPanic, a native macOS menu bar app that shows red pulsing low-battery alerts with customizable overlay and sound warnings.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
