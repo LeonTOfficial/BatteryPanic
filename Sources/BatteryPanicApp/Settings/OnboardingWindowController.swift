@@ -187,16 +187,16 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
         tile.addSubview(launchAtLoginSwitch)
         NSLayoutConstraint.activate([
             icon.leadingAnchor.constraint(equalTo: tile.leadingAnchor, constant: 18),
-            icon.centerYAnchor.constraint(equalTo: tile.centerYAnchor),
+            icon.topAnchor.constraint(equalTo: tile.topAnchor, constant: 30),
             title.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 12),
-            title.trailingAnchor.constraint(lessThanOrEqualTo: launchAtLoginSwitch.leadingAnchor, constant: -12),
-            title.topAnchor.constraint(equalTo: tile.topAnchor, constant: 36),
+            title.trailingAnchor.constraint(equalTo: tile.trailingAnchor, constant: -18),
+            title.topAnchor.constraint(equalTo: tile.topAnchor, constant: 32),
             body.leadingAnchor.constraint(equalTo: title.leadingAnchor),
             body.trailingAnchor.constraint(equalTo: tile.trailingAnchor, constant: -18),
             body.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 4),
-            body.bottomAnchor.constraint(lessThanOrEqualTo: tile.bottomAnchor, constant: -18),
+            body.bottomAnchor.constraint(lessThanOrEqualTo: launchAtLoginSwitch.topAnchor, constant: -8),
             launchAtLoginSwitch.trailingAnchor.constraint(equalTo: tile.trailingAnchor, constant: -18),
-            launchAtLoginSwitch.centerYAnchor.constraint(equalTo: title.centerYAnchor)
+            launchAtLoginSwitch.bottomAnchor.constraint(equalTo: tile.bottomAnchor, constant: -18)
         ])
         return tile
     }

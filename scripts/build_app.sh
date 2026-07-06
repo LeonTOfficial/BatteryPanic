@@ -61,6 +61,18 @@ clean_output_bundle_attributes() {
     find "$OUTPUT_APP_BUNDLE" -exec xattr -d 'com.apple.fileprovider.fpfs#P' {} \; 2>/dev/null || true
 }
 
+ensure_dmgbuild() {
+    if python3 - <<'PY' >/dev/null 2>&1
+import dmgbuild
+PY
+    then
+        return
+    fi
+
+    echo "Installing dmgbuild for styled DMG packaging..."
+    python3 -m pip install --user dmgbuild
+}
+
 cd "$ROOT_DIR"
 
 swift build -c "$BUILD_CONFIG"
@@ -183,77 +195,15 @@ if ! codesign --verify --deep --strict --verbose=2 "$OUTPUT_APP_BUNDLE"; then
 fi
 (cd "$STAGING_DIR" && ditto -c -k --keepParent --norsrc "$APP_NAME.app" "$RELEASE_ZIP")
 
-mkdir -p "$DMG_STAGING_DIR/.background"
-ditto --norsrc "$APP_BUNDLE" "$DMG_STAGING_DIR/$APP_NAME.app"
-cp "$ROOT_DIR/Resources/DMGBackground.png" "$DMG_STAGING_DIR/.background/background.png"
-sips -z 420 680 "$DMG_STAGING_DIR/.background/background.png" >/dev/null
-ln -s /Applications "$DMG_STAGING_DIR/Applications"
-printf '%s\n' \
-    '<?xml version="1.0" encoding="UTF-8"?>' \
-    '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' \
-    '<plist version="1.0">' \
-    '<dict>' \
-    '    <key>URL</key>' \
-    '    <string>x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension</string>' \
-    '</dict>' \
-    '</plist>' \
-    > "$DMG_STAGING_DIR/Open Privacy & Security.webloc"
+ensure_dmgbuild
+python3 -m dmgbuild \
+    --no-hidpi \
+    --settings "$ROOT_DIR/scripts/dmgbuild_settings.py" \
+    -D "app=$APP_BUNDLE" \
+    -D "background=$ROOT_DIR/Resources/DMGBackground.png" \
+    "$DMG_VOLUME_NAME" \
+    "$RELEASE_DMG" >/dev/null
 
-hdiutil create \
-    -volname "$DMG_VOLUME_NAME" \
-    -srcfolder "$DMG_STAGING_DIR" \
-    -ov \
-    -format UDRW \
-    "$DMG_RW" >/dev/null
-
-if [[ "${CI:-}" == "true" ]]; then
-    mkdir -p "$DMG_MOUNT_DIR"
-    hdiutil attach "$DMG_RW" -readwrite -noverify -noautoopen -mountpoint "$DMG_MOUNT_DIR" >/dev/null
-    echo "Skipping Finder DMG layout in CI. The DMG still contains the app, Applications shortcut, and background asset."
-else
-    mkdir -p "$DMG_MOUNT_DIR"
-    hdiutil attach "$DMG_RW" -readwrite -noverify -mountpoint "$DMG_MOUNT_DIR" >/dev/null
-    if ! osascript <<APPLESCRIPT
-tell application "Finder"
-    set dmgFolder to POSIX file "$DMG_MOUNT_DIR" as alias
-    open dmgFolder
-    delay 1
-    set dmgWindow to container window of dmgFolder
-    set current view of dmgWindow to icon view
-    set toolbar visible of dmgWindow to false
-    set statusbar visible of dmgWindow to false
-    set bounds of dmgWindow to {120, 120, 800, 540}
-    set viewOptions to icon view options of dmgWindow
-    set icon size of viewOptions to 96
-    set text size of viewOptions to 13
-    set background picture of viewOptions to (POSIX file "$DMG_MOUNT_DIR/.background/background.png" as alias)
-    set position of item "$APP_NAME.app" of dmgFolder to {190, 230}
-    set position of item "Applications" of dmgFolder to {490, 230}
-    try
-        set position of file "Open Privacy & Security.webloc" of dmgFolder to {340, 332}
-    end try
-    update dmgFolder without registering applications
-    delay 1
-    close dmgWindow
-end tell
-APPLESCRIPT
-    then
-        echo "Warning: Finder did not apply the custom DMG window layout. The DMG still contains the app, Applications shortcut, and background asset."
-    fi
-fi
-
-sync
-sleep 1
-if [[ "${CI:-}" != "true" && ! -f "$DMG_MOUNT_DIR/.DS_Store" ]]; then
-    echo "Warning: Finder did not write .DS_Store; DMG will still install correctly but may use default Finder layout."
-fi
-hdiutil detach "$DMG_MOUNT_DIR" >/dev/null
-if [[ "$DMG_MOUNT_DIR" == "${TMPDIR:-/tmp}"/* ]]; then
-    rm -rf "$DMG_MOUNT_DIR"
-else
-    rmdir "$DMG_MOUNT_DIR" >/dev/null 2>&1 || true
-fi
-hdiutil convert "$DMG_RW" -format UDZO -imagekey zlib-level=9 -o "$RELEASE_DMG" >/dev/null
 clean_output_bundle_attributes
 
 [[ -d "$OUTPUT_APP_BUNDLE" ]]
