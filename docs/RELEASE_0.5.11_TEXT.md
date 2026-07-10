@@ -20,7 +20,7 @@ This update also includes feedback from one of the first Battery Panic users, wh
 - At 2% or below while unplugged, Battery Panic switches to stronger critical wording.
 - The red overlay uses a stronger pulse and glow.
 - Apple system warning sounds repeat during the active alarm.
-- Battery Panic Siren keeps its original one-shot sound.
+- Battery Panic Siren now keeps warning during a real alarm until the alert ends.
 
 ### Website And Release Polish
 

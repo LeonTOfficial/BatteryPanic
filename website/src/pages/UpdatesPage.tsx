@@ -7,7 +7,7 @@ const latest = [
   "Charging reminder with adjustable threshold",
   <>Critical <span className="text-brand-red font-semibold">2%</span> battery mode</>,
   "Improved sound behavior and safer preview timing",
-  "Battery Panic Siren keeps its original one-shot sound",
+  "Battery Panic Siren keeps warning during a real alarm",
   "Better menu bar battery percentage display",
   "Updated installer and Privacy & Security guidance",
   "Thank you to Anni3 for the charging reminder idea",
