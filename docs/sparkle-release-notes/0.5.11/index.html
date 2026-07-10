@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Battery Panic 0.5.11</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0e1014;
+        --panel: #16191f;
+        --panel-soft: #1d1216;
+        --text: #fff7f7;
+        --muted: rgba(255, 247, 247, 0.68);
+        --red: #ff4050;
+        --teal: #2bd4d1;
+        --green: #42d66b;
+        --line: rgba(255, 255, 255, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at 20% 0%, rgba(255, 64, 80, 0.22), transparent 34rem),
+          radial-gradient(circle at 86% 18%, rgba(43, 212, 209, 0.14), transparent 28rem),
+          var(--bg);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+        line-height: 1.45;
+      }
+
+      main {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 34px 28px 40px;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid rgba(43, 212, 209, 0.25);
+        border-radius: 999px;
+        background: rgba(43, 212, 209, 0.09);
+        color: var(--teal);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        padding: 7px 11px;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 18px 0 10px;
+        font-size: clamp(32px, 7vw, 54px);
+        letter-spacing: -0.05em;
+        line-height: 0.98;
+      }
+
+      .lead {
+        margin: 0;
+        max-width: 650px;
+        color: var(--muted);
+        font-size: 17px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 26px;
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.045);
+        padding: 18px;
+      }
+
+      .card.important {
+        background: rgba(255, 64, 80, 0.075);
+        border-color: rgba(255, 64, 80, 0.22);
+      }
+
+      h2 {
+        margin: 0 0 8px;
+        font-size: 18px;
+      }
+
+      p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      ul {
+        margin: 20px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      li {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        border-top: 1px solid var(--line);
+        padding: 13px 0;
+        color: rgba(255, 247, 247, 0.78);
+        font-size: 14px;
+      }
+
+      li::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        margin-top: 6px;
+        border-radius: 999px;
+        background: var(--red);
+        box-shadow: 0 0 18px rgba(255, 64, 80, 0.8);
+        flex: 0 0 auto;
+      }
+
+      .thanks {
+        margin-top: 20px;
+        color: rgba(255, 247, 247, 0.76);
+      }
+
+      .heart {
+        color: var(--red);
+      }
+
+      @media (max-width: 640px) {
+        main {
+          padding: 28px 18px 32px;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <span class="badge">Battery Panic 0.5.11</span>
+      <h1>What&apos;s new in this update?</h1>
+      <p class="lead">
+        This release focuses on charging reminders, stronger critical warnings,
+        sound behavior, and safer update delivery.
+      </p>
+
+      <section class="grid" aria-label="Highlights">
+        <article class="card">
+          <h2>Charging reminder</h2>
+          <p>Battery Panic can remind you when charging reaches your chosen percentage.</p>
+        </article>
+        <article class="card important">
+          <h2>Critical <span style="color: var(--red)">2%</span> mode</h2>
+          <p>At 2% or below, the red warning becomes more urgent.</p>
+        </article>
+      </section>
+
+      <ul>
+        <li>Adjustable charging reminder threshold, enabled by default at 80%.</li>
+        <li>Stronger low-battery wording and glow for critical battery states.</li>
+        <li>Improved red-screen preview timing and safer sound behavior.</li>
+        <li>Menu bar battery percentage and charging display improvements.</li>
+        <li>Updated installer guidance and Sparkle update checks.</li>
+      </ul>
+
+      <p class="thanks">
+        Thanks to Anni3 for the charging reminder idea. Created with
+        <span class="heart">❤️</span> by Leon.T in Germany.
+      </p>
+    </main>
+  </body>
+</html>

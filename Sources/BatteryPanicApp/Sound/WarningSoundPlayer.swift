@@ -21,7 +21,7 @@ final class WarningSoundPlayer {
 
         if warningSound.source == .siren {
             activeSound = nil
-            sirenTonePlayer.play(looping: false)
+            sirenTonePlayer.play(looping: looping)
             return
         }
 

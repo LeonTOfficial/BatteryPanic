@@ -5,7 +5,7 @@ import { links } from "../content";
 const latest = [
   "Charging reminders and stronger critical alerts",
   "Charging reminder with adjustable threshold",
-  "Critical 2% battery mode",
+  <>Critical <span className="text-brand-red font-semibold">2%</span> battery mode</>,
   "Improved sound behavior and safer preview timing",
   "Battery Panic Siren keeps its original one-shot sound",
   "Better menu bar battery percentage display",
@@ -100,8 +100,8 @@ export function UpdatesPage() {
             </div>
             <h2 className="font-display text-3xl font-bold text-white">What's new</h2>
             <div className="mt-6 space-y-4">
-              {latest.map((item) => (
-                <div key={item} className="flex gap-3 rounded-2xl border border-white/10 bg-black/20 p-4">
+              {latest.map((item, index) => (
+                <div key={index} className="flex gap-3 rounded-2xl border border-white/10 bg-black/20 p-4">
                   <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-brand-red shadow-[0_0_18px_rgba(255,64,80,0.8)]" />
                   <p className="text-white/70">{item}</p>
                 </div>
@@ -113,7 +113,7 @@ export function UpdatesPage() {
         <div className="mt-8 grid gap-5 md:grid-cols-3">
           {[
             { icon: BatteryCharging, title: "Charging", text: "The app can remind you when charging reaches your chosen level." },
-            { icon: BellRing, title: "Critical alerts", text: "At 2% or below, the alert becomes more urgent." },
+            { icon: BellRing, title: <>Critical <span className="text-brand-red">2%</span> alerts</>, text: <>At <span className="text-brand-red font-medium">2%</span> or below, the alert becomes more urgent.</> },
             { icon: ShieldCheck, title: "Privacy", text: "Update checks are optional; battery warnings remain local." },
           ].map((item, index) => (
             <motion.article

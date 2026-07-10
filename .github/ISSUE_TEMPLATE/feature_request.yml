@@ -1,0 +1,41 @@
+name: Feature request
+description: Suggest an improvement for Battery Panic.
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for sharing an idea. Good feature requests explain the real situation where the feature would help.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      placeholder: "When my Mac..."
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: Your idea
+      placeholder: "Battery Panic could..."
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Low-battery alarm
+        - Charging reminder
+        - Menu bar
+        - Settings
+        - Installer / updates
+        - Website / documentation
+        - Other
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      placeholder: "I also thought about..."

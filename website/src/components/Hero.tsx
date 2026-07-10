@@ -17,10 +17,10 @@ export function Hero() {
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/80 text-sm mb-10 shadow-[0_0_30px_rgba(255,255,255,0.02)] backdrop-blur-md"
         >
           <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-red opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-red"></span>
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-green opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-green"></span>
           </span>
-          <span className="font-medium tracking-wide">Free and open source for macOS 13+</span>
+          <span className="font-medium tracking-wide"><span className="text-brand-green">Free</span> and open source for macOS 13+</span>
         </motion.div>
 
         <motion.h1
@@ -43,7 +43,7 @@ export function Hero() {
           className="text-lg md:text-2xl text-white/60 mb-12 max-w-3xl font-light leading-relaxed"
         >
           A native macOS menu bar app that forces you to plug in with highly visible
-          pulsing red overlays, charging reminders, critical 2% mode, and customizable sound warnings.
+          pulsing red overlays, charging reminders, critical <span className="text-brand-red font-medium">2%</span> mode, and customizable sound warnings.
         </motion.p>
 
         <motion.div

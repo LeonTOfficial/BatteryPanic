@@ -2,8 +2,8 @@ import { motion } from "motion/react";
 
 const faqs = [
   {
-    q: "Is Battery Panic free?",
-    a: "Yes, it is completely free and open-source. You can review the full codebase, contribute, or build it yourself from GitHub."
+    q: <>Is Battery Panic <span className="text-brand-green">free</span>?</>,
+    a: <>Yes, it is completely <span className="text-brand-green font-medium">free</span> and open-source. You can review the full codebase, contribute, or build it yourself from GitHub.</>
   },
   {
     q: "Will this app drain my battery faster?",

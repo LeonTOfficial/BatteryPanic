@@ -44,6 +44,9 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
+          <span className="hidden md:inline-flex rounded-full border border-brand-green/25 bg-brand-green/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-brand-green">
+            Free
+          </span>
           <a
             href={links.directDmg}
             className="hidden sm:inline-flex items-center rounded-full bg-brand-red px-4 py-2 text-sm font-semibold text-white shadow-[0_0_24px_rgba(255,64,80,0.24)] transition-all hover:-translate-y-0.5 hover:bg-brand-red-dark"

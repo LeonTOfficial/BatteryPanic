@@ -42,6 +42,7 @@ jobs:
           test -f docs/download/index.html
           test -f docs/updates/index.html
           test -f docs/release-notes/0.5.11/index.html
+          test -f docs/sparkle-release-notes/0.5.11/index.html
           test -d docs/web-assets
           grep -q "/BatteryPanic/web-assets/" docs/index.html
           grep -q "/BatteryPanic/web-assets/" docs/download/index.html
@@ -96,23 +97,35 @@ jobs:
           xmllint --noout appcast.xml
           grep -q "<sparkle:shortVersionString>0.5.11</sparkle:shortVersionString>" appcast.xml
           grep -q "<sparkle:version>16</sparkle:version>" appcast.xml
-          grep -q "leontofficial.github.io/BatteryPanic/release-notes/0.5.11/" appcast.xml
+          grep -q "leontofficial.github.io/BatteryPanic/sparkle-release-notes/0.5.11/" appcast.xml
           grep -q "releases/download/v0.5.11/Battery.Panic.0.5.11.zip" appcast.xml
           swift scripts/verify_appcast_update.swift
 
       - name: Check repository release docs
         run: |
           set -euo pipefail
+          test -f CODE_OF_CONDUCT.md
+          test -f .github/dependabot.yml
+          test -f .github/ISSUE_TEMPLATE/bug_report.yml
+          test -f .github/ISSUE_TEMPLATE/feature_request.yml
+          test -f .github/ISSUE_TEMPLATE/config.yml
+          test -f .github/workflows/release-guard.yml
           test -f Battery.Panic.0.5.11.md
           test -f docs/index.html
           test -f docs/download/index.html
           test -f docs/updates/index.html
           test -f docs/release-notes/0.5.11/index.html
+          test -f docs/sparkle-release-notes/0.5.11/index.html
           test -f docs/.nojekyll
           test -d docs/web-assets
+          test -f docs/wiki/Home.md
+          test -f docs/wiki/Installation.md
+          test -f docs/wiki/Updates.md
           grep -q "Battery Panic 0.5.11 Release Notes" Battery.Panic.0.5.11.md
           grep -q "Battery Panic Siren keeps its original one-shot" Battery.Panic.0.5.11.md
           grep -q "Thank you to Anni3" Battery.Panic.0.5.11.md
+          grep -q "Battery Panic 0.5.11" docs/sparkle-release-notes/0.5.11/index.html
+          grep -q "What's new in this update" docs/sparkle-release-notes/0.5.11/index.html
           grep -q "Battery.Panic.0.5.11.dmg" README.md
           grep -q "Battery.Panic.0.5.11.zip" README.md
           grep -q "Battery Panic - macOS Battery Alerts" docs/index.html

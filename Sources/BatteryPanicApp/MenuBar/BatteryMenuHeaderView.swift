@@ -24,13 +24,13 @@ final class BatteryMenuHeaderView: NSView {
         iconView.image = MenuBarIconFactory.image(appearance: appearance, percentage: status.percentage)
         titleLabel.stringValue = appearance.title
         let chargeText = settings.chargeReminderEnabled
-            ? "Charge: \(settings.chargeReminderThresholdPercentage)%"
-            : "Charge: off"
-        subtitleLabel.stringValue = "\(appearance.subtitle) Low: \(settings.thresholdPercentage)% - \(chargeText)"
+            ? "Charge \(settings.chargeReminderThresholdPercentage)%"
+            : "Charge off"
+        subtitleLabel.stringValue = "\(appearance.subtitle) • Low \(settings.thresholdPercentage)% • \(chargeText)"
     }
 
     private func setup() {
-        frame = NSRect(x: 0, y: 0, width: 344, height: 88)
+        frame = NSRect(x: 0, y: 0, width: 344, height: 96)
 
         let root = NSStackView()
         root.orientation = .vertical
@@ -52,12 +52,13 @@ final class BatteryMenuHeaderView: NSView {
         labels.orientation = .vertical
         labels.alignment = .leading
         labels.spacing = 2
+        labels.widthAnchor.constraint(equalToConstant: 256).isActive = true
 
         titleLabel.font = NSFont.systemFont(ofSize: 15, weight: .bold)
         subtitleLabel.font = NSFont.systemFont(ofSize: 11, weight: .regular)
         subtitleLabel.textColor = .secondaryLabelColor
-        subtitleLabel.lineBreakMode = .byTruncatingTail
-        subtitleLabel.maximumNumberOfLines = 1
+        subtitleLabel.lineBreakMode = .byWordWrapping
+        subtitleLabel.maximumNumberOfLines = 2
 
         labels.addArrangedSubview(titleLabel)
         labels.addArrangedSubview(subtitleLabel)

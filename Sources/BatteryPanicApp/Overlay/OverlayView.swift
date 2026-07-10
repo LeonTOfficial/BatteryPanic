@@ -90,7 +90,10 @@ final class OverlayView: NSView {
 
     private func drawWarningCard(in rect: NSRect) {
         let pulse = pulseEnabled ? pulseValue : 1
-        let cardWidth = min(max(rect.width * 0.38, 500), 640)
+        let cardWidth = min(
+            max(rect.width * 0.30, displayMode == .chargeReminder ? 430 : 470),
+            displayMode == .chargeReminder ? 520 : 560
+        )
         let cardHeight: CGFloat = 132
         let cardRect = NSRect(
             x: rect.midX - (cardWidth / 2),
@@ -181,7 +184,8 @@ final class OverlayView: NSView {
                 : (timeRemainingText ?? "Connect your charger to dismiss this alert.")
         }
 
-        let textOriginX = cardRect.minX + 124
+        let textOriginX = cardRect.minX + 116
+        let textWidth = max(220, cardRect.maxX - textOriginX - 28)
 
         drawText(
             eyebrow,
@@ -192,15 +196,17 @@ final class OverlayView: NSView {
         )
         drawText(
             title,
-            at: NSPoint(x: textOriginX, y: cardRect.minY + 47),
-            font: .systemFont(ofSize: 31, weight: .black),
-            color: accentColor
+            in: NSRect(x: textOriginX, y: cardRect.minY + 43, width: textWidth, height: 36),
+            font: .systemFont(ofSize: displayMode == .chargeReminder ? 24 : 29, weight: .black),
+            color: accentColor,
+            lineBreakMode: .byTruncatingTail
         )
         drawText(
             subtitle,
-            at: NSPoint(x: textOriginX + 2, y: cardRect.minY + 88),
+            in: NSRect(x: textOriginX + 2, y: cardRect.minY + 84, width: textWidth, height: 34),
             font: .systemFont(ofSize: 14, weight: .medium),
-            color: NSColor.white.withAlphaComponent(0.68)
+            color: NSColor.white.withAlphaComponent(0.68),
+            lineBreakMode: .byWordWrapping
         )
     }
 
@@ -213,6 +219,28 @@ final class OverlayView: NSView {
                 .kern: kern
             ]
         ).draw(at: point)
+    }
+
+    private func drawText(
+        _ text: String,
+        in rect: NSRect,
+        font: NSFont,
+        color: NSColor,
+        lineBreakMode: NSLineBreakMode
+    ) {
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.lineBreakMode = lineBreakMode
+        paragraph.maximumLineHeight = font.pointSize + 4
+        paragraph.minimumLineHeight = font.pointSize + 2
+
+        NSAttributedString(
+            string: text,
+            attributes: [
+                .font: font,
+                .foregroundColor: color,
+                .paragraphStyle: paragraph
+            ]
+        ).draw(with: rect)
     }
 
     private var accentColor: NSColor {

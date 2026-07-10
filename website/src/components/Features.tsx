@@ -104,7 +104,7 @@ export function Features() {
               </div>
               <h3 className="font-display font-bold text-3xl text-white mb-4">Unignorable Alerts</h3>
               <p className="text-white/60 text-lg leading-relaxed font-light">
-                When panic mode hits, standard notifications are easy to miss. Battery Panic uses a visible overlay, critical wording at 2%, and optional sound alerts.
+                When panic mode hits, standard notifications are easy to miss. Battery Panic uses a visible overlay, critical wording at <span className="text-brand-red font-medium">2%</span>, and optional sound alerts.
               </p>
             </motion.div>
           </div>
