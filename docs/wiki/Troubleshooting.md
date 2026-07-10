@@ -1,17 +1,42 @@
 # Troubleshooting
 
-## I do not see the menu bar icon
+This page covers common Battery Panic issues.
 
-Open macOS Control Center settings and make sure Battery Panic is allowed in the menu bar. You can also quit and reopen the app from Applications.
+## I Do Not See The Menu Bar Icon
 
-## macOS says the app cannot be opened
+Try these steps:
 
-Battery Panic is open source and distributed outside the Mac App Store. Open System Settings, go to Privacy & Security, scroll down, and click Open Anyway.
+1. Open Battery Panic from `Applications`.
+2. Check the right side of the macOS menu bar.
+3. If the menu bar is crowded, hide other menu bar items temporarily.
+4. Quit and reopen Battery Panic.
 
-## The update window shows an error
+If it still does not appear, restart your Mac and open Battery Panic again.
 
-Try quitting Battery Panic completely and checking for updates again. If the issue continues, install the newest DMG manually from the website.
+## macOS Says The App Cannot Be Opened
 
-## The overlay is too strong
+This can happen because Battery Panic is open source and distributed outside the Mac App Store.
 
-Open Settings and lower pulse intensity or disable the pulsing overlay.
+Open `System Settings`, go to `Privacy & Security`, scroll down, and click `Open Anyway` for Battery Panic.
+
+## The Update Window Shows An Error
+
+Try checking again after restarting the app.
+
+If the update still fails, download the latest DMG manually:
+
+https://leontofficial.github.io/BatteryPanic/download/
+
+## The Overlay Is Too Strong
+
+Open Settings and lower `Pulse intensity`.
+
+You can also disable `Pulse red overlay` if you want a calmer warning.
+
+## The Sound Is Too Much
+
+Open Settings and either choose a softer warning sound or disable `Play warning sound`.
+
+## Charging Reminder Appears Only Once
+
+That is expected. Battery Panic shows the charging reminder once per charging session so it does not keep interrupting you.
