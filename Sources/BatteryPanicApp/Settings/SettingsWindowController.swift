@@ -21,6 +21,7 @@ final class SettingsWindowController: NSWindowController {
     private let pauseButton = NSButton(title: "Pause Alarms for 30 Minutes", target: nil, action: nil)
     private let pauseInfoLabel = NSTextField(labelWithString: "Battery Panic cannot be disabled forever.")
     private let statusLabel = NSTextField(labelWithString: "Ready")
+    private weak var scrollView: NSScrollView?
 
     var onTestAlarm: (() -> Void)?
     var onTestSound: ((String) -> Void)?
@@ -55,6 +56,9 @@ final class SettingsWindowController: NSWindowController {
         window?.center()
         showWindow(nil)
         NSApp.activate(ignoringOtherApps: true)
+        DispatchQueue.main.async { [weak self] in
+            self?.scrollToTop()
+        }
     }
 
     private func setupUI() {
@@ -71,6 +75,7 @@ final class SettingsWindowController: NSWindowController {
         scrollView.hasVerticalScroller = true
         scrollView.borderType = .noBorder
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        self.scrollView = scrollView
 
         let documentView = NSView()
         documentView.translatesAutoresizingMaskIntoConstraints = false
@@ -640,6 +645,16 @@ final class SettingsWindowController: NSWindowController {
         alert.informativeText = informativeText
         alert.alertStyle = .warning
         alert.beginSheetModal(for: window)
+    }
+
+    private func scrollToTop() {
+        guard let scrollView, let documentView = scrollView.documentView else { return }
+
+        documentView.layoutSubtreeIfNeeded()
+        let visibleHeight = scrollView.contentView.bounds.height
+        let maxY = max(0, documentView.bounds.height - visibleHeight)
+        scrollView.contentView.scroll(to: NSPoint(x: 0, y: maxY))
+        scrollView.reflectScrolledClipView(scrollView.contentView)
     }
 
     private func makeSliderRow(title: String, slider: NSSlider, valueLabel: NSTextField) -> NSView {

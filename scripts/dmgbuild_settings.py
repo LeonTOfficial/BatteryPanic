@@ -1,6 +1,6 @@
 format = "UDZO"
 filesystem = "HFS+"
-size = "18M"
+size = "64M"
 
 files = [defines["app"]]
 symlinks = {

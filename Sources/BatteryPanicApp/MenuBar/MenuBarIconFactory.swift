@@ -14,35 +14,67 @@ enum MenuBarIconFactory {
     }
 
     static func image(appearance: BatteryStatusAppearance, percentage: Int) -> NSImage {
-        let size = NSSize(width: 19, height: 18)
+        image(appearance: appearance, percentage: percentage, size: NSSize(width: 22, height: 18))
+    }
+
+    static func image(appearance: BatteryStatusAppearance, percentage: Int, size: NSSize) -> NSImage {
         let image = NSImage(size: size)
         image.lockFocus()
 
         let color = appearance.color
+        let scaleX = size.width / 22
+        let scaleY = size.height / 18
+        let stroke = max(1.6, min(scaleX, scaleY) * 1.7)
 
-        let bodyRect = NSRect(x: 2, y: 4, width: 13, height: 9)
-        let body = NSBezierPath(roundedRect: bodyRect, xRadius: 2.2, yRadius: 2.2)
-        body.lineWidth = 1.7
+        let bodyRect = NSRect(
+            x: 2.4 * scaleX,
+            y: 4.4 * scaleY,
+            width: 14.8 * scaleX,
+            height: 8.8 * scaleY
+        )
+        let body = NSBezierPath(
+            roundedRect: bodyRect,
+            xRadius: 2.2 * min(scaleX, scaleY),
+            yRadius: 2.2 * min(scaleX, scaleY)
+        )
+        body.lineWidth = stroke
         color.setStroke()
         body.stroke()
 
-        let nub = NSBezierPath(roundedRect: NSRect(x: 16, y: 6.2, width: 2, height: 4.6), xRadius: 1, yRadius: 1)
+        let nub = NSBezierPath(
+            roundedRect: NSRect(x: 18.1 * scaleX, y: 6.6 * scaleY, width: 2.4 * scaleX, height: 4.8 * scaleY),
+            xRadius: 1.2 * min(scaleX, scaleY),
+            yRadius: 1.2 * min(scaleX, scaleY)
+        )
         color.setFill()
         nub.fill()
 
-        let fillWidth = max(2.4, min(10.2, CGFloat(percentage) / 100.0 * 10.2))
-        let fill = NSBezierPath(roundedRect: NSRect(x: 4.1, y: 6.1, width: fillWidth, height: 4.8), xRadius: 1, yRadius: 1)
+        let maxFillWidth = 10.9 * scaleX
+        let fillWidth = max(2.2 * scaleX, min(maxFillWidth, CGFloat(percentage) / 100.0 * maxFillWidth))
+        let fill = NSBezierPath(
+            roundedRect: NSRect(x: 4.8 * scaleX, y: 6.7 * scaleY, width: fillWidth, height: 4.2 * scaleY),
+            xRadius: 1.1 * min(scaleX, scaleY),
+            yRadius: 1.1 * min(scaleX, scaleY)
+        )
         color.withAlphaComponent(0.76).setFill()
         fill.fill()
 
         if appearance.showsCriticalDot {
-            let alertDot = NSBezierPath(ovalIn: NSRect(x: 14.1, y: 2.2, width: 3.4, height: 3.4))
+            let alertDot = NSBezierPath(
+                ovalIn: NSRect(x: 15.7 * scaleX, y: 2.1 * scaleY, width: 3.5 * scaleX, height: 3.5 * scaleY)
+            )
             NSColor.systemRed.withAlphaComponent(0.9).setFill()
             alertDot.fill()
         }
 
         if appearance.showsBolt {
-            drawText("⚡", in: NSRect(x: 5.4, y: 0.6, width: 10, height: 11), color: color, size: 9, weight: .bold)
+            drawText(
+                "⚡",
+                in: NSRect(x: 6.1 * scaleX, y: 0.8 * scaleY, width: 10 * scaleX, height: 11 * scaleY),
+                color: color,
+                size: 9 * min(scaleX, scaleY),
+                weight: .bold
+            )
         }
 
         image.unlockFocus()

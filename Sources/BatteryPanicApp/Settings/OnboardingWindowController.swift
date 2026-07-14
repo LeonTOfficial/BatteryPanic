@@ -14,7 +14,7 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
         self.loginItemService = loginItemService
 
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 880, height: 620),
+            contentRect: NSRect(x: 0, y: 0, width: 900, height: 660),
             styleMask: [.titled, .closable, .miniaturizable],
             backing: .buffered,
             defer: false
@@ -56,8 +56,8 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
         let stack = NSStackView()
         stack.orientation = .vertical
         stack.alignment = .leading
-        stack.spacing = 22
-        stack.edgeInsets = NSEdgeInsets(top: 34, left: 38, bottom: 28, right: 38)
+        stack.spacing = 24
+        stack.edgeInsets = NSEdgeInsets(top: 34, left: 42, bottom: 30, right: 42)
         stack.translatesAutoresizingMaskIntoConstraints = false
 
         stack.addArrangedSubview(makeTopBar())
@@ -81,7 +81,7 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
         row.orientation = .horizontal
         row.alignment = .centerY
         row.spacing = 12
-        row.widthAnchor.constraint(equalToConstant: 804).isActive = true
+        row.widthAnchor.constraint(equalToConstant: 816).isActive = true
 
         let icon = NSImageView(image: AppIconFactory.image(size: 38))
         icon.imageScaling = .scaleProportionallyUpOrDown
@@ -114,7 +114,7 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
     }
 
     private func makeHeroSection() -> NSView {
-        let card = makeCard(width: 804, height: 296, radius: 26)
+        let card = makeCard(width: 816, height: 296, radius: 26)
 
         let row = NSStackView()
         row.orientation = .horizontal
@@ -127,15 +127,15 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
         copy.orientation = .vertical
         copy.alignment = .leading
         copy.spacing = 16
-        copy.widthAnchor.constraint(equalToConstant: 402).isActive = true
+        copy.widthAnchor.constraint(equalToConstant: 408).isActive = true
 
         copy.addArrangedSubview(makePill("FIRST LAUNCH SETUP"))
         copy.addArrangedSubview(makeLabel("Your Mac should warn you before it disappears.", size: 32, weight: .bold, color: .labelColor, lines: 2))
         copy.addArrangedSubview(makeLabel("Battery Panic stays quiet in the menu bar, then shows a strong red overlay when the battery falls below your threshold while unplugged.", size: 14, weight: .regular, color: .secondaryLabelColor, lines: 3))
         copy.addArrangedSubview(makeFeedbackNote())
 
-        let hero = OnboardingHeroView(frame: NSRect(x: 0, y: 0, width: 320, height: 238))
-        hero.widthAnchor.constraint(equalToConstant: 320).isActive = true
+        let hero = OnboardingHeroView(frame: NSRect(x: 0, y: 0, width: 326, height: 238))
+        hero.widthAnchor.constraint(equalToConstant: 326).isActive = true
         hero.heightAnchor.constraint(equalToConstant: 238).isActive = true
 
         row.addArrangedSubview(copy)
@@ -156,7 +156,7 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
         row.orientation = .horizontal
         row.alignment = .top
         row.spacing = 14
-        row.widthAnchor.constraint(equalToConstant: 804).isActive = true
+        row.widthAnchor.constraint(equalToConstant: 816).isActive = true
 
         row.addArrangedSubview(makeInfoTile(symbolName: "battery.25", title: "10% default threshold", body: "Change it any time in Settings.", tint: .systemRed))
         row.addArrangedSubview(makeInfoTile(symbolName: "eye", title: "4-second preview", body: "Test the alert without draining your battery.", tint: .systemOrange))
@@ -165,7 +165,7 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
     }
 
     private func makeLoginTile() -> NSView {
-        let tile = makeCard(width: 258, height: 118, radius: 18)
+        let tile = makeCard(width: 262, height: 138, radius: 18)
 
         let icon = makeSymbol("power", tint: .systemGreen)
         icon.translatesAutoresizingMaskIntoConstraints = false
@@ -187,10 +187,10 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
         tile.addSubview(launchAtLoginSwitch)
         NSLayoutConstraint.activate([
             icon.leadingAnchor.constraint(equalTo: tile.leadingAnchor, constant: 18),
-            icon.topAnchor.constraint(equalTo: tile.topAnchor, constant: 30),
+            icon.topAnchor.constraint(equalTo: tile.topAnchor, constant: 28),
             title.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 12),
             title.trailingAnchor.constraint(equalTo: tile.trailingAnchor, constant: -18),
-            title.topAnchor.constraint(equalTo: tile.topAnchor, constant: 32),
+            title.topAnchor.constraint(equalTo: tile.topAnchor, constant: 30),
             body.leadingAnchor.constraint(equalTo: title.leadingAnchor),
             body.trailingAnchor.constraint(equalTo: tile.trailingAnchor, constant: -18),
             body.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 4),
@@ -202,7 +202,7 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
     }
 
     private func makeInfoTile(symbolName: String, title: String, body: String, tint: NSColor) -> NSView {
-        let card = makeCard(width: 258, height: 118, radius: 18)
+        let card = makeCard(width: 262, height: 138, radius: 18)
 
         let icon = makeSymbol(symbolName, tint: tint)
         icon.translatesAutoresizingMaskIntoConstraints = false
@@ -232,7 +232,7 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
         row.orientation = .horizontal
         row.alignment = .centerY
         row.spacing = 10
-        row.widthAnchor.constraint(equalToConstant: 804).isActive = true
+        row.widthAnchor.constraint(equalToConstant: 816).isActive = true
 
         let credits = makeLabel("Created by Leon.T", size: 12, weight: .medium, color: .secondaryLabelColor, lines: 1)
         let spacer = NSView()

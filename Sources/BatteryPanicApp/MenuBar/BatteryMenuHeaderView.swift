@@ -21,7 +21,11 @@ final class BatteryMenuHeaderView: NSView {
             for: status,
             threshold: settings.thresholdPercentage
         )
-        iconView.image = MenuBarIconFactory.image(appearance: appearance, percentage: status.percentage)
+        iconView.image = MenuBarIconFactory.image(
+            appearance: appearance,
+            percentage: status.percentage,
+            size: NSSize(width: 36, height: 28)
+        )
         titleLabel.stringValue = appearance.title
         let chargeText = settings.chargeReminderEnabled
             ? "Charge \(settings.chargeReminderThresholdPercentage)%"
@@ -45,8 +49,8 @@ final class BatteryMenuHeaderView: NSView {
         topRow.spacing = 10
 
         iconView.imageScaling = .scaleProportionallyUpOrDown
-        iconView.widthAnchor.constraint(equalToConstant: 32).isActive = true
-        iconView.heightAnchor.constraint(equalToConstant: 32).isActive = true
+        iconView.widthAnchor.constraint(equalToConstant: 36).isActive = true
+        iconView.heightAnchor.constraint(equalToConstant: 28).isActive = true
 
         let labels = NSStackView()
         labels.orientation = .vertical
