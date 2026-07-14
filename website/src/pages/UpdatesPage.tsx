@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { RefreshCw, Sparkles, Battery, LayoutPanelTop, ShieldCheck, FileText, Radio } from "lucide-react";
+import { RefreshCw, Sparkles, Battery, LayoutPanelTop, ShieldCheck, FileText, Radio, History } from "lucide-react";
 import { links } from "../content";
 
 const latest = [
@@ -9,6 +9,30 @@ const latest = [
   "Settings now opens at the top every time",
   "Version History release notes page is more polished",
   "Styled DMG packaging is more reliable during release builds",
+];
+
+const releaseHistory = [
+  {
+    version: "0.5.12",
+    title: "Polish release",
+    text: "Menu icon polish, larger welcome tiles, Settings scroll fix, cleaner Version History, and more reliable DMG packaging.",
+    href: `${import.meta.env.BASE_URL}sparkle-release-notes/0.5.12/`,
+    current: true,
+  },
+  {
+    version: "0.5.11",
+    title: "Charging reminders",
+    text: "Charging reminder, critical 2% mode, improved preview timing, and better update delivery.",
+    href: `${import.meta.env.BASE_URL}sparkle-release-notes/0.5.11/`,
+    current: false,
+  },
+  {
+    version: "0.5.9",
+    title: "Launch fixes",
+    text: "Menu bar reliability, estimated remaining time, first-launch behavior, and Sparkle update groundwork.",
+    href: `${import.meta.env.BASE_URL}sparkle-release-notes/0.5.9/`,
+    current: false,
+  },
 ];
 
 export function UpdatesPage() {
@@ -128,6 +152,53 @@ export function UpdatesPage() {
             </motion.article>
           ))}
         </div>
+
+        <motion.section
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-12 rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 shadow-2xl shadow-black/30"
+        >
+          <div className="mb-7 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-teal/30 bg-brand-teal/10 text-brand-teal">
+                <History className="h-6 w-6" />
+              </div>
+              <p className="text-sm font-bold uppercase tracking-[0.24em] text-brand-teal">History</p>
+              <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-white md:text-4xl">
+                Follow every public update.
+              </h2>
+            </div>
+            <p className="max-w-xl text-white/55">
+              Each version has its own styled notes page, so users can see what changed before installing.
+            </p>
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-3">
+            {releaseHistory.map((release, index) => (
+              <motion.a
+                key={release.version}
+                href={release.href}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.45, delay: index * 0.06 }}
+                className={`rounded-[1.4rem] border p-6 transition-all hover:-translate-y-1 hover:bg-white/[0.07] ${
+                  release.current
+                    ? "border-brand-red/35 bg-brand-red/[0.09]"
+                    : "border-white/10 bg-black/20"
+                }`}
+              >
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-brand-teal">
+                  {release.version}
+                </span>
+                <h3 className="mt-3 font-display text-xl font-bold text-white">{release.title}</h3>
+                <p className="mt-3 leading-relaxed text-white/58">{release.text}</p>
+              </motion.a>
+            ))}
+          </div>
+        </motion.section>
       </div>
     </section>
   );

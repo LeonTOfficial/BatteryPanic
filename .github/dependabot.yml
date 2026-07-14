@@ -4,6 +4,18 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 2
+    groups:
+      github-actions-minor-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
     labels:
       - dependencies
 
@@ -11,6 +23,18 @@ updates:
     directory: "/website"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 3
+    groups:
+      website-minor-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
     labels:
       - dependencies
 
@@ -18,5 +42,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 2
     labels:
       - dependencies

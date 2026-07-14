@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="dark light" />
-    <title>Battery Panic 0.5.11</title>
+    <title>Battery Panic 0.5.9</title>
     <link rel="stylesheet" href="../history.css" />
   </head>
   <body>
@@ -13,27 +13,27 @@
         <a class="back-link" href="../../updates/">← Update history</a>
         <div class="version-nav" aria-label="Versions">
           <a class="version-link" href="../0.5.12/">0.5.12</a>
-          <a class="version-link current" href="../0.5.11/">0.5.11</a>
-          <a class="version-link" href="../0.5.9/">0.5.9</a>
+          <a class="version-link" href="../0.5.11/">0.5.11</a>
+          <a class="version-link current" href="../0.5.9/">0.5.9</a>
         </div>
       </nav>
 
       <section class="hero" aria-label="Battery Panic release notes">
         <div class="intro">
-          <span class="badge">Battery Panic 0.5.11</span>
-          <h1>Charging reminders arrive.</h1>
+          <span class="badge">Battery Panic 0.5.9</span>
+          <h1>The update that made launches reliable.</h1>
           <p class="lead">
-            Battery Panic added charging reminders, stronger critical warnings,
-            safer preview timing, and cleaner update delivery for the macOS menu bar app.
+            Battery Panic restored the compact battery menu bar indicator,
+            fixed launch visibility, added estimated remaining time, and prepared Sparkle updates.
           </p>
           <div class="summary" aria-label="Release highlights">
             <article class="summary-card">
-              <h2>Charging reminder</h2>
-              <p>Get a short reminder when your Mac reaches the battery percentage you choose.</p>
+              <h2>Menu bar returns</h2>
+              <p>The compact battery icon and percentage came back with a cleaner app identity.</p>
             </article>
             <article class="summary-card critical">
-              <h2>Critical <span class="red">2%</span> mode</h2>
-              <p>At 2% or below, the red warning becomes stronger and more urgent.</p>
+              <h2>Launch reliability</h2>
+              <p>The app creates and rechecks the menu bar item when launched from Finder or Applications.</p>
             </article>
           </div>
         </div>
@@ -41,11 +41,11 @@
         <aside class="highlights">
           <h2>Release highlights</h2>
           <ul>
-            <li>Adjustable charging reminder threshold, enabled by default at 80%.</li>
-            <li>Stronger low-battery wording and glow for critical battery states.</li>
-            <li>Preview Red Screen timing is safer and stops automatically.</li>
-            <li>Menu bar battery percentage and charging display improvements.</li>
-            <li>Updated installer guidance and Sparkle update checks.</li>
+            <li>Restored compact menu bar battery display with current percentage.</li>
+            <li>Added estimated remaining battery time when macOS provides it.</li>
+            <li>Fixed launches that appeared to do nothing after opening the app.</li>
+            <li>Added Sparkle update support and a Check for Updates menu item.</li>
+            <li>Improved welcome, settings, sound, overlay, and temporary pause behavior.</li>
           </ul>
         </aside>
       </section>
@@ -53,18 +53,18 @@
       <section class="mini-grid" aria-label="What changed">
         <article class="mini-card">
           <div class="mini-icon">1</div>
-          <h2>More useful charging</h2>
-          <p>Battery Panic can now remind you while charging instead of only warning when power is low.</p>
+          <h2>Fresh identity</h2>
+          <p>The bundle identifier changed to avoid stale hidden menu bar state from older builds.</p>
         </article>
         <article class="mini-card">
           <div class="mini-icon">2</div>
-          <h2>Clearer panic state</h2>
-          <p>The app is easier to read in the menu bar and in the update notes before installing.</p>
+          <h2>Startup cleanup</h2>
+          <p>Battery polling and widget snapshot work no longer block normal startup.</p>
         </article>
         <article class="mini-card">
           <div class="mini-icon">3</div>
-          <h2>Polish & safety</h2>
-          <p>Sound, previews, installer guidance, and update checks were tightened for this release.</p>
+          <h2>Release groundwork</h2>
+          <p>ZIP, DMG, appcast, and Sparkle signing support were prepared for public updates.</p>
         </article>
       </section>
 
@@ -76,12 +76,12 @@
             <h2>Polish release</h2>
             <p>Menu icon polish, larger welcome tiles, Settings scroll fix, and cleaner Version History.</p>
           </a>
-          <a class="history-card current" href="../0.5.11/">
+          <a class="history-card" href="../0.5.11/">
             <span class="history-date">0.5.11</span>
             <h2>Charging reminders</h2>
-            <p>Charging reminder, critical <span class="red">2%</span> mode, and safer sound/preview behavior.</p>
+            <p>Charging reminder, critical 2% mode, and safer sound/preview behavior.</p>
           </a>
-          <a class="history-card" href="../0.5.9/">
+          <a class="history-card current" href="../0.5.9/">
             <span class="history-date">0.5.9</span>
             <h2>Launch fixes</h2>
             <p>Menu bar reliability, estimated time, first-launch flow, and Sparkle groundwork.</p>
@@ -90,7 +90,7 @@
       </section>
 
       <p class="footer-note">
-        <span>Thanks to Anni3 for the charging reminder idea.</span>
+        <span>Older release notes are kept here so changes stay easy to follow.</span>
         <span>Created with <span class="heart">❤️</span> by Leon.T in Germany.</span>
       </p>
     </main>

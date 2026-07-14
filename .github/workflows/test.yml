@@ -43,17 +43,23 @@ jobs:
           test -f docs/updates/index.html
           test -f docs/release-notes/0.5.12/index.html
           test -f docs/sparkle-release-notes/0.5.12/index.html
+          test -f docs/sparkle-release-notes/0.5.11/index.html
+          test -f docs/sparkle-release-notes/0.5.9/index.html
+          test -f docs/sparkle-release-notes/history.css
           test -d docs/web-assets
           grep -q "/BatteryPanic/web-assets/" docs/index.html
           grep -q "/BatteryPanic/web-assets/" docs/download/index.html
           grep -q "/BatteryPanic/web-assets/" docs/updates/index.html
           grep -q "/BatteryPanic/web-assets/" docs/release-notes/0.5.12/index.html
-          site_bundle="$(ls docs/web-assets/*.js | sort | tail -n 1)"
-          grep -q "What gets checked" "$site_bundle"
-          grep -q "Release notes remain available on this page" "$site_bundle"
-          grep -q "Download DMG" "$site_bundle"
-          grep -q "Free and open source" "$site_bundle"
-          grep -q "Cleaner menu bar battery icon rendering" "$site_bundle"
+          grep -q "What gets checked" docs/web-assets/*.js
+          grep -q "Release notes remain available on this page" docs/web-assets/*.js
+          grep -q "Download DMG" docs/web-assets/*.js
+          grep -q "Free and open source" docs/web-assets/*.js
+          grep -q "Cleaner menu bar battery icon rendering" docs/web-assets/*.js
+          grep -q "Follow every public update" docs/web-assets/*.js
+          grep -q "sparkle-release-notes/0.5.12/" docs/web-assets/*.js
+          grep -q "sparkle-release-notes/0.5.11/" docs/web-assets/*.js
+          grep -q "sparkle-release-notes/0.5.9/" docs/web-assets/*.js
 
       - name: Run logic tests
         run: ./scripts/run_tests.sh
@@ -98,6 +104,8 @@ jobs:
           grep -q "<sparkle:shortVersionString>0.5.12</sparkle:shortVersionString>" appcast.xml
           grep -q "<sparkle:version>17</sparkle:version>" appcast.xml
           grep -q "leontofficial.github.io/BatteryPanic/sparkle-release-notes/0.5.12/" appcast.xml
+          grep -q "leontofficial.github.io/BatteryPanic/sparkle-release-notes/0.5.11/" appcast.xml
+          grep -q "leontofficial.github.io/BatteryPanic/sparkle-release-notes/0.5.9/" appcast.xml
           grep -q "releases/download/v0.5.12/Battery.Panic.0.5.12.zip" appcast.xml
           swift scripts/verify_appcast_update.swift
 
@@ -116,6 +124,9 @@ jobs:
           test -f docs/updates/index.html
           test -f docs/release-notes/0.5.12/index.html
           test -f docs/sparkle-release-notes/0.5.12/index.html
+          test -f docs/sparkle-release-notes/0.5.11/index.html
+          test -f docs/sparkle-release-notes/0.5.9/index.html
+          test -f docs/sparkle-release-notes/history.css
           test -f docs/.nojekyll
           test -d docs/web-assets
           test -f docs/wiki/Home.md
@@ -126,6 +137,9 @@ jobs:
           grep -q "Settings now opens at the top" Battery.Panic.0.5.12.md
           grep -q "Battery Panic 0.5.12" docs/sparkle-release-notes/0.5.12/index.html
           grep -q "What&apos;s new in this update" docs/sparkle-release-notes/0.5.12/index.html
+          grep -q "Update history" docs/sparkle-release-notes/0.5.12/index.html
+          grep -q "Battery Panic 0.5.11" docs/sparkle-release-notes/0.5.11/index.html
+          grep -q "Battery Panic 0.5.9" docs/sparkle-release-notes/0.5.9/index.html
           grep -q "Battery.Panic.0.5.12.dmg" README.md
           grep -q "Battery.Panic.0.5.12.zip" README.md
           grep -q "Battery Panic - macOS Battery Alerts" docs/index.html
@@ -133,17 +147,17 @@ jobs:
           grep -q "Battery Panic Updates" docs/updates/index.html
           grep -q "Battery Panic 0.5.12 Release Notes" docs/release-notes/0.5.12/index.html
           grep -q "/BatteryPanic/web-assets/" docs/index.html
-          site_bundle="$(ls docs/web-assets/*.js | sort | tail -n 1)"
-          grep -q "Never Ignore" "$site_bundle"
-          grep -q "Free and open source" "$site_bundle"
-          grep -q "Download DMG" "$site_bundle"
-          grep -q "releases/download/v0.5.12/Battery.Panic.0.5.12.dmg" "$site_bundle"
-          grep -q "Developed by LeonTOfficial" "$site_bundle"
-          grep -q "discord.gg/JPjrw3ft" "$site_bundle"
-          grep -q "battery-panic-icon.png" "$site_bundle"
-          grep -q "Cleaner menu bar battery icon rendering" "$site_bundle"
-          grep -q "Version History release notes page is more polished" "$site_bundle"
-          grep -q "Settings now opens at the top every time" "$site_bundle"
+          grep -q "Never Ignore" docs/web-assets/*.js
+          grep -q "Free and open source" docs/web-assets/*.js
+          grep -q "Download DMG" docs/web-assets/*.js
+          grep -q "releases/download/v0.5.12/Battery.Panic.0.5.12.dmg" docs/web-assets/*.js
+          grep -q "Developed by LeonTOfficial" docs/web-assets/*.js
+          grep -q "discord.gg/JPjrw3ft" docs/web-assets/*.js
+          grep -q "battery-panic-icon.png" docs/web-assets/*.js
+          grep -q "Cleaner menu bar battery icon rendering" docs/web-assets/*.js
+          grep -q "Version History release notes page is more polished" docs/web-assets/*.js
+          grep -q "Settings now opens at the top every time" docs/web-assets/*.js
+          grep -q "Follow every public update" docs/web-assets/*.js
           grep -q "discord.gg/JPjrw3ft" README.md
           test -f docs/RELEASE_0.5.12_TEXT.md
           test -f docs/assets/battery-panic-icon.png
