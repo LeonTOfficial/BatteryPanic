@@ -1,16 +1,14 @@
 import { motion } from "motion/react";
-import { RefreshCw, Sparkles, BatteryCharging, BellRing, ShieldCheck, FileText, Radio } from "lucide-react";
+import { RefreshCw, Sparkles, Battery, LayoutPanelTop, ShieldCheck, FileText, Radio } from "lucide-react";
 import { links } from "../content";
 
 const latest = [
-  "Charging reminders and stronger critical alerts",
-  "Charging reminder with adjustable threshold",
-  <>Critical <span className="text-brand-red font-semibold">2%</span> battery mode</>,
-  "Improved sound behavior and safer preview timing",
-  "Battery Panic Siren keeps warning during a real alarm",
-  "Better menu bar battery percentage display",
-  "Updated installer and Privacy & Security guidance",
-  "Thank you to Anni3 for the charging reminder idea",
+  "Cleaner menu bar battery icon rendering",
+  "Cleaner larger battery icon inside the menu dropdown",
+  "Larger first-launch welcome setup tiles",
+  "Settings now opens at the top every time",
+  "Version History release notes page is more polished",
+  "Styled DMG packaging is more reliable during release builds",
 ];
 
 export function UpdatesPage() {
@@ -96,7 +94,7 @@ export function UpdatesPage() {
           >
             <div className="mb-6 flex items-center gap-3">
               <Sparkles className="h-6 w-6 text-brand-red" />
-              <p className="text-sm font-bold uppercase tracking-[0.22em] text-brand-red">Latest 0.5.11</p>
+              <p className="text-sm font-bold uppercase tracking-[0.22em] text-brand-red">Latest 0.5.12</p>
             </div>
             <h2 className="font-display text-3xl font-bold text-white">What's new</h2>
             <div className="mt-6 space-y-4">
@@ -112,9 +110,9 @@ export function UpdatesPage() {
 
         <div className="mt-8 grid gap-5 md:grid-cols-3">
           {[
-            { icon: BatteryCharging, title: "Charging", text: "The app can remind you when charging reaches your chosen level." },
-            { icon: BellRing, title: <>Critical <span className="text-brand-red">2%</span> alerts</>, text: <>At <span className="text-brand-red font-medium">2%</span> or below, the alert becomes more urgent.</> },
-            { icon: ShieldCheck, title: "Privacy", text: "Update checks are optional; battery warnings remain local." },
+            { icon: Battery, title: "Cleaner status", text: "The menu bar battery icon keeps its shape while still showing the percentage." },
+            { icon: LayoutPanelTop, title: "Better setup", text: "The welcome window and Settings entry point feel less cramped for new users." },
+            { icon: ShieldCheck, title: "Safer release", text: "ZIP, DMG, and Sparkle release notes are prepared for the update flow." },
           ].map((item, index) => (
             <motion.article
               key={item.title}

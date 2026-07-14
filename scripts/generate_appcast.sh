@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-VERSION="${VERSION:-0.5.11}"
+VERSION="${VERSION:-0.5.12}"
 SPARKLE_ACCOUNT="${SPARKLE_ACCOUNT:-BatteryPanic}"
 RELEASE_FILE="$ROOT_DIR/outputs/Battery.Panic.$VERSION.zip"
 APPCAST_WORK_DIR="$ROOT_DIR/work/sparkle-appcast"
@@ -38,6 +38,6 @@ else
         "$APPCAST_WORK_DIR"
 fi
 
-perl -0pi -e "s#https://raw.githubusercontent.com/LeonTOfficial/BatteryPanic/main/Battery\\.Panic\\.$VERSION\\.md#https://leontofficial.github.io/BatteryPanic/release-notes/$VERSION/#g" "$ROOT_DIR/appcast.xml"
+perl -0pi -e "s#https://raw.githubusercontent.com/LeonTOfficial/BatteryPanic/main/Battery\\.Panic\\.$VERSION\\.md#https://leontofficial.github.io/BatteryPanic/sparkle-release-notes/$VERSION/#g" "$ROOT_DIR/appcast.xml"
 
 echo "Generated appcast: $ROOT_DIR/appcast.xml"

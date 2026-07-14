@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.12
+
+- Improved the menu bar and menu header battery icon rendering so the battery shape looks less squeezed.
+- Enlarged the first-launch welcome setup tiles for better spacing and readability.
+- Fixed Settings opening at the previous scroll position; it now starts at the top when opened.
+- Reworked the Sparkle release notes page used by Version History.
+- Increased the styled DMG staging size so release DMG packaging completes reliably.
+
 ## 0.5.11
 
 - Added a charging reminder that appears once per charging session when the Mac reaches the configured charging percentage.

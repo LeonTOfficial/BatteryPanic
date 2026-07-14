@@ -5,6 +5,17 @@
         <link>https://github.com/LeonTOfficial/BatteryPanic</link>
         <description>Battery Panic app updates.</description>
         <item>
+            <title>0.5.12</title>
+            <pubDate>Tue, 14 Jul 2026 14:55:23 +0200</pubDate>
+            <link>https://github.com/LeonTOfficial/BatteryPanic</link>
+            <sparkle:version>17</sparkle:version>
+            <sparkle:shortVersionString>0.5.12</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+            <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
+            <sparkle:releaseNotesLink>https://leontofficial.github.io/BatteryPanic/sparkle-release-notes/0.5.12/</sparkle:releaseNotesLink>
+            <enclosure url="https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.12/Battery.Panic.0.5.12.zip" length="1335923" type="application/octet-stream" sparkle:edSignature="seEwVSTo7vuDyJ7kRI+BVHCJ5XiZdUE+kevEDaM5d66QUdCtPPBhuaz9NlXsZAc9XZ1NqmMFlHBJBH19//9hAg=="/>
+        </item>
+        <item>
             <title>0.5.11</title>
             <pubDate>Fri, 03 Jul 2026 20:17:03 +0200</pubDate>
             <link>https://github.com/LeonTOfficial/BatteryPanic</link>

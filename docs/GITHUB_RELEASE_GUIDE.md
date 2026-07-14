@@ -53,47 +53,47 @@ Before creating a GitHub Release:
 
 ```text
 Battery Panic.app
-Battery.Panic.0.5.11.zip
-Battery.Panic.0.5.11.dmg
+Battery.Panic.0.5.12.zip
+Battery.Panic.0.5.12.dmg
 ```
 
 4. Confirm the ZIP contains the finished `.app`, not source code.
 5. Confirm the DMG opens and supports the normal drag-and-drop install flow: `Battery Panic.app` -> `Applications`.
 6. Upload both files to the GitHub Release before relying on the direct README links.
 7. After uploading, the README links should resolve:
-   - `https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.11/Battery.Panic.0.5.11.dmg`
-   - `https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.11/Battery.Panic.0.5.11.zip`
+   - `https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.12/Battery.Panic.0.5.12.dmg`
+   - `https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.12/Battery.Panic.0.5.12.zip`
 
 ## Release Fields
 
 Create a new release with these values:
 
-- Tag: `v0.5.11`
-- Release title: `Battery Panic 0.5.11`
+- Tag: `v0.5.12`
+- Release title: `Battery Panic 0.5.12`
 - Release label: leave as `None` for a normal release. Use `Pre-release` only if you want to clearly mark it as a test build.
 - Attached binaries:
-  - `outputs/Battery.Panic.0.5.11.dmg`
-  - `outputs/Battery.Panic.0.5.11.zip`
+  - `outputs/Battery.Panic.0.5.12.dmg`
+  - `outputs/Battery.Panic.0.5.12.zip`
 
 Do not upload only GitHub's automatically generated source code archives as the main user download. Those are useful for developers, but normal users need the `.dmg` or `.zip` app package.
 
 You can copy the prepared release description from:
 
 ```text
-docs/RELEASE_0.5.11_TEXT.md
+docs/RELEASE_0.5.12_TEXT.md
 ```
 
 Suggested release description:
 
 ```markdown
-Battery Panic 0.5.11 adds a charging reminder, a stronger critical battery mode, and final polish fixes before the public release.
+Battery Panic 0.5.12 adds a charging reminder, a stronger critical battery mode, and final polish fixes before the public release.
 
 Download:
-- Recommended: `Battery.Panic.0.5.11.dmg`
-- Fallback: `Battery.Panic.0.5.11.zip`
+- Recommended: `Battery.Panic.0.5.12.dmg`
+- Fallback: `Battery.Panic.0.5.12.zip`
 
 Install with DMG:
-1. Download `Battery.Panic.0.5.11.dmg`.
+1. Download `Battery.Panic.0.5.12.dmg`.
 2. Open it.
 3. Drag `Battery Panic.app` into Applications.
 4. Open Battery Panic from Applications.
@@ -129,8 +129,8 @@ After uploading the ZIP, regenerate and commit the Sparkle appcast if needed:
 
 ```bash
 ./scripts/generate_appcast.sh
-git add appcast.xml Battery.Panic.0.5.11.md
-git commit -m "Update Sparkle appcast for 0.5.11"
+git add appcast.xml Battery.Panic.0.5.12.md
+git commit -m "Update Sparkle appcast for 0.5.12"
 git push origin main
 ```
 
