@@ -122,7 +122,7 @@ jobs:
           test -f docs/wiki/Installation.md
           test -f docs/wiki/Updates.md
           grep -q "Battery Panic 0.5.12 Release Notes" Battery.Panic.0.5.12.md
-          grep -q "Cleaner menu bar battery icon rendering" Battery.Panic.0.5.12.md
+          grep -q "Improved the battery icon drawing used in the macOS menu bar" Battery.Panic.0.5.12.md
           grep -q "Settings now opens at the top" Battery.Panic.0.5.12.md
           grep -q "Battery Panic 0.5.12" docs/sparkle-release-notes/0.5.12/index.html
           grep -q "What&apos;s new in this update" docs/sparkle-release-notes/0.5.12/index.html
