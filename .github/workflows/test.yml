@@ -118,6 +118,9 @@ jobs:
           test -f .github/ISSUE_TEMPLATE/feature_request.yml
           test -f .github/ISSUE_TEMPLATE/config.yml
           test -f .github/workflows/release-guard.yml
+          test -f .github/agents/release-manager.agent.md
+          test -f .github/agents/website-polisher.agent.md
+          test -f .github/agents/security-quality-reviewer.agent.md
           test -f Battery.Panic.0.5.12.md
           test -f docs/index.html
           test -f docs/download/index.html
