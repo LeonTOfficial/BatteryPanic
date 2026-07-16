@@ -6,6 +6,209 @@
     <meta name="color-scheme" content="dark light" />
     <title>Battery Panic 0.5.13</title>
     <link rel="stylesheet" href="../history.css" />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0e1014;
+        --panel: rgba(255, 255, 255, 0.06);
+        --panel-red: rgba(255, 64, 80, 0.1);
+        --text: #fff8f8;
+        --muted: rgba(255, 248, 248, 0.7);
+        --line: rgba(255, 255, 255, 0.13);
+        --red: #ff4050;
+        --teal: #2bd4d1;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at 12% 0%, rgba(255, 64, 80, 0.24), transparent 30rem),
+          radial-gradient(circle at 88% 12%, rgba(43, 212, 209, 0.18), transparent 30rem),
+          var(--bg);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+        line-height: 1.45;
+      }
+
+      a { color: inherit; text-decoration: none; }
+
+      main {
+        width: min(980px, calc(100% - 44px));
+        min-height: 100vh;
+        margin: 0 auto;
+        padding: 42px 0;
+        display: grid;
+        align-content: center;
+        gap: 20px;
+      }
+
+      .topbar,
+      .version-nav,
+      .summary,
+      .mini-grid,
+      .history-grid,
+      .footer-note {
+        display: flex;
+        gap: 10px;
+      }
+
+      .topbar {
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+
+      .version-nav { flex-wrap: wrap; justify-content: flex-end; }
+
+      .back-link,
+      .version-link,
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        font-weight: 800;
+      }
+
+      .back-link,
+      .version-link {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.06);
+        color: rgba(255, 248, 248, 0.78);
+        font-size: 13px;
+        padding: 9px 13px;
+      }
+
+      .version-link.current {
+        border-color: rgba(255, 64, 80, 0.45);
+        background: rgba(255, 64, 80, 0.16);
+        color: var(--text);
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 20px;
+      }
+
+      .intro,
+      .highlights,
+      .mini-card,
+      .history-card {
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background: var(--panel);
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
+      }
+
+      .intro,
+      .highlights,
+      .mini-card,
+      .history-card {
+        padding: 24px;
+      }
+
+      .badge {
+        border: 1px solid rgba(43, 212, 209, 0.34);
+        background: rgba(43, 212, 209, 0.1);
+        color: var(--teal);
+        font-size: 12px;
+        letter-spacing: 0.14em;
+        padding: 7px 12px;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 20px 0 12px;
+        font-size: clamp(40px, 7vw, 70px);
+        line-height: 0.96;
+      }
+
+      h2 { margin: 0 0 10px; }
+
+      .lead,
+      .summary-card p,
+      .mini-card p,
+      .history-card p,
+      li,
+      .footer-note {
+        color: var(--muted);
+      }
+
+      .summary,
+      .history-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 26px;
+      }
+
+      .summary-card {
+        min-height: 118px;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.045);
+        padding: 20px;
+      }
+
+      .summary-card.critical,
+      .history-card.current {
+        border-color: rgba(255, 64, 80, 0.28);
+        background: var(--panel-red);
+      }
+
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      li {
+        border-top: 1px solid var(--line);
+        padding: 13px 0;
+      }
+
+      li:first-child { border-top: 0; padding-top: 0; }
+      li::before { content: "• "; color: var(--red); font-weight: 900; }
+
+      .mini-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .mini-icon {
+        width: 34px;
+        height: 34px;
+        margin-bottom: 16px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        background: rgba(43, 212, 209, 0.12);
+        color: var(--teal);
+        font-weight: 900;
+      }
+
+      .history-card { display: block; }
+      .history-date, .red, .heart { color: var(--red); font-weight: 900; }
+
+      .footer-note {
+        justify-content: space-between;
+        flex-wrap: wrap;
+        border-top: 1px solid var(--line);
+        padding-top: 18px;
+        font-weight: 700;
+      }
+
+      @media (max-width: 760px) {
+        .hero,
+        .summary,
+        .mini-grid,
+        .history-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
   </head>
   <body>
     <main>

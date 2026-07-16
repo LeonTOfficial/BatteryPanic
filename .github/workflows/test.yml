@@ -104,8 +104,8 @@ jobs:
           grep -q "<sparkle:shortVersionString>0.5.13</sparkle:shortVersionString>" appcast.xml
           grep -q "<sparkle:version>18</sparkle:version>" appcast.xml
           grep -q "leontofficial.github.io/BatteryPanic/sparkle-release-notes/0.5.13/" appcast.xml
+          grep -q "leontofficial.github.io/BatteryPanic/sparkle-release-notes/0.5.12/" appcast.xml
           grep -q "leontofficial.github.io/BatteryPanic/sparkle-release-notes/0.5.11/" appcast.xml
-          grep -q "leontofficial.github.io/BatteryPanic/sparkle-release-notes/0.5.9/" appcast.xml
           grep -q "releases/download/v0.5.13/Battery.Panic.0.5.13.zip" appcast.xml
           swift scripts/verify_appcast_update.swift
 
