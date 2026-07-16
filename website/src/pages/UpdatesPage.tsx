@@ -3,21 +3,27 @@ import { RefreshCw, Sparkles, Battery, LayoutPanelTop, ShieldCheck, FileText, Ra
 import { links } from "../content";
 
 const latest = [
-  "Cleaner menu bar battery icon rendering",
-  "Cleaner larger battery icon inside the menu dropdown",
-  "Larger first-launch welcome setup tiles",
-  "Settings now opens at the top every time",
-  "Version History release notes page is more polished",
-  "Styled DMG packaging is more reliable during release builds",
+  "Fixed red overlay text alignment beside the battery icon",
+  "Improved spacing for 10%, 20%, and similar warning titles",
+  "Preview Alarm and real low-battery alerts use the same corrected layout",
+  "Slightly tuned the warning headline size for a cleaner card balance",
+  "Kept the existing red overlay design and behavior unchanged",
 ];
 
 const releaseHistory = [
+  {
+    version: "0.5.13",
+    title: "Overlay alignment",
+    text: "Fixes the red warning card title spacing so battery percentages no longer crowd the icon.",
+    href: `${import.meta.env.BASE_URL}sparkle-release-notes/0.5.13/`,
+    current: true,
+  },
   {
     version: "0.5.12",
     title: "Polish release",
     text: "Menu icon polish, larger welcome tiles, Settings scroll fix, cleaner Version History, and more reliable DMG packaging.",
     href: `${import.meta.env.BASE_URL}sparkle-release-notes/0.5.12/`,
-    current: true,
+    current: false,
   },
   {
     version: "0.5.11",
@@ -118,7 +124,7 @@ export function UpdatesPage() {
           >
             <div className="mb-6 flex items-center gap-3">
               <Sparkles className="h-6 w-6 text-brand-red" />
-              <p className="text-sm font-bold uppercase tracking-[0.22em] text-brand-red">Latest 0.5.12</p>
+              <p className="text-sm font-bold uppercase tracking-[0.22em] text-brand-red">Latest 0.5.13</p>
             </div>
             <h2 className="font-display text-3xl font-bold text-white">What's new</h2>
             <div className="mt-6 space-y-4">
@@ -134,9 +140,9 @@ export function UpdatesPage() {
 
         <div className="mt-8 grid gap-5 md:grid-cols-3">
           {[
-            { icon: Battery, title: "Cleaner status", text: "The menu bar battery icon keeps its shape while still showing the percentage." },
-            { icon: LayoutPanelTop, title: "Better setup", text: "The welcome window and Settings entry point feel less cramped for new users." },
-            { icon: ShieldCheck, title: "Safer release", text: "ZIP, DMG, and Sparkle release notes are prepared for the update flow." },
+            { icon: Battery, title: "Aligned warning card", text: "The red overlay headline starts after the icon with more breathing room." },
+            { icon: LayoutPanelTop, title: "Cleaner preview", text: "Preview Alarm now matches the corrected real alarm layout." },
+            { icon: ShieldCheck, title: "Safe hotfix", text: "This release keeps the existing alert behavior and only adjusts the drawing layout." },
           ].map((item, index) => (
             <motion.article
               key={item.title}

@@ -6,10 +6,10 @@ export const links = {
   faq: `${import.meta.env.BASE_URL}#faq`,
   downloadPage: `${import.meta.env.BASE_URL}download/`,
   updatesPage: `${import.meta.env.BASE_URL}updates/`,
-  releaseNotes: `${import.meta.env.BASE_URL}release-notes/0.5.12/`,
+  releaseNotes: `${import.meta.env.BASE_URL}release-notes/0.5.13/`,
   github: "https://github.com/LeonTOfficial/BatteryPanic",
   latestRelease: "https://github.com/LeonTOfficial/BatteryPanic/releases/latest",
-  directDmg: "https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.12/Battery.Panic.0.5.12.dmg",
+  directDmg: "https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.13/Battery.Panic.0.5.13.dmg",
   privacySettings: "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension",
 };
 
@@ -29,8 +29,8 @@ export function getCurrentPage(pathname = window.location.pathname) {
   if (
     normalized.endsWith("/updates/") ||
     normalized.endsWith("/updates") ||
-    normalized.endsWith("/release-notes/0.5.12/") ||
-    normalized.endsWith("/release-notes/0.5.12")
+    normalized.endsWith("/release-notes/0.5.13/") ||
+    normalized.endsWith("/release-notes/0.5.13")
   ) {
     return "updates";
   }

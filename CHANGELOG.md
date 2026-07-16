@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.13
+
+- Fixed the red overlay card text alignment so battery percentages no longer crowd or overlap the battery icon.
+- Tuned the warning title size and text spacing for preview and real low-battery alarms.
+
 ## 0.5.12
 
 - Improved the menu bar and menu header battery icon rendering so the battery shape looks less squeezed.

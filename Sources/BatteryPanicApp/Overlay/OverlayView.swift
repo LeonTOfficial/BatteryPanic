@@ -184,8 +184,11 @@ final class OverlayView: NSView {
                 : (timeRemainingText ?? "Connect your charger to dismiss this alert.")
         }
 
-        let textOriginX = cardRect.minX + 116
-        let textWidth = max(220, cardRect.maxX - textOriginX - 28)
+        let iconRightEdge = cardRect.minX + 28 + 76
+        let textOriginX = iconRightEdge + 28
+        let textRightInset: CGFloat = 34
+        let textWidth = max(180, cardRect.maxX - textOriginX - textRightInset)
+        let titleFontSize: CGFloat = displayMode == .chargeReminder ? 23 : 27
 
         drawText(
             eyebrow,
@@ -197,7 +200,7 @@ final class OverlayView: NSView {
         drawText(
             title,
             in: NSRect(x: textOriginX, y: cardRect.minY + 43, width: textWidth, height: 36),
-            font: .systemFont(ofSize: displayMode == .chargeReminder ? 24 : 29, weight: .black),
+            font: .systemFont(ofSize: titleFontSize, weight: .black),
             color: accentColor,
             lineBreakMode: .byTruncatingTail
         )
