@@ -116,7 +116,7 @@ jobs:
           grep -q "leontofficial.github.io/BatteryPanic/sparkle-release-notes/0.5.13/" appcast.xml
           grep -q "leontofficial.github.io/BatteryPanic/sparkle-release-notes/0.5.12/" appcast.xml
           grep -q "releases/download/v0.5.14/Battery.Panic.0.5.14.zip" appcast.xml
-          swift scripts/verify_appcast_update.swift
+          swift scripts/verify_appcast_update.swift "$release_zip"
 
       - name: Check repository release docs
         run: |
