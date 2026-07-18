@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.5.14
+
+- Rebuilt the menu bar battery icon with uniform Retina-safe geometry so it no longer looks stretched.
+- Made the battery fill accurately represent 0% through 100%, including a truly empty state and a clean full state.
+- Kept one clear charging indicator in the status bar while adding a geometric charging bolt to the larger menu header icon.
+- Added automated geometry and raster tests for empty, full, charging, and scaled icon states.
+- Updated the bundled Sparkle framework from 2.9.3 to 2.9.4.
+- Enabled secure automatic background downloads and installation when macOS permissions allow it.
+- Moved the launch update check onto Sparkle's recommended startup lifecycle and added privacy-safe error logging.
+- Explicitly disabled Sparkle system profiling.
+
 ## 0.5.13
 
 - Fixed the red overlay card text alignment so battery percentages no longer crowd or overlap the battery icon.

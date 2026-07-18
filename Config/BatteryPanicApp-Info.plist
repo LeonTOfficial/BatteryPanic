@@ -17,14 +17,16 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
-    <string>0.5.13</string>
+    <string>0.5.14</string>
     <key>CFBundleVersion</key>
-    <string>18</string>
+    <string>19</string>
     <key>LSMinimumSystemVersion</key>
     <string>13.0</string>
     <key>NSHighResolutionCapable</key>
     <true/>
     <key>SUEnableAutomaticChecks</key>
+    <true/>
+    <key>SUAutomaticallyUpdate</key>
     <true/>
     <key>SUEnableInstallerLauncherService</key>
     <true/>
@@ -34,6 +36,10 @@
     <string>XI4zReuhkT5oIylZw3eXkmtQArhooU4Q7fucZ8qndi8=</string>
     <key>SUScheduledCheckInterval</key>
     <integer>86400</integer>
+    <key>SUScheduledImpatientCheckInterval</key>
+    <integer>172800</integer>
+    <key>SUEnableSystemProfiling</key>
+    <false/>
     <key>SUShowReleaseNotes</key>
     <true/>
 </dict>

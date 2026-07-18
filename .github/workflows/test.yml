@@ -41,7 +41,8 @@ jobs:
           test -f docs/index.html
           test -f docs/download/index.html
           test -f docs/updates/index.html
-          test -f docs/release-notes/0.5.13/index.html
+          test -f docs/release-notes/0.5.14/index.html
+          test -f docs/sparkle-release-notes/0.5.14/index.html
           test -f docs/sparkle-release-notes/0.5.13/index.html
           test -f docs/sparkle-release-notes/0.5.11/index.html
           test -f docs/sparkle-release-notes/0.5.9/index.html
@@ -50,14 +51,14 @@ jobs:
           grep -q "/BatteryPanic/web-assets/" docs/index.html
           grep -q "/BatteryPanic/web-assets/" docs/download/index.html
           grep -q "/BatteryPanic/web-assets/" docs/updates/index.html
-          grep -q "/BatteryPanic/web-assets/" docs/release-notes/0.5.13/index.html
+          grep -q "/BatteryPanic/web-assets/" docs/release-notes/0.5.14/index.html
           grep -q "What gets checked" docs/web-assets/*.js
           grep -q "Release notes remain available on this page" docs/web-assets/*.js
           grep -q "Download DMG" docs/web-assets/*.js
           grep -q "Free and open source" docs/web-assets/*.js
-          grep -q "Fixed red overlay text alignment beside the battery icon" docs/web-assets/*.js
+          grep -q "Rebuilt the menu bar battery icon with uniform Retina-safe geometry" docs/web-assets/*.js
           grep -q "Follow every public update" docs/web-assets/*.js
-          grep -q "sparkle-release-notes/0.5.13/" docs/web-assets/*.js
+          grep -q "sparkle-release-notes/0.5.14/" docs/web-assets/*.js
           grep -q "sparkle-release-notes/0.5.11/" docs/web-assets/*.js
           grep -q "sparkle-release-notes/0.5.9/" docs/web-assets/*.js
 
@@ -78,8 +79,8 @@ jobs:
           set -euo pipefail
           rm -rf /tmp/BatteryPanicZipCheck
           mkdir -p /tmp/BatteryPanicZipCheck
-          release_zip="$(ls outputs/Battery.Panic.*.zip | sort | tail -n 1)"
-          release_dmg="$(ls outputs/Battery.Panic.*.dmg | sort | tail -n 1)"
+          release_zip="outputs/Battery.Panic.0.5.14.zip"
+          release_dmg="outputs/Battery.Panic.0.5.14.dmg"
           echo "Checking $release_zip"
           echo "Checking $release_dmg"
 
@@ -92,8 +93,16 @@ jobs:
 
           app_version="$(defaults read "$app/Contents/Info.plist" CFBundleShortVersionString)"
           app_build="$(defaults read "$app/Contents/Info.plist" CFBundleVersion)"
-          test "$app_version" = "0.5.13"
-          test "$app_build" = "18"
+          test "$app_version" = "0.5.14"
+          test "$app_build" = "19"
+
+          test "$(defaults read "$app/Contents/Info.plist" SUEnableAutomaticChecks)" = "1"
+          test "$(defaults read "$app/Contents/Info.plist" SUAutomaticallyUpdate)" = "1"
+          test "$(defaults read "$app/Contents/Info.plist" SUEnableSystemProfiling)" = "0"
+          test "$(defaults read "$app/Contents/Info.plist" SUScheduledCheckInterval)" = "86400"
+          test "$(defaults read "$app/Contents/Info.plist" SUScheduledImpatientCheckInterval)" = "172800"
+          sparkle_version="$(defaults read "$app/Contents/Frameworks/Sparkle.framework/Resources/Info.plist" CFBundleShortVersionString)"
+          test "$sparkle_version" = "2.9.4"
 
           codesign --verify --deep --strict --verbose=2 "$app"
           hdiutil verify "$release_dmg"
@@ -101,12 +110,12 @@ jobs:
           test -s "$release_dmg"
 
           xmllint --noout appcast.xml
-          grep -q "<sparkle:shortVersionString>0.5.13</sparkle:shortVersionString>" appcast.xml
-          grep -q "<sparkle:version>18</sparkle:version>" appcast.xml
+          grep -q "<sparkle:shortVersionString>0.5.14</sparkle:shortVersionString>" appcast.xml
+          grep -q "<sparkle:version>19</sparkle:version>" appcast.xml
+          grep -q "leontofficial.github.io/BatteryPanic/sparkle-release-notes/0.5.14/" appcast.xml
           grep -q "leontofficial.github.io/BatteryPanic/sparkle-release-notes/0.5.13/" appcast.xml
           grep -q "leontofficial.github.io/BatteryPanic/sparkle-release-notes/0.5.12/" appcast.xml
-          grep -q "leontofficial.github.io/BatteryPanic/sparkle-release-notes/0.5.11/" appcast.xml
-          grep -q "releases/download/v0.5.13/Battery.Panic.0.5.13.zip" appcast.xml
+          grep -q "releases/download/v0.5.14/Battery.Panic.0.5.14.zip" appcast.xml
           swift scripts/verify_appcast_update.swift
 
       - name: Check repository release docs
@@ -121,11 +130,14 @@ jobs:
           test -f .github/agents/release-manager.agent.md
           test -f .github/agents/website-polisher.agent.md
           test -f .github/agents/security-quality-reviewer.agent.md
-          test -f Battery.Panic.0.5.13.md
+          test -x scripts/run_icon_tests.sh
+          test -f Tests/BatteryPanicTests/MenuBarIconTestRunner.swift
+          test -f Battery.Panic.0.5.14.md
           test -f docs/index.html
           test -f docs/download/index.html
           test -f docs/updates/index.html
-          test -f docs/release-notes/0.5.13/index.html
+          test -f docs/release-notes/0.5.14/index.html
+          test -f docs/sparkle-release-notes/0.5.14/index.html
           test -f docs/sparkle-release-notes/0.5.13/index.html
           test -f docs/sparkle-release-notes/0.5.11/index.html
           test -f docs/sparkle-release-notes/0.5.9/index.html
@@ -135,34 +147,33 @@ jobs:
           test -f docs/wiki/Home.md
           test -f docs/wiki/Installation.md
           test -f docs/wiki/Updates.md
-          grep -q "Battery Panic 0.5.13 Release Notes" Battery.Panic.0.5.13.md
-          grep -q "Fixed the warning title position in the red overlay" Battery.Panic.0.5.13.md
-          grep -q "Battery percentages such as" Battery.Panic.0.5.13.md
-          grep -q "Battery Panic 0.5.13" docs/sparkle-release-notes/0.5.13/index.html
-          grep -q "What&apos;s new in this update" docs/sparkle-release-notes/0.5.13/index.html
-          grep -q "Update history" docs/sparkle-release-notes/0.5.13/index.html
+          grep -q "Battery Panic 0.5.14 Release Notes" Battery.Panic.0.5.14.md
+          grep -q "Rebuilt the icon with uniform geometry" Battery.Panic.0.5.14.md
+          grep -q "Updated the bundled Sparkle framework from 2.9.3 to 2.9.4" Battery.Panic.0.5.14.md
+          grep -q "Battery Panic 0.5.14" docs/sparkle-release-notes/0.5.14/index.html
+          grep -q "What&apos;s new in this update" docs/sparkle-release-notes/0.5.14/index.html
+          grep -q "Update history" docs/sparkle-release-notes/0.5.14/index.html
           grep -q "Battery Panic 0.5.11" docs/sparkle-release-notes/0.5.11/index.html
           grep -q "Battery Panic 0.5.9" docs/sparkle-release-notes/0.5.9/index.html
-          grep -q "Battery.Panic.0.5.13.dmg" README.md
-          grep -q "Battery.Panic.0.5.13.zip" README.md
+          grep -q "Battery.Panic.0.5.14.dmg" README.md
+          grep -q "Battery.Panic.0.5.14.zip" README.md
           grep -q "Battery Panic - macOS Battery Alerts" docs/index.html
           grep -q "Download Battery Panic" docs/download/index.html
           grep -q "Battery Panic Updates" docs/updates/index.html
-          grep -q "Battery Panic 0.5.13 Release Notes" docs/release-notes/0.5.13/index.html
+          grep -q "Battery Panic 0.5.14 Release Notes" docs/release-notes/0.5.14/index.html
           grep -q "/BatteryPanic/web-assets/" docs/index.html
           grep -q "Never Ignore" docs/web-assets/*.js
           grep -q "Free and open source" docs/web-assets/*.js
           grep -q "Download DMG" docs/web-assets/*.js
-          grep -q "releases/download/v0.5.13/Battery.Panic.0.5.13.dmg" docs/web-assets/*.js
+          grep -q "releases/download/v0.5.14/Battery.Panic.0.5.14.dmg" docs/web-assets/*.js
           grep -q "Developed by LeonTOfficial" docs/web-assets/*.js
           grep -q "discord.gg/JPjrw3ft" docs/web-assets/*.js
           grep -q "battery-panic-icon.png" docs/web-assets/*.js
-          grep -q "Fixed red overlay text alignment beside the battery icon" docs/web-assets/*.js
-          grep -q "Fixed red overlay text alignment beside the battery icon" docs/web-assets/*.js
-          grep -q "Preview Alarm and real low-battery alerts use the same corrected layout" docs/web-assets/*.js
+          grep -q "Rebuilt the menu bar battery icon with uniform Retina-safe geometry" docs/web-assets/*.js
+          grep -q "Enabled secure automatic background updates when macOS permits" docs/web-assets/*.js
           grep -q "Follow every public update" docs/web-assets/*.js
           grep -q "discord.gg/JPjrw3ft" README.md
-          test -f docs/RELEASE_0.5.13_TEXT.md
+          test -f docs/RELEASE_0.5.14_TEXT.md
           test -f docs/assets/battery-panic-icon.png
 
       - name: Scan for committed secret-looking values
