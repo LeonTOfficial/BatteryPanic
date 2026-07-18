@@ -33,7 +33,7 @@ Battery Panic is suitable for an initial public source release after local verif
 ./scripts/build_app.sh
 rm -rf /tmp/BatteryPanicZipCheck
 mkdir -p /tmp/BatteryPanicZipCheck
-ditto -x -k "outputs/Battery.Panic.0.5.13.zip" /tmp/BatteryPanicZipCheck
+ditto -x -k "outputs/Battery.Panic.0.5.14.zip" /tmp/BatteryPanicZipCheck
 codesign --verify --deep --strict --verbose=2 "/tmp/BatteryPanicZipCheck/Battery Panic.app"
 rg -n "(token|secret|password|api[_-]?key|BEGIN PRIVATE|ghp_|github_pat|sk-)" . --glob '!/.build/**' --glob '!outputs/**'
 ```

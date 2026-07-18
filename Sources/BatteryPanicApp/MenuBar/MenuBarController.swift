@@ -207,7 +207,9 @@ final class MenuBarController: NSObject {
                 showsBolt: false,
                 showsCriticalDot: true
             ) : appearance,
-            percentage: percentage
+            percentage: percentage,
+            size: NSSize(width: 22, height: 18),
+            showsChargingIndicator: false
         )
         button.imagePosition = .imageLeading
         button.title = title
