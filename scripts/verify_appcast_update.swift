@@ -50,6 +50,7 @@ let appcastURL = root.appendingPathComponent("appcast.xml")
 let infoPlistURL = root.appendingPathComponent("Config/BatteryPanicApp-Info.plist")
 let arguments = Array(CommandLine.arguments.dropFirst())
 let verifyPublicReleaseNotes = arguments.contains("--public-release-notes")
+let verifyMetadataOnly = arguments.contains("--metadata-only")
 let updateArchivePath = arguments.first { !$0.hasPrefix("--") }
 
 func readPublicKey() throws -> String {
@@ -141,12 +142,6 @@ func releaseNotesData(for update: AppcastUpdate) throws -> Data {
 
 do {
     let update = try readAppcastUpdate()
-    let data = try updateData(for: update)
-
-    guard data.count == update.length else {
-        throw VerifyError.invalidLength("appcast says \(update.length), file is \(data.count)")
-    }
-
     guard
         let signatureData = Data(base64Encoded: update.signature),
         let publicKeyData = Data(base64Encoded: try readPublicKey())
@@ -155,8 +150,14 @@ do {
     }
 
     let publicKey = try Curve25519.Signing.PublicKey(rawRepresentation: publicKeyData)
-    guard publicKey.isValidSignature(signatureData, for: data) else {
-        throw VerifyError.signatureMismatch
+    if !verifyMetadataOnly {
+        let data = try updateData(for: update)
+        guard data.count == update.length else {
+            throw VerifyError.invalidLength("appcast says \(update.length), file is \(data.count)")
+        }
+        guard publicKey.isValidSignature(signatureData, for: data) else {
+            throw VerifyError.signatureMismatch
+        }
     }
 
     let releaseNotesData = try releaseNotesData(for: update)
@@ -168,7 +169,7 @@ do {
         throw VerifyError.invalidReleaseNotes("release notes do not look like Battery Panic notes")
     }
 
-    print("Sparkle appcast update verified")
+    print(verifyMetadataOnly ? "Sparkle appcast metadata verified" : "Sparkle appcast update verified")
     print("URL: \(update.url.absoluteString)")
     print("Release notes: \(update.releaseNotesURL.absoluteString)")
     print("Length: \(update.length)")
