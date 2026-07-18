@@ -7,8 +7,8 @@ BUNDLE_ID="com.leontofficial.batterypanic.mac"
 WIDGET_NAME="BatteryPanicWidgetExtension"
 WIDGET_DISPLAY_NAME="Battery Panic Widget"
 WIDGET_BUNDLE_ID="$BUNDLE_ID.widget"
-VERSION="0.5.13"
-BUILD_NUMBER="18"
+VERSION="0.5.14"
+BUILD_NUMBER="19"
 BUILD_CONFIG="${BUILD_CONFIG:-release}"
 DMG_VOLUME_NAME="$APP_NAME $VERSION"
 SPARKLE_FEED_URL="${SPARKLE_FEED_URL:-https://raw.githubusercontent.com/LeonTOfficial/BatteryPanic/main/appcast.xml}"
@@ -136,8 +136,14 @@ cat > "$APP_BUNDLE/Contents/Info.plist" <<PLIST
     <true/>
     <key>SUEnableAutomaticChecks</key>
     <true/>
+    <key>SUAutomaticallyUpdate</key>
+    <true/>
     <key>SUScheduledCheckInterval</key>
     <integer>86400</integer>
+    <key>SUScheduledImpatientCheckInterval</key>
+    <integer>172800</integer>
+    <key>SUEnableSystemProfiling</key>
+    <false/>
     <key>SUFeedURL</key>
     <string>$SPARKLE_FEED_URL</string>
     <key>SUShowReleaseNotes</key>

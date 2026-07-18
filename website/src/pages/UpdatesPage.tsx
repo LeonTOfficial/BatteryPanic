@@ -3,20 +3,28 @@ import { RefreshCw, Sparkles, Battery, LayoutPanelTop, ShieldCheck, FileText, Ra
 import { links } from "../content";
 
 const latest = [
-  "Fixed red overlay text alignment beside the battery icon",
-  "Improved spacing for 10%, 20%, and similar warning titles",
-  "Preview Alarm and real low-battery alerts use the same corrected layout",
-  "Slightly tuned the warning headline size for a cleaner card balance",
-  "Kept the existing red overlay design and behavior unchanged",
+  "Rebuilt the menu bar battery icon with uniform Retina-safe geometry",
+  "Battery fill now accurately represents empty through full states",
+  "Charging and critical states stay clear without distorted symbols",
+  "Updated the bundled Sparkle framework to version 2.9.4",
+  "Enabled secure automatic background updates when macOS permits",
+  "Added icon geometry and rendered-pixel regression tests",
 ];
 
 const releaseHistory = [
+  {
+    version: "0.5.14",
+    title: "Clear icons and automatic updates",
+    text: "Retina-safe battery states, accurate fill levels, Sparkle 2.9.4, and secure background installation.",
+    href: `${import.meta.env.BASE_URL}sparkle-release-notes/0.5.14/`,
+    current: true,
+  },
   {
     version: "0.5.13",
     title: "Overlay alignment",
     text: "Fixes the red warning card title spacing so battery percentages no longer crowd the icon.",
     href: `${import.meta.env.BASE_URL}sparkle-release-notes/0.5.13/`,
-    current: true,
+    current: false,
   },
   {
     version: "0.5.12",
@@ -124,7 +132,7 @@ export function UpdatesPage() {
           >
             <div className="mb-6 flex items-center gap-3">
               <Sparkles className="h-6 w-6 text-brand-red" />
-              <p className="text-sm font-bold uppercase tracking-[0.22em] text-brand-red">Latest 0.5.13</p>
+              <p className="text-sm font-bold uppercase tracking-[0.22em] text-brand-red">Latest 0.5.14</p>
             </div>
             <h2 className="font-display text-3xl font-bold text-white">What's new</h2>
             <div className="mt-6 space-y-4">
@@ -140,9 +148,9 @@ export function UpdatesPage() {
 
         <div className="mt-8 grid gap-5 md:grid-cols-3">
           {[
-            { icon: Battery, title: "Aligned warning card", text: "The red overlay headline starts after the icon with more breathing room." },
-            { icon: LayoutPanelTop, title: "Cleaner preview", text: "Preview Alarm now matches the corrected real alarm layout." },
-            { icon: ShieldCheck, title: "Safe hotfix", text: "This release keeps the existing alert behavior and only adjusts the drawing layout." },
+            { icon: Battery, title: "Accurate battery states", text: "Empty, partial, full, charging, and critical icons share one distortion-free geometry." },
+            { icon: LayoutPanelTop, title: "Cleaner menu bar", text: "The compact icon and percentage remain balanced at every battery level." },
+            { icon: ShieldCheck, title: "Safer updates", text: "Sparkle verifies signed archives before installing updates in the background." },
           ].map((item, index) => (
             <motion.article
               key={item.title}

@@ -19,3 +19,4 @@ swiftc \
     -o "$TEST_BINARY"
 
 "$TEST_BINARY"
+"$ROOT_DIR/scripts/run_icon_tests.sh"
