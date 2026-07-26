@@ -15,8 +15,8 @@
     "@tailwindcss/vite": "^4.3.3",
     "@vitejs/plugin-react": "^5.0.4",
     "lucide-react": "^0.577.0",
-    "react": "^19.0.1",
-    "react-dom": "^19.0.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "vite": "^6.2.3",
     "motion": "^12.23.24"
   },
