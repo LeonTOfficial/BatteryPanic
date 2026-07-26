@@ -16,6 +16,7 @@ final class AppCoordinator {
     private var alarmVisible = false
     private var chargeReminderVisible = false
     private var chargeReminderShownThisSession = false
+    private var chargeReminderArmedThisSession = false
     private var chargeReminderToken = UUID()
     private var testAlarmVisible = false
     private var testAlarmToken = UUID()
@@ -141,7 +142,11 @@ final class AppCoordinator {
         let settings = settingsStore.snapshot()
         if AlarmPolicy.shouldResetChargeReminder(status: status, settings: settings) {
             chargeReminderShownThisSession = false
+            chargeReminderArmedThisSession = false
             hideChargeReminder()
+        }
+        if AlarmPolicy.shouldArmChargeReminder(status: status, settings: settings) {
+            chargeReminderArmedThisSession = true
         }
 
         if settings.isPaused {
@@ -176,7 +181,8 @@ final class AppCoordinator {
         if AlarmPolicy.shouldShowChargeReminder(
             status: status,
             settings: settings,
-            alreadyShownThisSession: chargeReminderShownThisSession
+            alreadyShownThisSession: chargeReminderShownThisSession,
+            hasObservedBelowThresholdThisSession: chargeReminderArmedThisSession
         ) {
             showChargeReminder(status: status, settings: settings)
         }

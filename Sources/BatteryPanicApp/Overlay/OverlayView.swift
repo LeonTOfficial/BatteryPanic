@@ -41,9 +41,19 @@ final class OverlayView: NSView {
 
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
+        clearPreviousFrame()
         drawRedWash(in: bounds)
         drawRedVignette(in: bounds)
         drawWarningCard(in: bounds)
+    }
+
+    private func clearPreviousFrame() {
+        guard let context = NSGraphicsContext.current?.cgContext else { return }
+        context.saveGState()
+        context.setBlendMode(.copy)
+        context.setFillColor(NSColor.clear.cgColor)
+        context.fill(bounds)
+        context.restoreGState()
     }
 
     private func drawRedWash(in rect: NSRect) {
@@ -171,7 +181,7 @@ final class OverlayView: NSView {
         case .chargeReminder:
             eyebrow = "CHARGING REMINDER"
             title = "Battery reached \(percentage)%"
-            subtitle = "You can unplug now, or keep charging if you need more power."
+            subtitle = "You can unplug now, or keep charging."
         case .criticalBattery:
             eyebrow = isTest ? "PREVIEW MODE" : "CRITICAL BATTERY"
             title = "\(percentage)% battery left"
@@ -192,14 +202,15 @@ final class OverlayView: NSView {
 
         drawText(
             eyebrow,
-            at: NSPoint(x: textOriginX, y: cardRect.minY + 25),
+            in: NSRect(x: textOriginX, y: cardRect.minY + 19, width: textWidth, height: 18),
             font: .systemFont(ofSize: 11, weight: .black),
             color: accentColor.withAlphaComponent(0.78),
+            lineBreakMode: .byTruncatingTail,
             kern: 1.0
         )
         drawText(
             title,
-            in: NSRect(x: textOriginX, y: cardRect.minY + 43, width: textWidth, height: 36),
+            in: NSRect(x: textOriginX, y: cardRect.minY + 42, width: textWidth, height: 36),
             font: .systemFont(ofSize: titleFontSize, weight: .black),
             color: accentColor,
             lineBreakMode: .byTruncatingTail
@@ -213,23 +224,13 @@ final class OverlayView: NSView {
         )
     }
 
-    private func drawText(_ text: String, at point: NSPoint, font: NSFont, color: NSColor, kern: CGFloat = 0) {
-        NSAttributedString(
-            string: text,
-            attributes: [
-                .font: font,
-                .foregroundColor: color,
-                .kern: kern
-            ]
-        ).draw(at: point)
-    }
-
     private func drawText(
         _ text: String,
         in rect: NSRect,
         font: NSFont,
         color: NSColor,
-        lineBreakMode: NSLineBreakMode
+        lineBreakMode: NSLineBreakMode,
+        kern: CGFloat = 0
     ) {
         let paragraph = NSMutableParagraphStyle()
         paragraph.lineBreakMode = lineBreakMode
@@ -241,7 +242,8 @@ final class OverlayView: NSView {
             attributes: [
                 .font: font,
                 .foregroundColor: color,
-                .paragraphStyle: paragraph
+                .paragraphStyle: paragraph,
+                .kern: kern
             ]
         ).draw(with: rect)
     }

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.15
+
+- Prevented charging reminders from appearing immediately after app launch or login when the battery is already at or above the configured threshold.
+- Charging reminders now require the battery to cross the threshold during the current charging session.
+- Cleared the transparent overlay surface before every animation frame to prevent duplicated or distorted text.
+- Separated and aligned text regions for normal alarms, previews, critical battery mode, and charging reminders.
+- Added startup-session policy coverage and pixel-level overlay rendering regression tests.
+
 ## 0.5.14
 
 - Rebuilt the menu bar battery icon with uniform Retina-safe geometry so it no longer looks stretched.

@@ -87,7 +87,8 @@ struct AlarmPolicyTestRunner {
                 AlarmPolicy.shouldShowChargeReminder(
                     status: status,
                     settings: settings(threshold: 10, chargeThreshold: 80),
-                    alreadyShownThisSession: false
+                    alreadyShownThisSession: false,
+                    hasObservedBelowThresholdThisSession: true
                 )
             )
         }
@@ -104,7 +105,8 @@ struct AlarmPolicyTestRunner {
                 !AlarmPolicy.shouldShowChargeReminder(
                     status: status,
                     settings: settings(threshold: 10, chargeThreshold: 80),
-                    alreadyShownThisSession: false
+                    alreadyShownThisSession: false,
+                    hasObservedBelowThresholdThisSession: true
                 )
             )
         }
@@ -121,7 +123,8 @@ struct AlarmPolicyTestRunner {
                 !AlarmPolicy.shouldShowChargeReminder(
                     status: status,
                     settings: settings(threshold: 10, chargeThreshold: 80),
-                    alreadyShownThisSession: false
+                    alreadyShownThisSession: false,
+                    hasObservedBelowThresholdThisSession: true
                 )
             )
         }
@@ -138,7 +141,76 @@ struct AlarmPolicyTestRunner {
                 !AlarmPolicy.shouldShowChargeReminder(
                     status: status,
                     settings: settings(threshold: 10, chargeThreshold: 80),
-                    alreadyShownThisSession: true
+                    alreadyShownThisSession: true,
+                    hasObservedBelowThresholdThisSession: true
+                )
+            )
+        }
+
+        do {
+            let status = BatteryStatus(
+                percentage: 80,
+                powerSource: .acPower,
+                isCharging: true,
+                hasBattery: true
+            )
+            suite.expect(
+                "does not show charging reminder from the first status after launch",
+                !AlarmPolicy.shouldShowChargeReminder(
+                    status: status,
+                    settings: settings(threshold: 10, chargeThreshold: 80),
+                    alreadyShownThisSession: false,
+                    hasObservedBelowThresholdThisSession: false
+                )
+            )
+        }
+
+        do {
+            let status = BatteryStatus(
+                percentage: 100,
+                powerSource: .acPower,
+                isCharging: false,
+                hasBattery: true
+            )
+            suite.expect(
+                "does not show charging reminder after relaunch while already full",
+                !AlarmPolicy.shouldShowChargeReminder(
+                    status: status,
+                    settings: settings(threshold: 10, chargeThreshold: 80),
+                    alreadyShownThisSession: false,
+                    hasObservedBelowThresholdThisSession: false
+                )
+            )
+        }
+
+        do {
+            let status = BatteryStatus(
+                percentage: 79,
+                powerSource: .acPower,
+                isCharging: true,
+                hasBattery: true
+            )
+            suite.expect(
+                "arms charging reminder after observing below threshold while plugged in",
+                AlarmPolicy.shouldArmChargeReminder(
+                    status: status,
+                    settings: settings(threshold: 10, chargeThreshold: 80)
+                )
+            )
+        }
+
+        do {
+            let status = BatteryStatus(
+                percentage: 79,
+                powerSource: .batteryPower,
+                isCharging: false,
+                hasBattery: true
+            )
+            suite.expect(
+                "does not arm charging reminder while unplugged",
+                !AlarmPolicy.shouldArmChargeReminder(
+                    status: status,
+                    settings: settings(threshold: 10, chargeThreshold: 80)
                 )
             )
         }
