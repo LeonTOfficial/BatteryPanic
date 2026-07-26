@@ -52,7 +52,7 @@ export function DownloadPage() {
             </div>
 
             <p className="mt-5 text-sm text-white/40">
-              Latest public package: Battery Panic 0.5.14 DMG
+              Latest public package: Battery Panic 0.5.15 DMG
             </p>
           </div>
 

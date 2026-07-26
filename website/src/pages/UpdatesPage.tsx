@@ -3,21 +3,28 @@ import { RefreshCw, Sparkles, Battery, LayoutPanelTop, ShieldCheck, FileText, Ra
 import { links } from "../content";
 
 const latest = [
-  "Rebuilt the menu bar battery icon with uniform Retina-safe geometry",
-  "Battery fill now accurately represents empty through full states",
-  "Charging and critical states stay clear without distorted symbols",
-  "Updated the bundled Sparkle framework to version 2.9.4",
-  "Enabled secure automatic background updates when macOS permits",
-  "Added icon geometry and rendered-pixel regression tests",
+  "Charging reminders no longer fire immediately after app launch or login",
+  "Reminders now wait for a real threshold crossing in the current charging session",
+  "Animated overlays clear the transparent drawing surface before every frame",
+  "Normal, preview, critical, and charging text regions stay separately aligned",
+  "Charging reminder copy remains crisp at both 80% and 100%",
+  "Added startup-policy and pixel-level overlay rendering regression tests",
 ];
 
 const releaseHistory = [
+  {
+    version: "0.5.15",
+    title: "Session-aware reminders",
+    text: "Startup-safe charging reminders and crisp, ghost-free animated overlays.",
+    href: `${import.meta.env.BASE_URL}sparkle-release-notes/0.5.15/`,
+    current: true,
+  },
   {
     version: "0.5.14",
     title: "Clear icons and automatic updates",
     text: "Retina-safe battery states, accurate fill levels, Sparkle 2.9.4, and secure background installation.",
     href: `${import.meta.env.BASE_URL}sparkle-release-notes/0.5.14/`,
-    current: true,
+    current: false,
   },
   {
     version: "0.5.13",
@@ -132,7 +139,7 @@ export function UpdatesPage() {
           >
             <div className="mb-6 flex items-center gap-3">
               <Sparkles className="h-6 w-6 text-brand-red" />
-              <p className="text-sm font-bold uppercase tracking-[0.22em] text-brand-red">Latest 0.5.14</p>
+              <p className="text-sm font-bold uppercase tracking-[0.22em] text-brand-red">Latest 0.5.15</p>
             </div>
             <h2 className="font-display text-3xl font-bold text-white">What's new</h2>
             <div className="mt-6 space-y-4">
@@ -148,9 +155,9 @@ export function UpdatesPage() {
 
         <div className="mt-8 grid gap-5 md:grid-cols-3">
           {[
-            { icon: Battery, title: "Accurate battery states", text: "Empty, partial, full, charging, and critical icons share one distortion-free geometry." },
-            { icon: LayoutPanelTop, title: "Cleaner menu bar", text: "The compact icon and percentage remain balanced at every battery level." },
-            { icon: ShieldCheck, title: "Safer updates", text: "Sparkle verifies signed archives before installing updates in the background." },
+            { icon: Battery, title: "Session-aware reminders", text: "Charging reminders wait for an observed threshold crossing instead of firing at startup." },
+            { icon: LayoutPanelTop, title: "Crisp overlays", text: "Every pulse frame redraws cleanly without duplicated or distorted text." },
+            { icon: ShieldCheck, title: "Regression coverage", text: "Policy and pixel-level tests protect both startup behavior and overlay rendering." },
           ].map((item, index) => (
             <motion.article
               key={item.title}

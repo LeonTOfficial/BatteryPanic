@@ -17,14 +17,22 @@ enum AlarmPolicy {
     static func shouldShowChargeReminder(
         status: BatteryStatus,
         settings: AlarmSettingsSnapshot,
-        alreadyShownThisSession: Bool
+        alreadyShownThisSession: Bool,
+        hasObservedBelowThresholdThisSession: Bool
     ) -> Bool {
         guard !settings.isPaused else { return false }
         guard settings.chargeReminderEnabled else { return false }
         guard !alreadyShownThisSession else { return false }
+        guard hasObservedBelowThresholdThisSession else { return false }
         guard status.hasBattery else { return false }
         guard status.isPluggedIn else { return false }
         return status.percentage >= settings.chargeReminderThresholdPercentage
+    }
+
+    static func shouldArmChargeReminder(status: BatteryStatus, settings: AlarmSettingsSnapshot) -> Bool {
+        guard status.hasBattery else { return false }
+        guard status.isPluggedIn else { return false }
+        return status.percentage < settings.chargeReminderThresholdPercentage
     }
 
     static func shouldResetChargeReminder(status: BatteryStatus, settings: AlarmSettingsSnapshot) -> Bool {
