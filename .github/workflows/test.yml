@@ -44,7 +44,9 @@ jobs:
           test -f docs/index.html
           test -f docs/download/index.html
           test -f docs/updates/index.html
+          test -f docs/release-notes/0.5.16/index.html
           test -f docs/release-notes/0.5.15/index.html
+          test -f docs/sparkle-release-notes/0.5.16/index.html
           test -f docs/sparkle-release-notes/0.5.15/index.html
           test -f docs/sparkle-release-notes/0.5.14/index.html
           test -f docs/sparkle-release-notes/0.5.13/index.html
@@ -55,13 +57,14 @@ jobs:
           grep -q "/BatteryPanic/web-assets/" docs/index.html
           grep -q "/BatteryPanic/web-assets/" docs/download/index.html
           grep -q "/BatteryPanic/web-assets/" docs/updates/index.html
-          grep -q "/BatteryPanic/web-assets/" docs/release-notes/0.5.15/index.html
+          grep -q "/BatteryPanic/web-assets/" docs/release-notes/0.5.16/index.html
           grep -q "What gets checked" docs/web-assets/*.js
           grep -q "Release notes remain available on this page" docs/web-assets/*.js
           grep -q "Download DMG" docs/web-assets/*.js
           grep -q "Free and open source" docs/web-assets/*.js
-          grep -q "Charging reminders no longer fire immediately after app launch or login" docs/web-assets/*.js
+          grep -q "Fixed vertically shifted text in every full-screen alarm overlay" docs/web-assets/*.js
           grep -q "Follow every public update" docs/web-assets/*.js
+          grep -q "sparkle-release-notes/0.5.16/" docs/web-assets/*.js
           grep -q "sparkle-release-notes/0.5.15/" docs/web-assets/*.js
           grep -q "sparkle-release-notes/0.5.14/" docs/web-assets/*.js
           grep -q "sparkle-release-notes/0.5.11/" docs/web-assets/*.js
@@ -84,8 +87,8 @@ jobs:
           set -euo pipefail
           rm -rf /tmp/BatteryPanicZipCheck
           mkdir -p /tmp/BatteryPanicZipCheck
-          release_zip="outputs/Battery.Panic.0.5.15.zip"
-          release_dmg="outputs/Battery.Panic.0.5.15.dmg"
+          release_zip="outputs/Battery.Panic.0.5.16.zip"
+          release_dmg="outputs/Battery.Panic.0.5.16.dmg"
           echo "Checking $release_zip"
           echo "Checking $release_dmg"
 
@@ -98,8 +101,8 @@ jobs:
 
           app_version="$(defaults read "$app/Contents/Info.plist" CFBundleShortVersionString)"
           app_build="$(defaults read "$app/Contents/Info.plist" CFBundleVersion)"
-          test "$app_version" = "0.5.15"
-          test "$app_build" = "20"
+          test "$app_version" = "0.5.16"
+          test "$app_build" = "21"
 
           test "$(defaults read "$app/Contents/Info.plist" SUEnableAutomaticChecks)" = "1"
           test "$(defaults read "$app/Contents/Info.plist" SUAutomaticallyUpdate)" = "1"
@@ -115,12 +118,12 @@ jobs:
           test -s "$release_dmg"
 
           xmllint --noout appcast.xml
-          grep -q "<sparkle:shortVersionString>0.5.15</sparkle:shortVersionString>" appcast.xml
-          grep -q "<sparkle:version>20</sparkle:version>" appcast.xml
+          grep -q "<sparkle:shortVersionString>0.5.16</sparkle:shortVersionString>" appcast.xml
+          grep -q "<sparkle:version>21</sparkle:version>" appcast.xml
+          grep -q "leontofficial.github.io/BatteryPanic/sparkle-release-notes/0.5.16/" appcast.xml
           grep -q "leontofficial.github.io/BatteryPanic/sparkle-release-notes/0.5.15/" appcast.xml
           grep -q "leontofficial.github.io/BatteryPanic/sparkle-release-notes/0.5.14/" appcast.xml
-          grep -q "leontofficial.github.io/BatteryPanic/sparkle-release-notes/0.5.13/" appcast.xml
-          grep -q "releases/download/v0.5.15/Battery.Panic.0.5.15.zip" appcast.xml
+          grep -q "releases/download/v0.5.16/Battery.Panic.0.5.16.zip" appcast.xml
           # CI rebuilds have different archive bytes and cannot match the signed
           # release ZIP. Release Guard verifies the uploaded ZIP cryptographically.
           swift scripts/verify_appcast_update.swift --metadata-only
@@ -139,11 +142,13 @@ jobs:
           test -f .github/agents/security-quality-reviewer.agent.md
           test -x scripts/run_icon_tests.sh
           test -f Tests/BatteryPanicTests/MenuBarIconTestRunner.swift
-          test -f Battery.Panic.0.5.15.md
+          test -f Battery.Panic.0.5.16.md
           test -f docs/index.html
           test -f docs/download/index.html
           test -f docs/updates/index.html
+          test -f docs/release-notes/0.5.16/index.html
           test -f docs/release-notes/0.5.15/index.html
+          test -f docs/sparkle-release-notes/0.5.16/index.html
           test -f docs/sparkle-release-notes/0.5.15/index.html
           test -f docs/sparkle-release-notes/0.5.14/index.html
           test -f docs/sparkle-release-notes/0.5.13/index.html
@@ -155,9 +160,12 @@ jobs:
           test -f docs/wiki/Home.md
           test -f docs/wiki/Installation.md
           test -f docs/wiki/Updates.md
-          grep -q "Battery Panic 0.5.15 Release Notes" Battery.Panic.0.5.15.md
-          grep -q "Charging reminders no longer appear immediately" Battery.Panic.0.5.15.md
-          grep -q "Every animation frame now clears the transparent drawing surface" Battery.Panic.0.5.15.md
+          grep -q "Battery Panic 0.5.16 Release Notes" Battery.Panic.0.5.16.md
+          grep -q "stable, separate vertical baselines" Battery.Panic.0.5.16.md
+          grep -q "pixel-band checks" Battery.Panic.0.5.16.md
+          grep -q "Battery Panic 0.5.16" docs/sparkle-release-notes/0.5.16/index.html
+          grep -q "What&apos;s new in this update" docs/sparkle-release-notes/0.5.16/index.html
+          grep -q "Update history" docs/sparkle-release-notes/0.5.16/index.html
           grep -q "Battery Panic 0.5.15" docs/sparkle-release-notes/0.5.15/index.html
           grep -q "What&apos;s new in this update" docs/sparkle-release-notes/0.5.15/index.html
           grep -q "Update history" docs/sparkle-release-notes/0.5.15/index.html
@@ -166,25 +174,25 @@ jobs:
           grep -q "Update history" docs/sparkle-release-notes/0.5.14/index.html
           grep -q "Battery Panic 0.5.11" docs/sparkle-release-notes/0.5.11/index.html
           grep -q "Battery Panic 0.5.9" docs/sparkle-release-notes/0.5.9/index.html
-          grep -q "Battery.Panic.0.5.15.dmg" README.md
-          grep -q "Battery.Panic.0.5.15.zip" README.md
+          grep -q "Battery.Panic.0.5.16.dmg" README.md
+          grep -q "Battery.Panic.0.5.16.zip" README.md
           grep -q "Battery Panic - macOS Battery Alerts" docs/index.html
           grep -q "Download Battery Panic" docs/download/index.html
           grep -q "Battery Panic Updates" docs/updates/index.html
-          grep -q "Battery Panic 0.5.15 Release Notes" docs/release-notes/0.5.15/index.html
+          grep -q "Battery Panic 0.5.16 Release Notes" docs/release-notes/0.5.16/index.html
           grep -q "/BatteryPanic/web-assets/" docs/index.html
           grep -q "Never Ignore" docs/web-assets/*.js
           grep -q "Free and open source" docs/web-assets/*.js
           grep -q "Download DMG" docs/web-assets/*.js
-          grep -q "releases/download/v0.5.15/Battery.Panic.0.5.15.dmg" docs/web-assets/*.js
+          grep -q "releases/download/v0.5.16/Battery.Panic.0.5.16.dmg" docs/web-assets/*.js
           grep -q "Developed by LeonTOfficial" docs/web-assets/*.js
           grep -q "discord.gg/JPjrw3ft" docs/web-assets/*.js
           grep -q "battery-panic-icon.png" docs/web-assets/*.js
-          grep -q "Charging reminders no longer fire immediately after app launch or login" docs/web-assets/*.js
-          grep -q "Animated overlays clear the transparent drawing surface before every frame" docs/web-assets/*.js
+          grep -q "Fixed vertically shifted text in every full-screen alarm overlay" docs/web-assets/*.js
+          grep -q "Animated overlays still clear the transparent surface before every frame" docs/web-assets/*.js
           grep -q "Follow every public update" docs/web-assets/*.js
           grep -q "discord.gg/JPjrw3ft" README.md
-          test -f docs/RELEASE_0.5.15_TEXT.md
+          test -f docs/RELEASE_0.5.16_TEXT.md
           test -f docs/assets/battery-panic-icon.png
 
       - name: Scan for committed secret-looking values

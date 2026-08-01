@@ -13,10 +13,10 @@ For normal users, download the finished DMG below. Do **not** use GitHub's **Cod
 
 **Latest app download:**
 
-- [Download Battery Panic 0.5.15 DMG](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.15/Battery.Panic.0.5.15.dmg)
+- [Download Battery Panic 0.5.16 DMG](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.16/Battery.Panic.0.5.16.dmg)
 - [All releases and fallback ZIP](https://github.com/LeonTOfficial/BatteryPanic/releases)
 
-Use `Battery.Panic.0.5.15.zip` only as a fallback if the DMG does not work.
+Use `Battery.Panic.0.5.16.zip` only as a fallback if the DMG does not work.
 
 DMG install:
 

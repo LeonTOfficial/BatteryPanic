@@ -53,47 +53,47 @@ Before creating a GitHub Release:
 
 ```text
 Battery Panic.app
-Battery.Panic.0.5.15.zip
-Battery.Panic.0.5.15.dmg
+Battery.Panic.0.5.16.zip
+Battery.Panic.0.5.16.dmg
 ```
 
 4. Confirm the ZIP contains the finished `.app`, not source code.
 5. Confirm the DMG opens and supports the normal drag-and-drop install flow: `Battery Panic.app` -> `Applications`.
 6. Upload both files to the GitHub Release before relying on the direct README links.
 7. After uploading, the README links should resolve:
-   - `https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.15/Battery.Panic.0.5.15.dmg`
-   - `https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.15/Battery.Panic.0.5.15.zip`
+   - `https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.16/Battery.Panic.0.5.16.dmg`
+   - `https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.16/Battery.Panic.0.5.16.zip`
 
 ## Release Fields
 
 Create a new release with these values:
 
-- Tag: `v0.5.15`
-- Release title: `Battery Panic 0.5.15`
+- Tag: `v0.5.16`
+- Release title: `Battery Panic 0.5.16`
 - Release label: leave as `None` for a normal release. Use `Pre-release` only if you want to clearly mark it as a test build.
 - Attached binaries:
-  - `outputs/Battery.Panic.0.5.15.dmg`
-  - `outputs/Battery.Panic.0.5.15.zip`
+  - `outputs/Battery.Panic.0.5.16.dmg`
+  - `outputs/Battery.Panic.0.5.16.zip`
 
 Do not upload only GitHub's automatically generated source code archives as the main user download. Those are useful for developers, but normal users need the `.dmg` or `.zip` app package.
 
 You can copy the prepared release description from:
 
 ```text
-docs/RELEASE_0.5.15_TEXT.md
+docs/RELEASE_0.5.16_TEXT.md
 ```
 
 Suggested release description:
 
 ```markdown
-Battery Panic 0.5.15 fixes charging reminders at startup and keeps animated warning overlays crisp.
+Battery Panic 0.5.16 fixes the vertically shifted text in every full-screen warning overlay.
 
 Download:
-- Recommended: `Battery.Panic.0.5.15.dmg`
-- Fallback: `Battery.Panic.0.5.15.zip`
+- Recommended: `Battery.Panic.0.5.16.dmg`
+- Fallback: `Battery.Panic.0.5.16.zip`
 
 Install with DMG:
-1. Download `Battery.Panic.0.5.15.dmg`.
+1. Download `Battery.Panic.0.5.16.dmg`.
 2. Open it.
 3. Drag `Battery Panic.app` into Applications.
 4. Open Battery Panic from Applications.
@@ -101,11 +101,11 @@ Install with DMG:
 If macOS warns that the developer cannot be verified, open [Privacy & Security settings](x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension), scroll to the bottom, and click Open Anyway / Dennoch öffnen.
 
 What's new:
-- Charging reminders no longer appear immediately after app launch or login when the battery is already at or above the configured threshold.
-- Charging reminders wait for a real threshold crossing during the current charging session.
-- Animated overlays clear their transparent drawing surface before every frame.
-- Normal, preview, critical, and charging reminder text regions stay separately aligned.
-- Added startup-session policy coverage and pixel-level overlay rendering regression tests.
+- Restored separate, balanced baselines for the mode label, warning title, and subtitle.
+- Removed the crowded label/title spacing and the oversized gap above the subtitle.
+- Corrected normal, preview, critical, 80%, and 100% charging overlays together.
+- Added adaptive text sizing for compact displays while keeping clean per-frame redraws.
+- Added pixel-band spacing regression tests at 1920x1080 and 1280x800.
 
 Privacy:
 - No analytics.
@@ -122,8 +122,8 @@ After uploading the ZIP, regenerate and commit the Sparkle appcast if needed:
 
 ```bash
 ./scripts/generate_appcast.sh
-git add appcast.xml Battery.Panic.0.5.15.md
-git commit -m "Update Sparkle appcast for 0.5.15"
+git add appcast.xml Battery.Panic.0.5.16.md
+git commit -m "Update Sparkle appcast for 0.5.16"
 git push origin main
 ```
 
