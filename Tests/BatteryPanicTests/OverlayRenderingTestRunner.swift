@@ -4,6 +4,7 @@ import Foundation
 @main
 struct OverlayRenderingTestRunner {
     private static let canvasSize = NSSize(width: 1920, height: 1080)
+    private static let compactCanvasSize = NSSize(width: 1280, height: 800)
 
     static func main() throws {
         _ = NSApplication.shared
@@ -71,6 +72,34 @@ struct OverlayRenderingTestRunner {
             if let png {
                 try png.write(to: outputDirectory.appendingPathComponent("\(testCase.name).png"))
             }
+
+            assertTextSpacing(
+                in: preview,
+                canvasSize: canvasSize,
+                mode: testCase.mode,
+                name: testCase.name,
+                suite: &suite
+            )
+
+            let compactPreview = renderPreview(
+                mode: testCase.mode,
+                percentage: testCase.percentage,
+                isTest: testCase.isTest,
+                pulse: 0.92,
+                canvasSize: compactCanvasSize
+            )
+            assertTextSpacing(
+                in: compactPreview,
+                canvasSize: compactCanvasSize,
+                mode: testCase.mode,
+                name: "\(testCase.name) at 1280x800",
+                suite: &suite
+            )
+
+            if testCase.name == "test-alarm",
+               let png = compactPreview.representation(using: .png, properties: [:]) {
+                try png.write(to: outputDirectory.appendingPathComponent("test-alarm-1280x800.png"))
+            }
         }
 
         suite.finish()
@@ -121,9 +150,15 @@ struct OverlayRenderingTestRunner {
         mode: OverlayDisplayMode,
         percentage: Int,
         isTest: Bool,
-        pulse: CGFloat
+        pulse: CGFloat,
+        canvasSize: NSSize = canvasSize
     ) -> NSBitmapImageRep {
-        let view = configuredView(mode: mode, percentage: percentage, isTest: isTest)
+        let view = configuredView(
+            mode: mode,
+            percentage: percentage,
+            isTest: isTest,
+            canvasSize: canvasSize
+        )
         view.pulseValue = pulse
         guard let bitmap = view.bitmapImageRepForCachingDisplay(in: view.bounds) else {
             fatalError("Could not create overlay preview bitmap")
@@ -135,7 +170,8 @@ struct OverlayRenderingTestRunner {
     private static func configuredView(
         mode: OverlayDisplayMode,
         percentage: Int,
-        isTest: Bool
+        isTest: Bool,
+        canvasSize: NSSize = canvasSize
     ) -> OverlayView {
         let view = OverlayView(frame: NSRect(origin: .zero, size: canvasSize))
         view.percentage = percentage
@@ -145,6 +181,131 @@ struct OverlayRenderingTestRunner {
         view.displayMode = mode
         view.isTest = isTest
         return view
+    }
+
+    private static func assertTextSpacing(
+        in bitmap: NSBitmapImageRep,
+        canvasSize: NSSize,
+        mode: OverlayDisplayMode,
+        name: String,
+        suite: inout TestSuite
+    ) {
+        let cardRect = warningCardRect(canvasSize: canvasSize, mode: mode)
+        let scanRect = NSRect(
+            x: cardRect.minX + 112,
+            y: cardRect.minY + 8,
+            width: cardRect.width - 132,
+            height: cardRect.height - 16
+        )
+        let accentBands = occupiedRowBands(in: bitmap, scanRect: scanRect) { red, green, blue in
+            switch mode {
+            case .chargeReminder:
+                return green > 125 && blue > 125 && green > red + 35 && blue > red + 35
+            case .criticalBattery, .lowBattery:
+                return red > 150 && red > green + 55 && red > blue + 55
+            }
+        }
+        let subtitleBands = occupiedRowBands(in: bitmap, scanRect: scanRect) { red, green, blue in
+            let strongest = max(red, green, blue)
+            let weakest = min(red, green, blue)
+            return weakest > 115 && strongest - weakest < 45
+        }
+
+        if accentBands.count != 2 || subtitleBands.count != 1 {
+            print("LAYOUT: \(name) accent=\(accentBands) subtitle=\(subtitleBands)")
+        }
+
+        suite.expect("\(name) keeps eyebrow and title in separate rows", accentBands.count == 2)
+        suite.expect("\(name) renders one subtitle row", subtitleBands.count == 1)
+
+        if accentBands.count == 2 {
+            let scaleY = CGFloat(bitmap.pixelsHigh) / bitmap.size.height
+            let accentGap = CGFloat(gap(between: accentBands[0], and: accentBands[1])) / scaleY
+            suite.expect(
+                "\(name) leaves visible space between eyebrow and title",
+                accentGap >= 8
+            )
+        }
+
+        if accentBands.count == 2, let subtitleBand = subtitleBands.first {
+            let scaleY = CGFloat(bitmap.pixelsHigh) / bitmap.size.height
+            let nearestAccentGap = CGFloat(accentBands
+                .map { gap(between: $0, and: subtitleBand) }
+                .min() ?? 0) / scaleY
+            suite.expect(
+                "\(name) keeps the subtitle close to the title",
+                nearestAccentGap >= 4 && nearestAccentGap <= 18
+            )
+        }
+    }
+
+    private static func warningCardRect(canvasSize: NSSize, mode: OverlayDisplayMode) -> NSRect {
+        let width = min(
+            max(canvasSize.width * 0.30, mode == .chargeReminder ? 430 : 470),
+            mode == .chargeReminder ? 520 : 560
+        )
+        let height: CGFloat = 132
+        return NSRect(
+            x: (canvasSize.width - width) / 2,
+            y: (canvasSize.height - height) / 2,
+            width: width,
+            height: height
+        )
+    }
+
+    private static func occupiedRowBands(
+        in bitmap: NSBitmapImageRep,
+        scanRect: NSRect,
+        matches: (Int, Int, Int) -> Bool
+    ) -> [ClosedRange<Int>] {
+        guard let bytes = bitmap.bitmapData, bitmap.samplesPerPixel >= 4 else { return [] }
+
+        let scaleX = CGFloat(bitmap.pixelsWide) / bitmap.size.width
+        let scaleY = CGFloat(bitmap.pixelsHigh) / bitmap.size.height
+        let minX = max(0, Int((scanRect.minX * scaleX).rounded(.down)))
+        let maxX = min(bitmap.pixelsWide - 1, Int((scanRect.maxX * scaleX).rounded(.up)))
+        let minY = max(0, Int((scanRect.minY * scaleY).rounded(.down)))
+        let maxY = min(bitmap.pixelsHigh - 1, Int((scanRect.maxY * scaleY).rounded(.up)))
+        var occupiedRows: [Int] = []
+
+        for y in minY...maxY {
+            var matchingPixels = 0
+            for x in minX...maxX {
+                let offset = (y * bitmap.bytesPerRow) + (x * bitmap.samplesPerPixel)
+                let red = Int(bytes[offset])
+                let green = Int(bytes[offset + 1])
+                let blue = Int(bytes[offset + 2])
+                let alpha = Int(bytes[offset + 3])
+                if alpha > 100, matches(red, green, blue) {
+                    matchingPixels += 1
+                }
+            }
+            if matchingPixels >= 3 {
+                occupiedRows.append(y)
+            }
+        }
+
+        return occupiedRows.reduce(into: []) { bands, row in
+            guard let last = bands.last else {
+                bands.append(row...row)
+                return
+            }
+            if row == last.upperBound + 1 {
+                bands[bands.count - 1] = last.lowerBound...row
+            } else {
+                bands.append(row...row)
+            }
+        }
+    }
+
+    private static func gap(between first: ClosedRange<Int>, and second: ClosedRange<Int>) -> Int {
+        if first.upperBound < second.lowerBound {
+            return second.lowerBound - first.upperBound - 1
+        }
+        if second.upperBound < first.lowerBound {
+            return first.lowerBound - second.upperBound - 1
+        }
+        return 0
     }
 
     private static func pixelData(for bitmap: NSBitmapImageRep) -> Data {

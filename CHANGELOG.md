@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.16
+
+- Restored stable vertical baselines for the mode label, warning title, and subtitle in every full-screen alarm overlay.
+- Fixed the crowded title area and oversized subtitle gap visible in normal alarms, previews, critical mode, and charging reminders.
+- Added adaptive title and subtitle sizing so compact displays keep the complete warning inside the card.
+- Kept per-frame surface clearing from 0.5.15, so animated overlays remain free of duplicated or smeared text.
+- Added pixel-band spacing regression checks for all five alarm variants at 1920x1080 and 1280x800.
+
 ## 0.5.15
 
 - Prevented charging reminders from appearing immediately after app launch or login when the battery is already at or above the configured threshold.

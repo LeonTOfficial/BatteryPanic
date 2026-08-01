@@ -194,58 +194,85 @@ final class OverlayView: NSView {
                 : (timeRemainingText ?? "Connect your charger to dismiss this alert.")
         }
 
-        let iconRightEdge = cardRect.minX + 28 + 76
-        let textOriginX = iconRightEdge + 28
-        let textRightInset: CGFloat = 34
+        let textOriginX = cardRect.minX + 124
+        let textRightInset: CGFloat = 28
         let textWidth = max(180, cardRect.maxX - textOriginX - textRightInset)
-        let titleFontSize: CGFloat = displayMode == .chargeReminder ? 23 : 27
+        let titleFont = fittedSystemFont(
+            for: title,
+            size: 31,
+            minimumSize: 23,
+            weight: .black,
+            maximumWidth: textWidth
+        )
+        let subtitleFont = fittedSystemFont(
+            for: subtitle,
+            size: 14,
+            minimumSize: 12,
+            weight: .medium,
+            maximumWidth: textWidth - 2
+        )
+
+        NSGraphicsContext.saveGraphicsState()
+        NSBezierPath(
+            rect: NSRect(
+                x: textOriginX,
+                y: cardRect.minY + 10,
+                width: textWidth,
+                height: cardRect.height - 20
+            )
+        ).addClip()
 
         drawText(
             eyebrow,
-            in: NSRect(x: textOriginX, y: cardRect.minY + 19, width: textWidth, height: 18),
+            at: NSPoint(x: textOriginX, y: cardRect.minY + 25),
             font: .systemFont(ofSize: 11, weight: .black),
             color: accentColor.withAlphaComponent(0.78),
-            lineBreakMode: .byTruncatingTail,
             kern: 1.0
         )
         drawText(
             title,
-            in: NSRect(x: textOriginX, y: cardRect.minY + 42, width: textWidth, height: 36),
-            font: .systemFont(ofSize: titleFontSize, weight: .black),
-            color: accentColor,
-            lineBreakMode: .byTruncatingTail
+            at: NSPoint(x: textOriginX, y: cardRect.minY + 47),
+            font: titleFont,
+            color: accentColor
         )
         drawText(
             subtitle,
-            in: NSRect(x: textOriginX + 2, y: cardRect.minY + 84, width: textWidth, height: 34),
-            font: .systemFont(ofSize: 14, weight: .medium),
-            color: NSColor.white.withAlphaComponent(0.68),
-            lineBreakMode: .byWordWrapping
+            at: NSPoint(x: textOriginX + 2, y: cardRect.minY + 88),
+            font: subtitleFont,
+            color: NSColor.white.withAlphaComponent(0.68)
         )
+        NSGraphicsContext.restoreGraphicsState()
     }
 
     private func drawText(
         _ text: String,
-        in rect: NSRect,
+        at point: NSPoint,
         font: NSFont,
         color: NSColor,
-        lineBreakMode: NSLineBreakMode,
         kern: CGFloat = 0
     ) {
-        let paragraph = NSMutableParagraphStyle()
-        paragraph.lineBreakMode = lineBreakMode
-        paragraph.maximumLineHeight = font.pointSize + 4
-        paragraph.minimumLineHeight = font.pointSize + 2
-
         NSAttributedString(
             string: text,
             attributes: [
                 .font: font,
                 .foregroundColor: color,
-                .paragraphStyle: paragraph,
                 .kern: kern
             ]
-        ).draw(with: rect)
+        ).draw(at: point)
+    }
+
+    private func fittedSystemFont(
+        for text: String,
+        size: CGFloat,
+        minimumSize: CGFloat,
+        weight: NSFont.Weight,
+        maximumWidth: CGFloat
+    ) -> NSFont {
+        let font = NSFont.systemFont(ofSize: size, weight: weight)
+        let width = NSAttributedString(string: text, attributes: [.font: font]).size().width
+        guard width > maximumWidth, width > 0 else { return font }
+        let fittedSize = max(minimumSize, floor(size * maximumWidth / width))
+        return NSFont.systemFont(ofSize: fittedSize, weight: weight)
     }
 
     private var accentColor: NSColor {

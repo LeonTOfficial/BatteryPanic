@@ -3,21 +3,28 @@ import { RefreshCw, Sparkles, Battery, LayoutPanelTop, ShieldCheck, FileText, Ra
 import { links } from "../content";
 
 const latest = [
-  "Charging reminders no longer fire immediately after app launch or login",
-  "Reminders now wait for a real threshold crossing in the current charging session",
-  "Animated overlays clear the transparent drawing surface before every frame",
-  "Normal, preview, critical, and charging text regions stay separately aligned",
-  "Charging reminder copy remains crisp at both 80% and 100%",
-  "Added startup-policy and pixel-level overlay rendering regression tests",
+  "Fixed vertically shifted text in every full-screen alarm overlay",
+  "Restored separate baselines for the mode label, warning title, and subtitle",
+  "Corrected normal, preview, critical, 80%, and 100% charging layouts",
+  "Long titles scale down safely instead of crowding the warning card",
+  "Animated overlays still clear the transparent surface before every frame",
+  "Added pixel-band spacing checks at 1920x1080 and 1280x800",
 ];
 
 const releaseHistory = [
+  {
+    version: "0.5.16",
+    title: "Alarm text alignment",
+    text: "Stable line spacing for every warning overlay on standard and compact displays.",
+    href: `${import.meta.env.BASE_URL}sparkle-release-notes/0.5.16/`,
+    current: true,
+  },
   {
     version: "0.5.15",
     title: "Session-aware reminders",
     text: "Startup-safe charging reminders and crisp, ghost-free animated overlays.",
     href: `${import.meta.env.BASE_URL}sparkle-release-notes/0.5.15/`,
-    current: true,
+    current: false,
   },
   {
     version: "0.5.14",
@@ -139,7 +146,7 @@ export function UpdatesPage() {
           >
             <div className="mb-6 flex items-center gap-3">
               <Sparkles className="h-6 w-6 text-brand-red" />
-              <p className="text-sm font-bold uppercase tracking-[0.22em] text-brand-red">Latest 0.5.15</p>
+              <p className="text-sm font-bold uppercase tracking-[0.22em] text-brand-red">Latest 0.5.16</p>
             </div>
             <h2 className="font-display text-3xl font-bold text-white">What's new</h2>
             <div className="mt-6 space-y-4">
@@ -155,9 +162,9 @@ export function UpdatesPage() {
 
         <div className="mt-8 grid gap-5 md:grid-cols-3">
           {[
-            { icon: Battery, title: "Session-aware reminders", text: "Charging reminders wait for an observed threshold crossing instead of firing at startup." },
-            { icon: LayoutPanelTop, title: "Crisp overlays", text: "Every pulse frame redraws cleanly without duplicated or distorted text." },
-            { icon: ShieldCheck, title: "Regression coverage", text: "Policy and pixel-level tests protect both startup behavior and overlay rendering." },
+            { icon: Battery, title: "Correct baselines", text: "Mode, title, and subtitle text keep balanced vertical spacing again." },
+            { icon: LayoutPanelTop, title: "Every alarm mode", text: "Normal, preview, critical, and charging cards share the corrected layout." },
+            { icon: ShieldCheck, title: "Measured spacing", text: "Rendered-pixel tests now verify the actual gaps at two display sizes." },
           ].map((item, index) => (
             <motion.article
               key={item.title}
