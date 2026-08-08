@@ -19,8 +19,6 @@ open .
 In Xcode, use these schemes:
 
 - `BatteryPanicApp` for the menu bar app.
-- `BatteryPanicWidgetExtension` for the WidgetKit source target.
-- `BatteryPanicWidgetShared` for the shared widget snapshot model.
 
 ## Do not create a new app template inside the repository
 
@@ -34,10 +32,5 @@ For the real local app bundle, ZIP, and DMG, use:
 ./scripts/build_app.sh
 ```
 
-The build script compiles the app and WidgetKit extension, embeds the widget into:
-
-```text
-Battery Panic.app/Contents/PlugIns/BatteryPanicWidgetExtension.appex
-```
-
-and then writes the release files into `outputs/`.
+The build script compiles the menu bar app, embeds Sparkle, and writes the app,
+ZIP, and DMG into `outputs/`. It also rejects any accidental `.appex` output.

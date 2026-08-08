@@ -6,7 +6,7 @@ final class OverlayPreviewView: NSView {
 
     var pulseEnabled = true {
         didSet {
-            if pulseEnabled {
+            if shouldAnimate {
                 startAnimation()
             } else {
                 stopAnimation()
@@ -32,6 +32,15 @@ final class OverlayPreviewView: NSView {
         super.init(frame: frameRect)
         wantsLayer = true
         layer?.cornerRadius = 12
+        setAccessibilityElement(true)
+        setAccessibilityRole(.image)
+        setAccessibilityLabel("Overlay appearance preview")
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self,
+            selector: #selector(accessibilityDisplayOptionsChanged),
+            name: NSWorkspace.accessibilityDisplayOptionsDidChangeNotification,
+            object: nil
+        )
     }
 
     required init?(coder: NSCoder) {
@@ -40,12 +49,14 @@ final class OverlayPreviewView: NSView {
 
     deinit {
         stopAnimation()
+        NSWorkspace.shared.notificationCenter.removeObserver(self)
     }
 
     func configure(pulseEnabled: Bool, pulseSpeed: Double, pulseIntensity: Double) {
         self.pulseEnabled = pulseEnabled
-        self.pulseSpeed = pulseSpeed
-        self.pulseIntensity = pulseIntensity
+        self.pulseSpeed = pulseSpeed.isFinite ? pulseSpeed.clamped(to: 0.4...2.4) : 1.0
+        self.pulseIntensity = pulseIntensity.isFinite ? pulseIntensity.clamped(to: 0.45...1.6) : 1.0
+        setAccessibilityValue(String(format: "Pulse %.1f times speed, %d percent intensity", self.pulseSpeed, Int(self.pulseIntensity * 100)))
     }
 
     override func viewDidMoveToWindow() {
@@ -57,7 +68,9 @@ final class OverlayPreviewView: NSView {
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [weak self] in
             guard let self, self.window != nil else { return }
-            self.startAnimation()
+            if self.shouldAnimate {
+                self.startAnimation()
+            }
         }
     }
 
@@ -119,7 +132,7 @@ final class OverlayPreviewView: NSView {
     }
 
     private func startAnimation() {
-        guard timer == nil, pulseEnabled, window != nil else { return }
+        guard timer == nil, shouldAnimate, window != nil else { return }
         let timer = Timer(timeInterval: 1.0 / 4.0, repeats: true) { [weak self] _ in
             self?.tick()
         }
@@ -133,7 +146,7 @@ final class OverlayPreviewView: NSView {
     }
 
     private func tick() {
-        guard pulseEnabled else {
+        guard shouldAnimate else {
             stopAnimation()
             return
         }
@@ -143,5 +156,21 @@ final class OverlayPreviewView: NSView {
         if abs(nextValue - pulseValue) > 0.025 {
             pulseValue = nextValue
         }
+    }
+
+    @objc private func accessibilityDisplayOptionsChanged() {
+        if shouldAnimate {
+            startAnimation()
+        } else {
+            stopAnimation()
+            pulseValue = 1
+        }
+    }
+
+    private var shouldAnimate: Bool {
+        OverlayAnimationPolicy.shouldAnimate(
+            pulseEnabled: pulseEnabled,
+            reduceMotion: NSWorkspace.shared.accessibilityDisplayShouldReduceMotion
+        )
     }
 }

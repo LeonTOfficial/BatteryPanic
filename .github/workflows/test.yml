@@ -73,6 +73,12 @@ jobs:
       - name: Run logic tests
         run: ./scripts/run_tests.sh
 
+      - name: Run native Swift tests
+        run: swift test
+
+      - name: Check version contract
+        run: ./scripts/check_version_consistency.sh
+
       - name: Build Swift package
         run: swift build
 
@@ -96,8 +102,11 @@ jobs:
           app="/tmp/BatteryPanicZipCheck/Battery Panic.app"
           test -d "$app"
           test -x "$app/Contents/MacOS/Battery Panic"
-          test -d "$app/Contents/PlugIns/BatteryPanicWidgetExtension.appex"
+          test -z "$(find "$app" -name '*.appex' -print -quit)"
+          ! codesign -d --entitlements :- "$app" 2>&1 | grep -q "application-groups"
           test -d "$app/Contents/Frameworks/Sparkle.framework"
+          test -f "$app/Contents/Resources/THIRD_PARTY_NOTICES.md"
+          test -f "$app/Contents/Resources/Sparkle-LICENSE.txt"
 
           app_version="$(defaults read "$app/Contents/Info.plist" CFBundleShortVersionString)"
           app_build="$(defaults read "$app/Contents/Info.plist" CFBundleVersion)"
@@ -110,7 +119,7 @@ jobs:
           test "$(defaults read "$app/Contents/Info.plist" SUScheduledCheckInterval)" = "86400"
           test "$(defaults read "$app/Contents/Info.plist" SUScheduledImpatientCheckInterval)" = "172800"
           sparkle_version="$(defaults read "$app/Contents/Frameworks/Sparkle.framework/Resources/Info.plist" CFBundleShortVersionString)"
-          test "$sparkle_version" = "2.9.4"
+          test "$sparkle_version" = "2.9.5"
 
           codesign --verify --deep --strict --verbose=2 "$app"
           hdiutil verify "$release_dmg"

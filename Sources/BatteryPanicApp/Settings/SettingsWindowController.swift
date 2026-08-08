@@ -34,13 +34,14 @@ final class SettingsWindowController: NSWindowController {
 
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 720, height: 860),
-            styleMask: [.titled, .closable, .miniaturizable],
+            styleMask: [.titled, .closable, .miniaturizable, .resizable],
             backing: .buffered,
             defer: false
         )
         window.title = "Battery Panic Settings"
         window.isReleasedWhenClosed = false
         window.titlebarAppearsTransparent = true
+        window.minSize = NSSize(width: 700, height: 520)
 
         super.init(window: window)
         setupUI()
@@ -528,7 +529,7 @@ final class SettingsWindowController: NSWindowController {
         pulseCheckbox.state = settings.pulseEnabled ? .on : .off
         soundCheckbox.state = settings.soundEnabled ? .on : .off
         selectSound(named: settings.selectedSoundName)
-        launchAtLoginCheckbox.state = (settings.launchAtLoginEnabled || loginItemService.isEnabled) ? .on : .off
+        launchAtLoginCheckbox.state = loginItemService.isEnabled ? .on : .off
         updatePauseControls(settings: settings)
         statusLabel.stringValue = settings.isPaused ? pauseStatusText(settings: settings) : "Ready"
         updateOverlayPreview()
@@ -590,9 +591,6 @@ final class SettingsWindowController: NSWindowController {
 
     @objc private func testSound() {
         let soundName = selectedSoundName()
-        settingsStore.setSelectedSoundName(soundName)
-        settingsStore.setSoundEnabled(true)
-        soundCheckbox.state = .on
         statusLabel.stringValue = "Playing \(WarningSound.sound(named: soundName).displayName)"
         onTestSound?(soundName)
     }
@@ -601,10 +599,9 @@ final class SettingsWindowController: NSWindowController {
         let enabled = launchAtLoginCheckbox.state == .on
         do {
             try loginItemService.setEnabled(enabled)
-            settingsStore.setLaunchAtLoginEnabled(enabled)
             statusLabel.stringValue = enabled ? "Starts at login" : "Login start disabled"
         } catch {
-            launchAtLoginCheckbox.state = settingsStore.snapshot().launchAtLoginEnabled ? .on : .off
+            launchAtLoginCheckbox.state = loginItemService.isEnabled ? .on : .off
             showError("Could not update login item.", informativeText: error.localizedDescription)
         }
     }

@@ -1,6 +1,12 @@
 import AppKit
 import Foundation
 
+enum OverlayAnimationPolicy {
+    static func shouldAnimate(pulseEnabled: Bool, reduceMotion: Bool) -> Bool {
+        pulseEnabled && !reduceMotion
+    }
+}
+
 final class OverlayManager: NSObject {
     private var windows: [OverlayWindow] = []
     private var animationTimer: Timer?
@@ -11,8 +17,12 @@ final class OverlayManager: NSObject {
     private var currentPulseIntensity = 1.0
     private var currentIsTest = false
     private var currentDisplayMode = OverlayDisplayMode.lowBattery
+    private let reduceMotionEnabled: () -> Bool
 
-    override init() {
+    init(reduceMotionEnabled: @escaping () -> Bool = {
+        NSWorkspace.shared.accessibilityDisplayShouldReduceMotion
+    }) {
+        self.reduceMotionEnabled = reduceMotionEnabled
         super.init()
         NotificationCenter.default.addObserver(
             self,
@@ -20,10 +30,17 @@ final class OverlayManager: NSObject {
             name: NSApplication.didChangeScreenParametersNotification,
             object: nil
         )
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self,
+            selector: #selector(accessibilityDisplayOptionsChanged),
+            name: NSWorkspace.accessibilityDisplayOptionsDidChangeNotification,
+            object: nil
+        )
     }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+        NSWorkspace.shared.notificationCenter.removeObserver(self)
     }
 
     func show(
@@ -36,8 +53,8 @@ final class OverlayManager: NSObject {
     ) {
         currentStatus = status
         currentPulseEnabled = pulseEnabled
-        currentPulseSpeed = pulseSpeed.clamped(to: 0.4...2.4)
-        currentPulseIntensity = pulseIntensity.clamped(to: 0.45...1.6)
+        currentPulseSpeed = pulseSpeed.isFinite ? pulseSpeed.clamped(to: 0.4...2.4) : 1.0
+        currentPulseIntensity = pulseIntensity.isFinite ? pulseIntensity.clamped(to: 0.45...1.6) : 1.0
         currentDisplayMode = displayMode
         currentIsTest = isTest
 
@@ -79,7 +96,10 @@ final class OverlayManager: NSObject {
             window.overlayView.frame = NSRect(origin: .zero, size: targetFrame.size)
             window.overlayView.percentage = currentStatus.percentage
             window.overlayView.timeRemainingText = BatteryFormatter.timeRemainingText(for: currentStatus)
-            window.overlayView.pulseEnabled = currentPulseEnabled
+            window.overlayView.pulseEnabled = shouldAnimatePulse
+            if !shouldAnimatePulse {
+                window.overlayView.pulseValue = 1
+            }
             window.overlayView.pulseIntensity = CGFloat(currentPulseIntensity)
             window.overlayView.displayMode = currentDisplayMode
             window.overlayView.isTest = currentIsTest
@@ -88,6 +108,11 @@ final class OverlayManager: NSObject {
     }
 
     private func startAnimation() {
+        guard shouldAnimatePulse else {
+            stopAnimation()
+            windows.forEach { $0.overlayView.pulseValue = 1 }
+            return
+        }
         guard animationTimer == nil else { return }
         animationStart = Date()
 
@@ -104,6 +129,10 @@ final class OverlayManager: NSObject {
     }
 
     private func tickAnimation() {
+        guard shouldAnimatePulse else {
+            stopAnimation()
+            return
+        }
         let elapsed = Date().timeIntervalSince(animationStart)
         let pulse = (sin(elapsed * 2.4 * currentPulseSpeed) + 1.0) / 2.0
         windows.forEach { window in
@@ -124,5 +153,18 @@ final class OverlayManager: NSObject {
                 isTest: currentIsTest
             )
         }
+    }
+
+    @objc private func accessibilityDisplayOptionsChanged() {
+        guard !windows.isEmpty else { return }
+        updateWindows()
+        startAnimation()
+    }
+
+    private var shouldAnimatePulse: Bool {
+        OverlayAnimationPolicy.shouldAnimate(
+            pulseEnabled: currentPulseEnabled,
+            reduceMotion: reduceMotionEnabled()
+        )
     }
 }

@@ -6,7 +6,7 @@ Battery Panic is a privacy-friendly macOS utility. It does not require an accoun
 
 - Battery status is read locally through macOS power APIs.
 - Settings are stored in local `UserDefaults`.
-- The battery warning, overlay, settings, widget snapshot, and sound features run locally.
+- The battery warning, menu bar status, overlay, settings, and sound features run locally.
 - Optional update checks use Sparkle and contact the configured GitHub appcast URL.
 - No analytics.
 - No telemetry.

@@ -1,6 +1,12 @@
 import AppKit
 
-final class WarningSoundPlayer {
+protocol WarningSoundPlaying: AnyObject {
+    func playWarning(named soundName: String)
+    func playLoopingWarning(named soundName: String)
+    func stop()
+}
+
+final class WarningSoundPlayer: WarningSoundPlaying {
     private var activeSound: NSSound?
     private var repeatTimer: Timer?
     private let sirenTonePlayer = SirenTonePlayer()

@@ -2,24 +2,20 @@ import Foundation
 import IOKit.ps
 
 final class IOKitBatteryProvider: BatteryProviding {
-    func currentStatus() -> BatteryStatus {
-        let info = IOPSCopyPowerSourcesInfo().takeRetainedValue()
-        let sources = IOPSCopyPowerSourcesList(info).takeRetainedValue() as NSArray
+    typealias DescriptionReader = () -> [[String: Any]]?
 
-        guard sources.count > 0 else {
+    private let readDescriptions: DescriptionReader
+
+    init(readDescriptions: @escaping DescriptionReader = IOKitBatteryProvider.readPowerSourceDescriptions) {
+        self.readDescriptions = readDescriptions
+    }
+
+    func currentStatus() -> BatteryStatus {
+        guard let descriptions = readDescriptions(), !descriptions.isEmpty else {
             return BatteryStatus.noBattery()
         }
 
-        for source in sources {
-            guard
-                let description = IOPSGetPowerSourceDescription(
-                    info,
-                    source as CFTypeRef
-                )?.takeUnretainedValue() as? [String: Any]
-            else {
-                continue
-            }
-
+        for description in descriptions {
             guard let currentCapacity = description[kIOPSCurrentCapacityKey] as? Int else {
                 continue
             }
@@ -40,6 +36,23 @@ final class IOKitBatteryProvider: BatteryProviding {
         }
 
         return BatteryStatus.noBattery()
+    }
+
+    static func readPowerSourceDescriptions() -> [[String: Any]]? {
+        guard let unmanagedInfo = IOPSCopyPowerSourcesInfo() else {
+            return nil
+        }
+        let info = unmanagedInfo.takeRetainedValue()
+
+        guard let unmanagedSources = IOPSCopyPowerSourcesList(info) else {
+            return nil
+        }
+        let sources = unmanagedSources.takeRetainedValue() as NSArray
+
+        return sources.compactMap { source in
+            IOPSGetPowerSourceDescription(info, source as CFTypeRef)?
+                .takeUnretainedValue() as? [String: Any]
+        }
     }
 
     private static func percentage(current: Int, max: Int) -> Int {
