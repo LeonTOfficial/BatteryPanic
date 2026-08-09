@@ -331,17 +331,15 @@ final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
     }
 
     private func refreshFromSettings() {
-        let enabled = loginItemService.isEnabled || settingsStore.snapshot().launchAtLoginEnabled
-        launchAtLoginSwitch.state = enabled ? .on : .off
+        launchAtLoginSwitch.state = loginItemService.isEnabled ? .on : .off
     }
 
     @objc private func launchAtLoginChanged() {
         let enabled = launchAtLoginSwitch.state == .on
         do {
             try loginItemService.setEnabled(enabled)
-            settingsStore.setLaunchAtLoginEnabled(enabled)
         } catch {
-            launchAtLoginSwitch.state = settingsStore.snapshot().launchAtLoginEnabled ? .on : .off
+            launchAtLoginSwitch.state = loginItemService.isEnabled ? .on : .off
             showError("Could not update login item.", informativeText: error.localizedDescription)
         }
     }

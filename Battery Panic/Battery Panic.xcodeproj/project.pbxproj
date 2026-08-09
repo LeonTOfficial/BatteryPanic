@@ -17,30 +17,24 @@
 		305E1AB5198CCF2AA04A1CF5 /* MenuBarIconFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6D4B6B2B49577A07FA5AFD /* MenuBarIconFactory.swift */; };
 		31BB856542377F857FEAFD14 /* OnboardingHeroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BCEC1DD226750810AF4049 /* OnboardingHeroView.swift */; };
 		3632EE198B90BB40C4FF2061 /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD213438204982391D2096DA /* SettingsWindowController.swift */; };
-		3AF64E864B3645CAE3221C67 /* libBatteryPanicWidgetShared.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B60942BEFBD2308EA7B80980 /* libBatteryPanicWidgetShared.a */; };
+		37340CA8EA00E7C6C96430C5 /* Sparkle-LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = A83D911787C90A2D30B5E8DE /* Sparkle-LICENSE.txt */; };
 		40CA0E20B0D5FE11A05F84A0 /* OverlayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1E6197731275787FA20DF95 /* OverlayManager.swift */; };
 		49597E6A266D0BF71699B87F /* BatteryFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28C363657C7C7C4E4F3F2A7 /* BatteryFormatter.swift */; };
 		53C8924B7149314C3D73DB68 /* BatteryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8950D1193F17D079A1F567B4 /* BatteryMonitor.swift */; };
-		5670580D92F89CC3EEB5EBCF /* BatteryPanicWidgetSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6C0410CEC88E64FF606303 /* BatteryPanicWidgetSnapshot.swift */; };
+		5425475E6FC7B42B4FCA6992 /* THIRD_PARTY_NOTICES.md in Resources */ = {isa = PBXBuildFile; fileRef = C389E1E141BC797A451CA8B9 /* THIRD_PARTY_NOTICES.md */; };
 		58534F5D0490BA46A896A827 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51DBEEA2EB76F11ABF7550A5 /* ServiceManagement.framework */; };
 		593EE41F7B9EFF1CF7A04531 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5EA7927E561838976427C0C /* main.swift */; };
 		5E24B764E8AC23EBB92DC6A0 /* BatteryMenuDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F837BAB71796B486F91D9E61 /* BatteryMenuDetailsView.swift */; };
 		644D84D3C28EBE3918B4CBC4 /* LoginItemService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF9634375531C8ED198C57D /* LoginItemService.swift */; };
-		707BD9E6157505FFAE1A26A3 /* WidgetSnapshotPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDB4613276A050A6A49B414 /* WidgetSnapshotPublisher.swift */; };
 		70B4B41B7D9ED7125DF34BF1 /* AlarmPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67981FAFD3B41D619C17EF99 /* AlarmPolicy.swift */; };
-		70CC60DD71BBF354E0F8DC5F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2ADC7BAD6F2234C29AD0DFCC /* Cocoa.framework */; };
 		8367F1EB338275AC6878B039 /* Sparkle.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B37BAC5A08D44856633FB4A8 /* Sparkle.xcframework */; };
-		8ACAEBD5F4A7A6B1F9C5C39B /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B469A0D0FD9C323E4C1BC746 /* WidgetKit.framework */; };
 		8C46980D4B44AB7F28538ECE /* AppSettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD415687AD1AF2B432013719 /* AppSettingsStore.swift */; };
 		8D24CC931C26B7CDBC42B3DB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88F43DB44CF8B63A3C3ACF /* AppDelegate.swift */; };
 		916BFFCEFCF4DF4863D75804 /* MenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5C1E8281CDF184EBA03FE4 /* MenuBarController.swift */; };
-		93F92510E6B7EBC9432DC69E /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5588A81CB301DB506987B93B /* SwiftUI.framework */; };
-		9BEDBF3C52E30C1563F3A6DC /* BatteryPanicWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B2B56F74DC5A88C0A66C72F6 /* BatteryPanicWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		9DEFC599F39031D1FBAF771A /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA5DA2AFBCD340EA2751FD5B /* IOKit.framework */; };
 		A8A768E9B841F5158D52767F /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = F5CB2D769E51C516AB3E4A0A /* AppIcon.icns */; };
 		C6C9980AE53C95C7A88669C8 /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AFDB52C1849BA989E1C448 /* OverlayView.swift */; };
 		C9E6575D5D1A68F9A6477E40 /* Sparkle.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B37BAC5A08D44856633FB4A8 /* Sparkle.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		CC0697F1268DCF7F372B909B /* libBatteryPanicWidgetShared.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B60942BEFBD2308EA7B80980 /* libBatteryPanicWidgetShared.a */; };
 		D0BC86AE78BA33AFE8F9DE71 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57D9549DB01F49562E4E8B /* AppCoordinator.swift */; };
 		D7565DB99942CF0605BA700C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2ADC7BAD6F2234C29AD0DFCC /* Cocoa.framework */; };
 		D959A9EEDCAF739F1B7AFD2A /* WarningSoundPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D9C0744BB7F05A96E9E9EC /* WarningSoundPlayer.swift */; };
@@ -49,37 +43,11 @@
 		E05F919B11EA69C108B3EF1C /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA467BA4E86E9763B4D15B4D /* AppConstants.swift */; };
 		E4FAD506936E0AE319176A04 /* WarningSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = E359B505682D74A21CF6431B /* WarningSound.swift */; };
 		E6D7C4FA761EE97DFFD69C1F /* Comparable+Clamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D2892BE9B9D7753FE70417 /* Comparable+Clamp.swift */; };
-		E95CB2904E0534241C22ADD2 /* BatteryPanicWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876241AED840586696B7043 /* BatteryPanicWidgets.swift */; };
 		EA984D9D420B7E6102ED09FC /* BatteryMenuHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB710DCA43C1CA9950FC028 /* BatteryMenuHeaderView.swift */; };
 		F514CC75EA8A8B0D887D6F6E /* AppIconFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8D312100DE8D9B9D380AB3 /* AppIconFactory.swift */; };
 		F8FA9B5BF722E5205050F0F8 /* BatteryProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B9D2C33D98C5DE94208587 /* BatteryProvider.swift */; };
-		FC7F1C5D061B897C7B0D5C52 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23634E9C63835461A5155887 /* WidgetKit.framework */; };
 		FFEDAF3390C93DC13D6EC80F /* AppUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC42CD7CF6E42A1F502BA078 /* AppUpdater.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		8514A32C22FECEFB5FF33EA0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8D94A655297A1787F5B68A47 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 929D3BF1DED3A74E0BEAA195;
-			remoteInfo = BatteryPanicWidgetShared;
-		};
-		B980D322214F8066CC0E19AE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8D94A655297A1787F5B68A47 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 232EE0DBD0E9F119DF626890;
-			remoteInfo = BatteryPanicWidgetExtension;
-		};
-		E48A19437AEDD74814EF4E25 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8D94A655297A1787F5B68A47 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 929D3BF1DED3A74E0BEAA195;
-			remoteInfo = BatteryPanicWidgetShared;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		27EFC5B4C4A049BB2F8B8313 /* Embed Frameworks */ = {
@@ -93,40 +61,23 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		585CE0A65AC7F53965512233 /* Embed App Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				9BEDBF3C52E30C1563F3A6DC /* BatteryPanicWidgetExtension.appex in Embed App Extensions */,
-			);
-			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		04F03DEA1C5480DB11B43C0A /* DMGBackground.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = DMGBackground.png; path = ../Resources/DMGBackground.png; sourceTree = "<group>"; };
-		07212C54F6F9DFE2F9B78636 /* BatteryPanicWidgetExtension.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; name = BatteryPanicWidgetExtension.entitlements; path = ../Entitlements/BatteryPanicWidgetExtension.entitlements; sourceTree = "<group>"; };
 		07BCEC1DD226750810AF4049 /* OnboardingHeroView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OnboardingHeroView.swift; path = ../Sources/BatteryPanicApp/Settings/OnboardingHeroView.swift; sourceTree = "<group>"; };
 		0A88F43DB44CF8B63A3C3ACF /* AppDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../Sources/BatteryPanicApp/App/AppDelegate.swift; sourceTree = "<group>"; };
-		0B6C0410CEC88E64FF606303 /* BatteryPanicWidgetSnapshot.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BatteryPanicWidgetSnapshot.swift; path = ../Sources/BatteryPanicWidgetShared/BatteryPanicWidgetSnapshot.swift; sourceTree = "<group>"; };
 		19D2892BE9B9D7753FE70417 /* Comparable+Clamp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Comparable+Clamp.swift"; path = "../Sources/BatteryPanicApp/Shared/Comparable+Clamp.swift"; sourceTree = "<group>"; };
 		1FA7ACA70D93BC53C3FCA4C3 /* IOKitBatteryProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = IOKitBatteryProvider.swift; path = ../Sources/BatteryPanicApp/Battery/IOKitBatteryProvider.swift; sourceTree = "<group>"; };
-		23634E9C63835461A5155887 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		2ADC7BAD6F2234C29AD0DFCC /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		36D9C0744BB7F05A96E9E9EC /* WarningSoundPlayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WarningSoundPlayer.swift; path = ../Sources/BatteryPanicApp/Sound/WarningSoundPlayer.swift; sourceTree = "<group>"; };
-		4409B61180A6214123AC5B24 /* BatteryPanicWidgetExtension-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = "BatteryPanicWidgetExtension-Info.plist"; path = "../Config/BatteryPanicWidgetExtension-Info.plist"; sourceTree = "<group>"; };
-		4876241AED840586696B7043 /* BatteryPanicWidgets.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BatteryPanicWidgets.swift; path = ../Sources/BatteryPanicWidgetExtension/BatteryPanicWidgets.swift; sourceTree = "<group>"; };
 		4B426D1327411F8A5E3AB7B0 /* SirenTonePlayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SirenTonePlayer.swift; path = ../Sources/BatteryPanicApp/Sound/SirenTonePlayer.swift; sourceTree = "<group>"; };
 		4E6D4B6B2B49577A07FA5AFD /* MenuBarIconFactory.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MenuBarIconFactory.swift; path = ../Sources/BatteryPanicApp/MenuBar/MenuBarIconFactory.swift; sourceTree = "<group>"; };
 		51DBEEA2EB76F11ABF7550A5 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
-		5588A81CB301DB506987B93B /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		5E5C1E8281CDF184EBA03FE4 /* MenuBarController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MenuBarController.swift; path = ../Sources/BatteryPanicApp/MenuBar/MenuBarController.swift; sourceTree = "<group>"; };
 		67981FAFD3B41D619C17EF99 /* AlarmPolicy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AlarmPolicy.swift; path = ../Sources/BatteryPanicApp/Battery/AlarmPolicy.swift; sourceTree = "<group>"; };
 		68B99E54221B841D6A74D529 /* BatteryStatus.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BatteryStatus.swift; path = ../Sources/BatteryPanicApp/Battery/BatteryStatus.swift; sourceTree = "<group>"; };
-		6DDB4613276A050A6A49B414 /* WidgetSnapshotPublisher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WidgetSnapshotPublisher.swift; path = ../Sources/BatteryPanicApp/Widgets/WidgetSnapshotPublisher.swift; sourceTree = "<group>"; };
+		6B7AD9BE4854547D5783C164 /* Version.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Version.xcconfig; path = ../Config/Version.xcconfig; sourceTree = "<group>"; };
 		7F85CA5FCBD5ECC3BA142E6A /* OverlayPreviewView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OverlayPreviewView.swift; path = ../Sources/BatteryPanicApp/Settings/OverlayPreviewView.swift; sourceTree = "<group>"; };
 		8950D1193F17D079A1F567B4 /* BatteryMonitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BatteryMonitor.swift; path = ../Sources/BatteryPanicApp/Battery/BatteryMonitor.swift; sourceTree = "<group>"; };
 		8EB710DCA43C1CA9950FC028 /* BatteryMenuHeaderView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BatteryMenuHeaderView.swift; path = ../Sources/BatteryPanicApp/MenuBar/BatteryMenuHeaderView.swift; sourceTree = "<group>"; };
@@ -134,18 +85,16 @@
 		98AFDB52C1849BA989E1C448 /* OverlayView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OverlayView.swift; path = ../Sources/BatteryPanicApp/Overlay/OverlayView.swift; sourceTree = "<group>"; };
 		9BBAB574E52F4DF303AD512B /* BatteryPanicApp-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = "BatteryPanicApp-Info.plist"; path = "../Config/BatteryPanicApp-Info.plist"; sourceTree = "<group>"; };
 		A5EA7927E561838976427C0C /* main.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = main.swift; path = ../Sources/BatteryPanicApp/App/main.swift; sourceTree = "<group>"; };
+		A83D911787C90A2D30B5E8DE /* Sparkle-LICENSE.txt */ = {isa = PBXFileReference; includeInIndex = 1; name = "Sparkle-LICENSE.txt"; path = ../Vendor/Sparkle/LICENSE; sourceTree = "<group>"; };
 		A9B9D2C33D98C5DE94208587 /* BatteryProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BatteryProvider.swift; path = ../Sources/BatteryPanicApp/Battery/BatteryProvider.swift; sourceTree = "<group>"; };
 		AD4277660EFD0ED31251BDA4 /* BatteryStatus+Preview.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "BatteryStatus+Preview.swift"; path = "../Sources/BatteryPanicApp/Battery/BatteryStatus+Preview.swift"; sourceTree = "<group>"; };
-		B2B56F74DC5A88C0A66C72F6 /* BatteryPanicWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BatteryPanicWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		B37BAC5A08D44856633FB4A8 /* Sparkle.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = Sparkle.xcframework; path = ../Vendor/Sparkle/Sparkle.xcframework; sourceTree = "<group>"; };
-		B469A0D0FD9C323E4C1BC746 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
-		B60942BEFBD2308EA7B80980 /* libBatteryPanicWidgetShared.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBatteryPanicWidgetShared.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC42CD7CF6E42A1F502BA078 /* AppUpdater.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppUpdater.swift; path = ../Sources/BatteryPanicApp/Updates/AppUpdater.swift; sourceTree = "<group>"; };
 		BD213438204982391D2096DA /* SettingsWindowController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SettingsWindowController.swift; path = ../Sources/BatteryPanicApp/Settings/SettingsWindowController.swift; sourceTree = "<group>"; };
 		BD415687AD1AF2B432013719 /* AppSettingsStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppSettingsStore.swift; path = ../Sources/BatteryPanicApp/Settings/AppSettingsStore.swift; sourceTree = "<group>"; };
 		C11BD3FCDD1DDA06B91F1616 /* OverlayWindow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OverlayWindow.swift; path = ../Sources/BatteryPanicApp/Overlay/OverlayWindow.swift; sourceTree = "<group>"; };
 		C1E6197731275787FA20DF95 /* OverlayManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OverlayManager.swift; path = ../Sources/BatteryPanicApp/Overlay/OverlayManager.swift; sourceTree = "<group>"; };
-		C3BA23F9E8D1D3BD185740D8 /* BatteryPanicApp.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; name = BatteryPanicApp.entitlements; path = ../Entitlements/BatteryPanicApp.entitlements; sourceTree = "<group>"; };
+		C389E1E141BC797A451CA8B9 /* THIRD_PARTY_NOTICES.md */ = {isa = PBXFileReference; includeInIndex = 1; name = THIRD_PARTY_NOTICES.md; path = ../THIRD_PARTY_NOTICES.md; sourceTree = "<group>"; };
 		CD57D9549DB01F49562E4E8B /* AppCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppCoordinator.swift; path = ../Sources/BatteryPanicApp/App/AppCoordinator.swift; sourceTree = "<group>"; };
 		CD761E454FBE400CD0DF235D /* OnboardingWindowController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OnboardingWindowController.swift; path = ../Sources/BatteryPanicApp/Settings/OnboardingWindowController.swift; sourceTree = "<group>"; };
 		D6B94AC4AEE771A079B8837F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -161,24 +110,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		07A2E101B0C671B7D3CEF5BA /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CFC4AF6CA673F4AFFC66D91E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				70CC60DD71BBF354E0F8DC5F /* Cocoa.framework in Frameworks */,
-				93F92510E6B7EBC9432DC69E /* SwiftUI.framework in Frameworks */,
-				FC7F1C5D061B897C7B0D5C52 /* WidgetKit.framework in Frameworks */,
-				CC0697F1268DCF7F372B909B /* libBatteryPanicWidgetShared.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		E6DAE8E344EFADB6983079AE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -188,8 +119,6 @@
 				9DEFC599F39031D1FBAF771A /* IOKit.framework in Frameworks */,
 				DE0FAB2CEC2F1013F8CDC717 /* AVFoundation.framework in Frameworks */,
 				58534F5D0490BA46A896A827 /* ServiceManagement.framework in Frameworks */,
-				8ACAEBD5F4A7A6B1F9C5C39B /* WidgetKit.framework in Frameworks */,
-				3AF64E864B3645CAE3221C67 /* libBatteryPanicWidgetShared.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,17 +159,8 @@
 				E359B505682D74A21CF6431B /* WarningSound.swift */,
 				36D9C0744BB7F05A96E9E9EC /* WarningSoundPlayer.swift */,
 				BC42CD7CF6E42A1F502BA078 /* AppUpdater.swift */,
-				6DDB4613276A050A6A49B414 /* WidgetSnapshotPublisher.swift */,
 			);
 			name = BatteryPanicApp;
-			sourceTree = "<group>";
-		};
-		4A2014169F19929956C4C696 /* BatteryPanicWidgetExtension */ = {
-			isa = PBXGroup;
-			children = (
-				4876241AED840586696B7043 /* BatteryPanicWidgets.swift */,
-			);
-			name = BatteryPanicWidgetExtension;
 			sourceTree = "<group>";
 		};
 		58A27142A6330E9C6BE5941F /* Resources */ = {
@@ -248,17 +168,10 @@
 			children = (
 				F5CB2D769E51C516AB3E4A0A /* AppIcon.icns */,
 				04F03DEA1C5480DB11B43C0A /* DMGBackground.png */,
+				C389E1E141BC797A451CA8B9 /* THIRD_PARTY_NOTICES.md */,
+				A83D911787C90A2D30B5E8DE /* Sparkle-LICENSE.txt */,
 			);
 			name = Resources;
-			sourceTree = "<group>";
-		};
-		93928D4A1658BB37ACD8509B /* Entitlements */ = {
-			isa = PBXGroup;
-			children = (
-				C3BA23F9E8D1D3BD185740D8 /* BatteryPanicApp.entitlements */,
-				07212C54F6F9DFE2F9B78636 /* BatteryPanicWidgetExtension.entitlements */,
-			);
-			name = Entitlements;
 			sourceTree = "<group>";
 		};
 		AB325EC057E02CFFC8AC55A6 = {
@@ -268,7 +181,6 @@
 				FC9410DCBADAC28AC197572E /* Frameworks */,
 				C00F015661CC0A807BF942B6 /* Sources */,
 				58A27142A6330E9C6BE5941F /* Resources */,
-				93928D4A1658BB37ACD8509B /* Entitlements */,
 				AC8217AB9AE596184C9F0206 /* Config */,
 				F51A61E9574380714A36B119 /* Vendor */,
 			);
@@ -278,7 +190,7 @@
 			isa = PBXGroup;
 			children = (
 				9BBAB574E52F4DF303AD512B /* BatteryPanicApp-Info.plist */,
-				4409B61180A6214123AC5B24 /* BatteryPanicWidgetExtension-Info.plist */,
+				6B7AD9BE4854547D5783C164 /* Version.xcconfig */,
 			);
 			name = Config;
 			sourceTree = "<group>";
@@ -287,26 +199,14 @@
 			isa = PBXGroup;
 			children = (
 				DCB41671B954814E0C4649B2 /* Battery Panic.app */,
-				B2B56F74DC5A88C0A66C72F6 /* BatteryPanicWidgetExtension.appex */,
-				B60942BEFBD2308EA7B80980 /* libBatteryPanicWidgetShared.a */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		B7792A3320874C87F256DF17 /* BatteryPanicWidgetShared */ = {
-			isa = PBXGroup;
-			children = (
-				0B6C0410CEC88E64FF606303 /* BatteryPanicWidgetSnapshot.swift */,
-			);
-			name = BatteryPanicWidgetShared;
 			sourceTree = "<group>";
 		};
 		C00F015661CC0A807BF942B6 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				389E30D3BF071ADBC2765B8B /* BatteryPanicApp */,
-				B7792A3320874C87F256DF17 /* BatteryPanicWidgetShared */,
-				4A2014169F19929956C4C696 /* BatteryPanicWidgetExtension */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -334,24 +234,11 @@
 				EA5DA2AFBCD340EA2751FD5B /* IOKit.framework */,
 				D6B94AC4AEE771A079B8837F /* AVFoundation.framework */,
 				51DBEEA2EB76F11ABF7550A5 /* ServiceManagement.framework */,
-				B469A0D0FD9C323E4C1BC746 /* WidgetKit.framework */,
-				5588A81CB301DB506987B93B /* SwiftUI.framework */,
-				23634E9C63835461A5155887 /* WidgetKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
-
-/* Begin PBXHeadersBuildPhase section */
-		A73E11C651063B9DCFA91441 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		084D67084E0392C149FF5C9C /* Battery Panic */ = {
@@ -362,53 +249,15 @@
 				E6DAE8E344EFADB6983079AE /* Frameworks */,
 				DE8998785BDE484B5DAA7221 /* Resources */,
 				27EFC5B4C4A049BB2F8B8313 /* Embed Frameworks */,
-				585CE0A65AC7F53965512233 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				7F4635F35DF27EBD698DE8BE /* PBXTargetDependency */,
-				0CC7CBC6DC4E5A271DC310E1 /* PBXTargetDependency */,
 			);
 			name = "Battery Panic";
 			productName = "Battery Panic";
 			productReference = DCB41671B954814E0C4649B2 /* Battery Panic.app */;
 			productType = "com.apple.product-type.application";
-		};
-		232EE0DBD0E9F119DF626890 /* BatteryPanicWidgetExtension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 69947C084C7774603AB441F3 /* Build configuration list for PBXNativeTarget "BatteryPanicWidgetExtension" */;
-			buildPhases = (
-				F82F6FBBA1E522BEB052584A /* Sources */,
-				CFC4AF6CA673F4AFFC66D91E /* Frameworks */,
-				BB4B7FF0527BC7BFA7E56F06 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				D757B65975E203670D9E569A /* PBXTargetDependency */,
-			);
-			name = BatteryPanicWidgetExtension;
-			productName = BatteryPanicWidgetExtension;
-			productReference = B2B56F74DC5A88C0A66C72F6 /* BatteryPanicWidgetExtension.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
-		929D3BF1DED3A74E0BEAA195 /* BatteryPanicWidgetShared */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D6D5B8A94E0EA35C3DFC9769 /* Build configuration list for PBXNativeTarget "BatteryPanicWidgetShared" */;
-			buildPhases = (
-				A73E11C651063B9DCFA91441 /* Headers */,
-				C00EECC48E6F0D574DF662C4 /* Sources */,
-				07A2E101B0C671B7D3CEF5BA /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = BatteryPanicWidgetShared;
-			productName = BatteryPanicWidgetShared;
-			productReference = B60942BEFBD2308EA7B80980 /* libBatteryPanicWidgetShared.a */;
-			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -434,39 +283,24 @@
 			projectRoot = "";
 			targets = (
 				084D67084E0392C149FF5C9C /* Battery Panic */,
-				232EE0DBD0E9F119DF626890 /* BatteryPanicWidgetExtension */,
-				929D3BF1DED3A74E0BEAA195 /* BatteryPanicWidgetShared */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		BB4B7FF0527BC7BFA7E56F06 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		DE8998785BDE484B5DAA7221 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				A8A768E9B841F5158D52767F /* AppIcon.icns in Resources */,
+				5425475E6FC7B42B4FCA6992 /* THIRD_PARTY_NOTICES.md in Resources */,
+				37340CA8EA00E7C6C96430C5 /* Sparkle-LICENSE.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		C00EECC48E6F0D574DF662C4 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5670580D92F89CC3EEB5EBCF /* BatteryPanicWidgetSnapshot.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		D7C539C011E32E82596078E9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -502,40 +336,10 @@
 				E4FAD506936E0AE319176A04 /* WarningSound.swift in Sources */,
 				D959A9EEDCAF739F1B7AFD2A /* WarningSoundPlayer.swift in Sources */,
 				FFEDAF3390C93DC13D6EC80F /* AppUpdater.swift in Sources */,
-				707BD9E6157505FFAE1A26A3 /* WidgetSnapshotPublisher.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F82F6FBBA1E522BEB052584A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E95CB2904E0534241C22ADD2 /* BatteryPanicWidgets.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		0CC7CBC6DC4E5A271DC310E1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = BatteryPanicWidgetExtension;
-			target = 232EE0DBD0E9F119DF626890 /* BatteryPanicWidgetExtension */;
-			targetProxy = B980D322214F8066CC0E19AE /* PBXContainerItemProxy */;
-		};
-		7F4635F35DF27EBD698DE8BE /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = BatteryPanicWidgetShared;
-			target = 929D3BF1DED3A74E0BEAA195 /* BatteryPanicWidgetShared */;
-			targetProxy = E48A19437AEDD74814EF4E25 /* PBXContainerItemProxy */;
-		};
-		D757B65975E203670D9E569A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = BatteryPanicWidgetShared;
-			target = 929D3BF1DED3A74E0BEAA195 /* BatteryPanicWidgetShared */;
-			targetProxy = 8514A32C22FECEFB5FF33EA0 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		11F17FE08B6EE282125E816B /* Release */ = {
@@ -592,34 +396,13 @@
 			};
 			name = Release;
 		};
-		49E66F1063719BE0BAC3B29A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = ../Entitlements/BatteryPanicWidgetExtension.entitlements;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
-				ENABLE_HARDENED_RUNTIME = NO;
-				INFOPLIST_FILE = "../Config/BatteryPanicWidgetExtension-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.leontofficial.batterypanic.mac.widget;
-				PRODUCT_NAME = BatteryPanicWidgetExtension;
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
 		50057EFDD5DD70E46932A4A2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6B7AD9BE4854547D5783C164 /* Version.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = ../Entitlements/BatteryPanicApp.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -700,32 +483,13 @@
 			};
 			name = Debug;
 		};
-		85F0EBB99D6BD132D756EF3D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
-				ENABLE_HARDENED_RUNTIME = NO;
-				EXECUTABLE_PREFIX = lib;
-				MACH_O_TYPE = staticlib;
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.leontofficial.batterypanic.mac.widgetshared;
-				PRODUCT_NAME = BatteryPanicWidgetShared;
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
 		B0AB0413DC1D1833CAF16B4B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6B7AD9BE4854547D5783C164 /* Version.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = ../Entitlements/BatteryPanicApp.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -745,46 +509,6 @@
 			};
 			name = Debug;
 		};
-		C0D24023BA219881B8EC7372 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = ../Entitlements/BatteryPanicWidgetExtension.entitlements;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
-				ENABLE_HARDENED_RUNTIME = NO;
-				INFOPLIST_FILE = "../Config/BatteryPanicWidgetExtension-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.leontofficial.batterypanic.mac.widget;
-				PRODUCT_NAME = BatteryPanicWidgetExtension;
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		DF833FCB271790E3FD725F59 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
-				ENABLE_HARDENED_RUNTIME = NO;
-				EXECUTABLE_PREFIX = lib;
-				MACH_O_TYPE = staticlib;
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.leontofficial.batterypanic.mac.widgetshared;
-				PRODUCT_NAME = BatteryPanicWidgetShared;
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -802,24 +526,6 @@
 			buildConfigurations = (
 				50057EFDD5DD70E46932A4A2 /* Release */,
 				B0AB0413DC1D1833CAF16B4B /* Debug */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		69947C084C7774603AB441F3 /* Build configuration list for PBXNativeTarget "BatteryPanicWidgetExtension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				49E66F1063719BE0BAC3B29A /* Release */,
-				C0D24023BA219881B8EC7372 /* Debug */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		D6D5B8A94E0EA35C3DFC9769 /* Build configuration list for PBXNativeTarget "BatteryPanicWidgetShared" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				DF833FCB271790E3FD725F59 /* Release */,
-				85F0EBB99D6BD132D756EF3D /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -288,7 +288,6 @@ struct AlarmPolicyTestRunner {
             pulseIntensity: 1.0,
             soundEnabled: true,
             selectedSoundName: WarningSound.defaultSound.name,
-            launchAtLoginEnabled: false,
             isPaused: isPaused,
             hasCompletedOnboarding: true
         )

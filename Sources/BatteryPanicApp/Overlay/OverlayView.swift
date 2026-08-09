@@ -8,15 +8,24 @@ enum OverlayDisplayMode {
 
 final class OverlayView: NSView {
     var percentage: Int = 10 {
-        didSet { needsDisplay = true }
+        didSet {
+            needsDisplay = true
+            updateAccessibilityMetadata()
+        }
     }
 
     var timeRemainingText: String? {
-        didSet { needsDisplay = true }
+        didSet {
+            needsDisplay = true
+            updateAccessibilityMetadata()
+        }
     }
 
     var isTest: Bool = false {
-        didSet { needsDisplay = true }
+        didSet {
+            needsDisplay = true
+            updateAccessibilityMetadata()
+        }
     }
 
     var pulseEnabled: Bool = true {
@@ -32,7 +41,24 @@ final class OverlayView: NSView {
     }
 
     var displayMode: OverlayDisplayMode = .lowBattery {
-        didSet { needsDisplay = true }
+        didSet {
+            needsDisplay = true
+            updateAccessibilityMetadata()
+        }
+    }
+
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+        setAccessibilityElement(true)
+        setAccessibilityRole(.group)
+        updateAccessibilityMetadata()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setAccessibilityElement(true)
+        setAccessibilityRole(.group)
+        updateAccessibilityMetadata()
     }
 
     override var isFlipped: Bool {
@@ -100,10 +126,11 @@ final class OverlayView: NSView {
 
     private func drawWarningCard(in rect: NSRect) {
         let pulse = pulseEnabled ? pulseValue : 1
-        let cardWidth = min(
+        let preferredCardWidth = min(
             max(rect.width * 0.30, displayMode == .chargeReminder ? 430 : 470),
             displayMode == .chargeReminder ? 520 : 560
         )
+        let cardWidth = min(preferredCardWidth, max(280, rect.width - 32))
         let cardHeight: CGFloat = 132
         let cardRect = NSRect(
             x: rect.midX - (cardWidth / 2),
@@ -125,8 +152,9 @@ final class OverlayView: NSView {
         NSGraphicsContext.restoreGraphicsState()
 
         let outline = NSBezierPath(roundedRect: cardRect, xRadius: 32, yRadius: 32)
-        outline.lineWidth = 1.8
-        accentColor.withAlphaComponent(0.60 + (pulse * 0.26)).setStroke()
+        outline.lineWidth = NSWorkspace.shared.accessibilityDisplayShouldIncreaseContrast ? 3 : 1.8
+        let outlineAlpha: CGFloat = NSWorkspace.shared.accessibilityDisplayShouldIncreaseContrast ? 1 : 0.60 + (pulse * 0.26)
+        accentColor.withAlphaComponent(outlineAlpha).setStroke()
         outline.stroke()
 
         drawWarningIcon(in: cardRect, pulse: pulse)
@@ -194,9 +222,9 @@ final class OverlayView: NSView {
                 : (timeRemainingText ?? "Connect your charger to dismiss this alert.")
         }
 
-        let textOriginX = cardRect.minX + 124
+        let textOriginX = cardRect.minX + (cardRect.width < 420 ? 104 : 124)
         let textRightInset: CGFloat = 28
-        let textWidth = max(180, cardRect.maxX - textOriginX - textRightInset)
+        let textWidth = max(120, cardRect.maxX - textOriginX - textRightInset)
         let titleFont = fittedSystemFont(
             for: title,
             size: 31,
@@ -302,5 +330,23 @@ final class OverlayView: NSView {
         case .lowBattery:
             return pulseIntensity
         }
+    }
+
+    private func updateAccessibilityMetadata() {
+        let label: String
+        let detail: String
+        switch displayMode {
+        case .chargeReminder:
+            label = "Charging reminder"
+            detail = "Battery reached \(percentage) percent. You can unplug now or keep charging."
+        case .criticalBattery:
+            label = isTest ? "Critical battery preview" : "Critical battery warning"
+            detail = "\(percentage) percent battery remaining. \(timeRemainingText ?? "Plug in your charger now.")"
+        case .lowBattery:
+            label = isTest ? "Low battery preview" : "Low battery warning"
+            detail = "\(percentage) percent battery remaining. \(timeRemainingText ?? "Connect your charger.")"
+        }
+        setAccessibilityLabel(label)
+        setAccessibilityValue(detail)
     }
 }

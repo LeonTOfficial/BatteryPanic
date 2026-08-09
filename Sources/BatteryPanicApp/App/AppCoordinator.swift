@@ -5,7 +5,7 @@ final class AppCoordinator {
     private let settingsStore: AppSettingsStore
     private let batteryMonitor: BatteryMonitor
     private let overlayManager: OverlayManager
-    private let soundPlayer: WarningSoundPlayer
+    private let soundPlayer: WarningSoundPlaying
     private let loginItemService: LoginItemService
     private let menuBarController: MenuBarController
     private let settingsWindowController: SettingsWindowController
@@ -22,12 +22,14 @@ final class AppCoordinator {
     private var testAlarmToken = UUID()
     private var testAlarmTimer: Timer?
     private var soundPreviewToken = UUID()
+    private var soundPreviewActive = false
+    private var activeAlarmSoundName: String?
 
     init(
         settingsStore: AppSettingsStore = AppSettingsStore(),
         batteryMonitor: BatteryMonitor = BatteryMonitor(),
         overlayManager: OverlayManager = OverlayManager(),
-        soundPlayer: WarningSoundPlayer = WarningSoundPlayer(),
+        soundPlayer: WarningSoundPlaying = WarningSoundPlayer(),
         loginItemService: LoginItemService = LoginItemService()
     ) {
         self.settingsStore = settingsStore
@@ -62,6 +64,9 @@ final class AppCoordinator {
         batteryMonitor.stop()
         testAlarmTimer?.invalidate()
         testAlarmTimer = nil
+        soundPreviewToken = UUID()
+        soundPreviewActive = false
+        activeAlarmSoundName = nil
         soundPlayer.stop()
         overlayManager.hide()
     }
@@ -166,10 +171,8 @@ final class AppCoordinator {
                 displayMode: isCritical ? .criticalBattery : .lowBattery,
                 isTest: false
             )
-            if !alarmVisible {
-                playWarningSound(using: settings, looping: true)
-            }
             alarmVisible = true
+            synchronizeActiveAlarmSound(using: settings)
             menuBarController.setAlarmVisible(true, mode: isCritical ? .critical : .active)
             return
         }
@@ -193,6 +196,7 @@ final class AppCoordinator {
             overlayManager.hide()
         }
         soundPlayer.stop()
+        activeAlarmSoundName = nil
         alarmVisible = false
         menuBarController.setAlarmVisible(false)
     }
@@ -212,6 +216,7 @@ final class AppCoordinator {
             isTest: false
         )
         menuBarController.setAlarmVisible(true, mode: .chargeReminder)
+        cancelSoundPreview()
         playWarningSound(using: settings, looping: false)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + AppConstants.previewAlarmDuration) { [weak self] in
@@ -225,6 +230,7 @@ final class AppCoordinator {
         chargeReminderVisible = false
         overlayManager.hide()
         soundPlayer.stop()
+        activeAlarmSoundName = nil
         menuBarController.setAlarmVisible(false)
     }
 
@@ -276,6 +282,7 @@ final class AppCoordinator {
         let token = UUID()
 
         testAlarmTimer?.invalidate()
+        cancelSoundPreview()
         hideActiveAlarm()
         hideChargeReminder()
         soundPlayer.stop()
@@ -320,11 +327,13 @@ final class AppCoordinator {
     private func previewWarningSound(named soundName: String) {
         let token = UUID()
         soundPreviewToken = token
+        soundPreviewActive = true
         playPreviewSound(named: soundName)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + AppConstants.previewAlarmDuration) { [weak self] in
             guard let self, self.soundPreviewToken == token else { return }
-            self.soundPlayer.stop()
+            self.soundPreviewActive = false
+            self.restoreSoundAfterPreview()
         }
     }
 
@@ -344,5 +353,33 @@ final class AppCoordinator {
         } else {
             soundPlayer.playWarning(named: settings.selectedSoundName)
         }
+    }
+
+    private func synchronizeActiveAlarmSound(using settings: AlarmSettingsSnapshot) {
+        guard !soundPreviewActive else { return }
+        guard settings.soundEnabled else {
+            soundPlayer.stop()
+            activeAlarmSoundName = nil
+            return
+        }
+        guard activeAlarmSoundName != settings.selectedSoundName else { return }
+
+        soundPlayer.playLoopingWarning(named: settings.selectedSoundName)
+        activeAlarmSoundName = settings.selectedSoundName
+    }
+
+    private func cancelSoundPreview() {
+        guard soundPreviewActive else { return }
+        soundPreviewToken = UUID()
+        soundPreviewActive = false
+    }
+
+    private func restoreSoundAfterPreview() {
+        activeAlarmSoundName = nil
+        guard alarmVisible else {
+            soundPlayer.stop()
+            return
+        }
+        synchronizeActiveAlarmSound(using: settingsStore.snapshot())
     }
 }

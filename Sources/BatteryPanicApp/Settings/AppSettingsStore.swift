@@ -9,7 +9,6 @@ struct AlarmSettingsSnapshot: Equatable {
     let pulseIntensity: Double
     let soundEnabled: Bool
     let selectedSoundName: String
-    let launchAtLoginEnabled: Bool
     let isPaused: Bool
     let pauseUntil: Date?
     let hasCompletedOnboarding: Bool
@@ -23,7 +22,6 @@ struct AlarmSettingsSnapshot: Equatable {
         pulseIntensity: Double,
         soundEnabled: Bool,
         selectedSoundName: String,
-        launchAtLoginEnabled: Bool,
         isPaused: Bool,
         pauseUntil: Date? = nil,
         hasCompletedOnboarding: Bool
@@ -36,7 +34,6 @@ struct AlarmSettingsSnapshot: Equatable {
         self.pulseIntensity = pulseIntensity
         self.soundEnabled = soundEnabled
         self.selectedSoundName = selectedSoundName
-        self.launchAtLoginEnabled = launchAtLoginEnabled
         self.isPaused = isPaused
         self.pauseUntil = pauseUntil
         self.hasCompletedOnboarding = hasCompletedOnboarding
@@ -53,7 +50,7 @@ final class AppSettingsStore {
         static let pulseIntensity = "pulseIntensity"
         static let soundEnabled = "soundEnabled"
         static let selectedSoundName = "selectedSoundName"
-        static let launchAtLoginEnabled = "launchAtLoginEnabled"
+        static let legacyLaunchAtLoginEnabled = "launchAtLoginEnabled"
         static let legacyIsPaused = "isPaused"
         static let pauseUntil = "pauseUntil"
         static let hasCompletedOnboarding = "hasCompletedOnboarding"
@@ -78,11 +75,11 @@ final class AppSettingsStore {
             Keys.pulseIntensity: 1.0,
             Keys.soundEnabled: true,
             Keys.selectedSoundName: WarningSound.defaultSound.name,
-            Keys.launchAtLoginEnabled: false,
             Keys.hasCompletedOnboarding: false
         ])
         migrateLegacyBundleSettingsIfNeeded()
         defaults.removeObject(forKey: Keys.legacyIsPaused)
+        defaults.removeObject(forKey: Keys.legacyLaunchAtLoginEnabled)
     }
 
     func snapshot() -> AlarmSettingsSnapshot {
@@ -96,10 +93,9 @@ final class AppSettingsStore {
             pulseIntensity: pulseIntensity,
             soundEnabled: defaults.bool(forKey: Keys.soundEnabled),
             selectedSoundName: selectedSoundName,
-            launchAtLoginEnabled: defaults.bool(forKey: Keys.launchAtLoginEnabled),
             isPaused: pauseUntil != nil,
             pauseUntil: pauseUntil,
-            hasCompletedOnboarding: hasCompletedOnboardingForCurrentVersion
+            hasCompletedOnboarding: hasCompletedOnboarding
         )
     }
 
@@ -114,12 +110,12 @@ final class AppSettingsStore {
 
     var pulseSpeed: Double {
         let value = defaults.double(forKey: Keys.pulseSpeed)
-        return (value == 0 ? 1.0 : value).clamped(to: 0.4...2.4)
+        return finiteValue(value, defaultValue: 1.0, range: 0.4...2.4, key: Keys.pulseSpeed)
     }
 
     var pulseIntensity: Double {
         let value = defaults.double(forKey: Keys.pulseIntensity)
-        return (value == 0 ? 1.0 : value).clamped(to: 0.45...1.6)
+        return finiteValue(value, defaultValue: 1.0, range: 0.45...1.6, key: Keys.pulseIntensity)
     }
 
     var selectedSoundName: String {
@@ -156,7 +152,6 @@ final class AppSettingsStore {
             Keys.pulseIntensity,
             Keys.soundEnabled,
             Keys.selectedSoundName,
-            Keys.launchAtLoginEnabled,
             Keys.pauseUntil,
             Keys.hasCompletedOnboarding,
             Keys.completedOnboardingVersion
@@ -174,9 +169,17 @@ final class AppSettingsStore {
         defaults.set(true, forKey: Keys.migratedLegacyBundleSettings)
     }
 
-    private var hasCompletedOnboardingForCurrentVersion: Bool {
-        guard defaults.bool(forKey: Keys.hasCompletedOnboarding) else { return false }
-        return defaults.string(forKey: Keys.completedOnboardingVersion) == currentAppVersion
+    private var hasCompletedOnboarding: Bool {
+        if defaults.bool(forKey: Keys.hasCompletedOnboarding) {
+            return true
+        }
+
+        guard defaults.string(forKey: Keys.completedOnboardingVersion) != nil else {
+            return false
+        }
+
+        defaults.set(true, forKey: Keys.hasCompletedOnboarding)
+        return true
     }
 
     func setThresholdPercentage(_ value: Int) {
@@ -200,12 +203,14 @@ final class AppSettingsStore {
     }
 
     func setPulseSpeed(_ value: Double) {
-        defaults.set(value.clamped(to: 0.4...2.4), forKey: Keys.pulseSpeed)
+        let safeValue = value.isFinite ? value.clamped(to: 0.4...2.4) : 1.0
+        defaults.set(safeValue, forKey: Keys.pulseSpeed)
         notify()
     }
 
     func setPulseIntensity(_ value: Double) {
-        defaults.set(value.clamped(to: 0.45...1.6), forKey: Keys.pulseIntensity)
+        let safeValue = value.isFinite ? value.clamped(to: 0.45...1.6) : 1.0
+        defaults.set(safeValue, forKey: Keys.pulseIntensity)
         notify()
     }
 
@@ -216,11 +221,6 @@ final class AppSettingsStore {
 
     func setSelectedSoundName(_ name: String) {
         defaults.set(WarningSound.sound(named: name).name, forKey: Keys.selectedSoundName)
-        notify()
-    }
-
-    func setLaunchAtLoginEnabled(_ enabled: Bool) {
-        defaults.set(enabled, forKey: Keys.launchAtLoginEnabled)
         notify()
     }
 
@@ -246,5 +246,18 @@ final class AppSettingsStore {
 
     private func notify() {
         onChange?(snapshot())
+    }
+
+    private func finiteValue(
+        _ value: Double,
+        defaultValue: Double,
+        range: ClosedRange<Double>,
+        key: String
+    ) -> Double {
+        let safeValue = value.isFinite && value != 0 ? value.clamped(to: range) : defaultValue
+        if value != safeValue {
+            defaults.set(safeValue, forKey: key)
+        }
+        return safeValue
     }
 }

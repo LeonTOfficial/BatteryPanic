@@ -6,6 +6,9 @@ final class OnboardingHeroView: NSView {
         wantsLayer = true
         layer?.cornerRadius = 24
         layer?.masksToBounds = false
+        setAccessibilityElement(true)
+        setAccessibilityRole(.image)
+        setAccessibilityLabel("Battery Panic menu bar and low battery alert preview")
     }
 
     required init?(coder: NSCoder) {

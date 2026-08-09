@@ -2,7 +2,8 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-VERSION="${VERSION:-0.5.16}"
+VERSION_CONFIG="$ROOT_DIR/Config/Version.xcconfig"
+VERSION="$(awk -F ' = ' '$1 == "MARKETING_VERSION" { print $2 }' "$VERSION_CONFIG")"
 SPARKLE_ACCOUNT="${SPARKLE_ACCOUNT:-BatteryPanic}"
 RELEASE_FILE="$ROOT_DIR/outputs/Battery.Panic.$VERSION.zip"
 APPCAST_WORK_DIR="$ROOT_DIR/work/sparkle-appcast"

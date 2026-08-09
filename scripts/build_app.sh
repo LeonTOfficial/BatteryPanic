@@ -4,12 +4,11 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 APP_NAME="Battery Panic"
 BUNDLE_ID="com.leontofficial.batterypanic.mac"
-WIDGET_NAME="BatteryPanicWidgetExtension"
-WIDGET_DISPLAY_NAME="Battery Panic Widget"
-WIDGET_BUNDLE_ID="$BUNDLE_ID.widget"
-VERSION="0.5.16"
-BUILD_NUMBER="21"
+VERSION_CONFIG="$ROOT_DIR/Config/Version.xcconfig"
+VERSION="$(awk -F ' = ' '$1 == "MARKETING_VERSION" { print $2 }' "$VERSION_CONFIG")"
+BUILD_NUMBER="$(awk -F ' = ' '$1 == "CURRENT_PROJECT_VERSION" { print $2 }' "$VERSION_CONFIG")"
 BUILD_CONFIG="${BUILD_CONFIG:-release}"
+DMGBUILD_VERSION="1.6.7"
 DMG_VOLUME_NAME="$APP_NAME $VERSION"
 SPARKLE_FEED_URL="${SPARKLE_FEED_URL:-https://raw.githubusercontent.com/LeonTOfficial/BatteryPanic/main/appcast.xml}"
 SPARKLE_PUBLIC_ED_KEY="${SPARKLE_PUBLIC_ED_KEY:-XI4zReuhkT5oIylZw3eXkmtQArhooU4Q7fucZ8qndi8=}"
@@ -23,9 +22,6 @@ DMG_MOUNT_DIR="${TMPDIR:-/tmp}/BatteryPanicDmgMount.$$"
 APP_BUNDLE="$STAGING_DIR/$APP_NAME.app"
 BINARY_SOURCE="$ROOT_DIR/.build/$BUILD_CONFIG/BatteryPanicApp"
 BINARY_DEST="$APP_BUNDLE/Contents/MacOS/$APP_NAME"
-WIDGET_BUNDLE="$APP_BUNDLE/Contents/PlugIns/$WIDGET_NAME.appex"
-WIDGET_BINARY_SOURCE="$ROOT_DIR/.build/$BUILD_CONFIG/$WIDGET_NAME"
-WIDGET_BINARY_DEST="$WIDGET_BUNDLE/Contents/MacOS/$WIDGET_NAME"
 SPARKLE_FRAMEWORK_SOURCE="$ROOT_DIR/Vendor/Sparkle/Sparkle.xcframework/macos-arm64_x86_64/Sparkle.framework"
 SPARKLE_FRAMEWORK_DEST="$APP_BUNDLE/Contents/Frameworks/Sparkle.framework"
 DMGBUILD_PYTHON="python3"
@@ -60,8 +56,10 @@ clean_output_bundle_attributes() {
 }
 
 ensure_dmgbuild() {
-    if "$DMGBUILD_PYTHON" - <<'PY' >/dev/null 2>&1
-import dmgbuild
+    if "$DMGBUILD_PYTHON" - "$DMGBUILD_VERSION" <<'PY' >/dev/null 2>&1
+import importlib.metadata
+import sys
+sys.exit(0 if importlib.metadata.version("dmgbuild") == sys.argv[1] else 1)
 PY
     then
         return
@@ -71,13 +69,29 @@ PY
     echo "Preparing dmgbuild for styled DMG packaging..."
     python3 -m venv "$venv_dir"
     "$venv_dir/bin/python" -m pip install --upgrade pip >/dev/null
-    "$venv_dir/bin/python" -m pip install dmgbuild >/dev/null
+    "$venv_dir/bin/python" -m pip install "dmgbuild==$DMGBUILD_VERSION" >/dev/null
     DMGBUILD_PYTHON="$venv_dir/bin/python"
+}
+
+sign_sparkle_framework() {
+    local version_dir="$SPARKLE_FRAMEWORK_DEST/Versions/B"
+    codesign --force --sign - "$version_dir/XPCServices/Downloader.xpc"
+    codesign --force --sign - "$version_dir/XPCServices/Installer.xpc"
+    codesign --force --sign - "$version_dir/Updater.app"
+    codesign --force --sign - "$SPARKLE_FRAMEWORK_DEST"
+
+    codesign --verify --strict --verbose=2 "$version_dir/XPCServices/Downloader.xpc"
+    codesign --verify --strict --verbose=2 "$version_dir/XPCServices/Installer.xpc"
+    codesign --verify --strict --verbose=2 "$version_dir/Updater.app"
+    codesign --verify --strict --verbose=2 "$SPARKLE_FRAMEWORK_DEST"
 }
 
 cd "$ROOT_DIR"
 
-swift build -c "$BUILD_CONFIG"
+if [[ "${SKIP_SWIFT_BUILD:-0}" != "1" ]]; then
+    swift build -c "$BUILD_CONFIG"
+fi
+[[ -x "$BINARY_SOURCE" ]]
 
 rm -rf "$STAGING_DIR"
 rm -rf "$OUTPUT_APP_BUNDLE"
@@ -89,14 +103,10 @@ rm -rf "$DMG_MOUNT_DIR"
 mkdir -p "$APP_BUNDLE/Contents/MacOS"
 mkdir -p "$APP_BUNDLE/Contents/Resources"
 mkdir -p "$APP_BUNDLE/Contents/Frameworks"
-mkdir -p "$WIDGET_BUNDLE/Contents/MacOS"
-mkdir -p "$WIDGET_BUNDLE/Contents/Resources"
 mkdir -p "$OUTPUT_DIR"
 
 cp "$BINARY_SOURCE" "$BINARY_DEST"
 chmod +x "$BINARY_DEST"
-cp "$WIDGET_BINARY_SOURCE" "$WIDGET_BINARY_DEST"
-chmod +x "$WIDGET_BINARY_DEST"
 ditto "$SPARKLE_FRAMEWORK_SOURCE" "$SPARKLE_FRAMEWORK_DEST"
 
 if [[ ! -f "$ROOT_DIR/Resources/AppIcon.icns" ]]; then
@@ -104,6 +114,8 @@ if [[ ! -f "$ROOT_DIR/Resources/AppIcon.icns" ]]; then
 fi
 swift "$ROOT_DIR/scripts/create_dmg_background.swift"
 cp "$ROOT_DIR/Resources/AppIcon.icns" "$APP_BUNDLE/Contents/Resources/AppIcon.icns"
+cp "$ROOT_DIR/THIRD_PARTY_NOTICES.md" "$APP_BUNDLE/Contents/Resources/THIRD_PARTY_NOTICES.md"
+cp "$ROOT_DIR/Vendor/Sparkle/LICENSE" "$APP_BUNDLE/Contents/Resources/Sparkle-LICENSE.txt"
 
 cat > "$APP_BUNDLE/Contents/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
@@ -154,44 +166,9 @@ cat > "$APP_BUNDLE/Contents/Info.plist" <<PLIST
 </plist>
 PLIST
 
-cat > "$WIDGET_BUNDLE/Contents/Info.plist" <<PLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>CFBundleDevelopmentRegion</key>
-    <string>en</string>
-    <key>CFBundleDisplayName</key>
-    <string>$WIDGET_DISPLAY_NAME</string>
-    <key>CFBundleExecutable</key>
-    <string>$WIDGET_NAME</string>
-    <key>CFBundleIdentifier</key>
-    <string>$WIDGET_BUNDLE_ID</string>
-    <key>CFBundleInfoDictionaryVersion</key>
-    <string>6.0</string>
-    <key>CFBundleName</key>
-    <string>$WIDGET_DISPLAY_NAME</string>
-    <key>CFBundlePackageType</key>
-    <string>XPC!</string>
-    <key>CFBundleShortVersionString</key>
-    <string>$VERSION</string>
-    <key>CFBundleVersion</key>
-    <string>$BUILD_NUMBER</string>
-    <key>LSMinimumSystemVersion</key>
-    <string>13.0</string>
-    <key>NSExtension</key>
-    <dict>
-        <key>NSExtensionPointIdentifier</key>
-        <string>com.apple.widgetkit-extension</string>
-    </dict>
-</dict>
-</plist>
-PLIST
-
 clean_bundle_attributes
-codesign --force --deep --sign - "$SPARKLE_FRAMEWORK_DEST"
-codesign --force --sign - --entitlements "$ROOT_DIR/Entitlements/BatteryPanicWidgetExtension.entitlements" "$WIDGET_BUNDLE"
-codesign --force --deep --sign - --entitlements "$ROOT_DIR/Entitlements/BatteryPanicApp.entitlements" "$APP_BUNDLE"
+sign_sparkle_framework
+codesign --force --sign - "$APP_BUNDLE"
 clean_bundle_attributes
 codesign --verify --deep --strict --verbose=2 "$APP_BUNDLE"
 
@@ -214,8 +191,11 @@ ensure_dmgbuild
 clean_output_bundle_attributes
 
 [[ -d "$OUTPUT_APP_BUNDLE" ]]
-[[ -d "$OUTPUT_APP_BUNDLE/Contents/PlugIns/$WIDGET_NAME.appex" ]]
+[[ ! -d "$OUTPUT_APP_BUNDLE/Contents/PlugIns" ]]
+[[ -z "$(find "$OUTPUT_APP_BUNDLE" -name '*.appex' -print -quit)" ]]
 [[ -d "$OUTPUT_APP_BUNDLE/Contents/Frameworks/Sparkle.framework" ]]
+[[ -f "$OUTPUT_APP_BUNDLE/Contents/Resources/THIRD_PARTY_NOTICES.md" ]]
+[[ -f "$OUTPUT_APP_BUNDLE/Contents/Resources/Sparkle-LICENSE.txt" ]]
 [[ -f "$RELEASE_ZIP" ]]
 [[ -f "$RELEASE_DMG" ]]
 
