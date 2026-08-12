@@ -21,10 +21,10 @@ The battery history is stored locally in Application Support, retained for no mo
 
 ## Download
 
-Attach these files to this GitHub release:
+Download Battery Panic 0.6.0 from the published GitHub release:
 
-- outputs/Battery.Panic.0.6.0.dmg
-- outputs/Battery.Panic.0.6.0.zip
+- [Battery.Panic.0.6.0.dmg](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.6.0/Battery.Panic.0.6.0.dmg)
+- [Battery.Panic.0.6.0.zip](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.6.0/Battery.Panic.0.6.0.zip)
 
 ## Compatibility and installation
 
