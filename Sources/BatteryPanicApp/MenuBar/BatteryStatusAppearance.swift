@@ -28,13 +28,39 @@ struct BatteryStatusAppearance {
             )
         }
 
-        if status.isPluggedIn {
+        if status.isFinishingCharge {
+            return BatteryStatusAppearance(
+                level: .charging,
+                color: .systemGreen,
+                title: "\(status.percentage)% finishing charge",
+                subtitle: "Power adapter connected.",
+                showsBolt: true,
+                showsCriticalDot: false
+            )
+        }
+
+        if status.isCharging {
             return BatteryStatusAppearance(
                 level: .charging,
                 color: .systemGreen,
                 title: "\(status.percentage)% charging",
                 subtitle: "Power adapter connected.",
                 showsBolt: true,
+                showsCriticalDot: false
+            )
+        }
+
+        if status.powerState == .connectedNotCharging {
+            return BatteryStatusAppearance(
+                level: .healthy,
+                color: .systemGreen,
+                title: status.isCharged
+                    ? "\(status.percentage)% charged"
+                    : "\(status.percentage)% on power adapter",
+                subtitle: status.isCharged
+                    ? "Power adapter connected."
+                    : "Connected, not charging.",
+                showsBolt: false,
                 showsCriticalDot: false
             )
         }

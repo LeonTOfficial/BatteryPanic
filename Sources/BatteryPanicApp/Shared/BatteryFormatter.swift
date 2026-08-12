@@ -5,9 +5,10 @@ enum BatteryFormatter {
 
     static func menuTitle(for status: BatteryStatus, threshold: Int) -> String {
         guard status.hasBattery else { return pendingMenuTitle }
-        if status.isPluggedIn {
+        if status.isActivelyCharging {
             return "⚡ \(status.percentage)%"
         }
+        if status.isPluggedIn { return "\(status.percentage)%" }
         if status.percentage <= threshold {
             return "! \(status.percentage)%"
         }
@@ -22,7 +23,7 @@ enum BatteryFormatter {
         case .batteryPower:
             source = "battery"
         case .acPower:
-            source = status.isCharging ? "charging" : "power adapter"
+            source = status.isActivelyCharging ? "charging" : "power adapter"
         case .unknown:
             source = "unknown power source"
         }
@@ -47,6 +48,6 @@ enum BatteryFormatter {
             value = "\(remainingMinutes)m"
         }
 
-        return status.isCharging ? "About \(value) until full" : "About \(value) remaining"
+        return status.isActivelyCharging ? "About \(value) until full" : "About \(value) remaining"
     }
 }

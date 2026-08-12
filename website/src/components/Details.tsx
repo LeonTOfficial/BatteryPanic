@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { BatteryCharging, BellRing, Clock3, Gauge, RefreshCw, Volume2 } from "lucide-react";
+import { BatteryCharging, BellRing, Clock3, Gauge, History, PauseCircle, RefreshCw, Volume2 } from "lucide-react";
 
 const details = [
   {
@@ -11,6 +11,11 @@ const details = [
     icon: BatteryCharging,
     title: "Charging reminder",
     text: "Get a short blue-green reminder when your Mac reaches your chosen charging percentage.",
+  },
+  {
+    icon: History,
+    title: "Seven-day local history",
+    text: "Review 30 minutes, one hour, one day, or one week. Hover always shows the nearest exact recorded sample rather than a smoothed substitute.",
   },
   {
     icon: BellRing,
@@ -26,6 +31,11 @@ const details = [
     icon: Clock3,
     title: "Temporary pause",
     text: "Pause alarms for 30 minutes when you need quiet, without turning protection off forever.",
+  },
+  {
+    icon: PauseCircle,
+    title: "Visible snooze state",
+    text: "While the battery is low and unplugged, a paused alarm pulses only the menu-bar percentage in red. Reduce Motion keeps the percentage static red.",
   },
   {
     icon: RefreshCw,
@@ -52,8 +62,8 @@ export function Details() {
             More than a normal notification.
           </h2>
           <p className="mt-5 text-lg font-light leading-relaxed text-white/60">
-            Battery Panic combines menu bar status, pulsing overlays, warning sounds, charging
-            reminders, and update support in one small native macOS app.
+            Battery Panic combines a native status dashboard, private local history, pulsing overlays,
+            warning sounds, charging reminders, and update support in one small native macOS app.
           </p>
         </motion.div>
 

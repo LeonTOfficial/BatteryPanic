@@ -3,9 +3,9 @@
 Battery Panic is split by responsibility:
 
 - `App`: application startup and coordination.
-- `Battery`: battery status reading, polling, and pure alarm decision logic.
+- `Battery`: battery status reading, polling, local seven-day history, and pure alarm decision logic.
 - `Overlay`: full-screen red warning windows, distinct Battery Panic alert layout, pulse speed, and pulse intensity.
-- `MenuBar`: colored battery states, charging display, menu header, readable status summary, and commands.
+- `MenuBar`: colored battery states, native history dashboard, charging display, snooze indicator, and commands.
 - `Settings`: persisted settings, first-run onboarding, settings window, creator links, and launch-at-login support.
 - `Sound`: built-in synthesized siren, repeating Apple system warning playback, sound catalog, selection, preview, and playback.
 - `Shared`: constants, formatters, and small helpers.
@@ -18,6 +18,8 @@ The preview button does not depend on the real current battery level. It creates
 Menu bar pause is intentionally one-time while a real alarm is active. It silences the current low-battery state and resets once the alarm condition clears, so the user does not accidentally disable future warnings forever.
 
 The menu bar status is derived from `BatteryStatusAppearance`, which maps battery state into healthy, warning, critical, charging, or unavailable UI states.
+
+`BatteryHistoryStore` records at most one regular sample per minute plus immediate power-state transitions. It keeps no more than seven days in the app's local Application Support folder. The dashboard downsamples only for drawing; hover values always come from the original recorded observations.
 
 The Settings window includes a lightweight `OverlayPreviewView` so pulse speed and intensity can be tuned without opening the full-screen overlay.
 

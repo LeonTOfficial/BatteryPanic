@@ -3,21 +3,29 @@ import { RefreshCw, Sparkles, Battery, LayoutPanelTop, ShieldCheck, FileText, Ra
 import { links } from "../content";
 
 const latest = [
-  "Fixed vertically shifted text in every full-screen alarm overlay",
-  "Restored separate baselines for the mode label, warning title, and subtitle",
-  "Corrected normal, preview, critical, 80%, and 100% charging layouts",
-  "Long titles scale down safely instead of crowding the warning card",
-  "Animated overlays still clear the transparent surface before every frame",
-  "Added pixel-band spacing checks at 1920x1080 and 1280x800",
+  "New native dashboard with real percentage, power state, remaining time, battery health, and alarm status",
+  "Private on-device history retained for at most seven days, with 30-minute, one-hour, one-day, and one-week views",
+  "Exact hover values come from recorded samples even though the visible line is smoothed for readability",
+  "Charging sections turn green only while the battery is actively charging; adapter power without charging stays neutral",
+  "Paused low-battery alarms pulse only the menu-bar percentage in red, with a static red Reduce Motion state",
+  "Release builds start from real local observations and never insert fixture values or placeholder history",
+  "Sparkle 2.9.5, stronger runtime checks, and the intentionally menu-bar-only package remain included",
 ];
 
 const releaseHistory = [
+  {
+    version: "0.6.0",
+    title: "Native battery dashboard",
+    text: "Real status, private seven-day history, exact hover values, charging-aware chart sections, and a visible snooze state.",
+    href: `${import.meta.env.BASE_URL}sparkle-release-notes/0.6.0/`,
+    current: true,
+  },
   {
     version: "0.5.16",
     title: "Alarm text alignment",
     text: "Stable line spacing for every warning overlay on standard and compact displays.",
     href: `${import.meta.env.BASE_URL}sparkle-release-notes/0.5.16/`,
-    current: true,
+    current: false,
   },
   {
     version: "0.5.15",
@@ -146,7 +154,7 @@ export function UpdatesPage() {
           >
             <div className="mb-6 flex items-center gap-3">
               <Sparkles className="h-6 w-6 text-brand-red" />
-              <p className="text-sm font-bold uppercase tracking-[0.22em] text-brand-red">Latest 0.5.16</p>
+              <p className="text-sm font-bold uppercase tracking-[0.22em] text-brand-red">Latest 0.6.0 • Build 22</p>
             </div>
             <h2 className="font-display text-3xl font-bold text-white">What's new</h2>
             <div className="mt-6 space-y-4">
@@ -162,9 +170,9 @@ export function UpdatesPage() {
 
         <div className="mt-8 grid gap-5 md:grid-cols-3">
           {[
-            { icon: Battery, title: "Correct baselines", text: "Mode, title, and subtitle text keep balanced vertical spacing again." },
-            { icon: LayoutPanelTop, title: "Every alarm mode", text: "Normal, preview, critical, and charging cards share the corrected layout." },
-            { icon: ShieldCheck, title: "Measured spacing", text: "Rendered-pixel tests now verify the actual gaps at two display sizes." },
+            { icon: Battery, title: "Live dashboard", text: "See real battery percentage, power state, remaining time, health, and alarm status in one native menu." },
+            { icon: LayoutPanelTop, title: "Honest history", text: "Review up to seven days locally, hover exact samples, and distinguish real charging sections from discharge." },
+            { icon: ShieldCheck, title: "Private by design", text: "History stays in local Application Support and is never uploaded; no account, analytics, or tracking is added." },
           ].map((item, index) => (
             <motion.article
               key={item.title}

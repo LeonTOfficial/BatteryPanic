@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		028797CA5700F7C872BE063B /* BatteryStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B99E54221B841D6A74D529 /* BatteryStatus.swift */; };
+		B1C2D3E4F5061728394A5B6C /* BatteryHistoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B5C /* BatteryHistoryStore.swift */; };
+		D1E2F3041526374859A6B7C8 /* BatteryDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D2E3F40516273849A5B6C7 /* BatteryDashboardView.swift */; };
 		14314CE1F98EB24DA5C314B3 /* IOKitBatteryProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA7ACA70D93BC53C3FCA4C3 /* IOKitBatteryProvider.swift */; };
 		14E0370967CF3E00ED5E0C55 /* BatteryStatusAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = F372BE09D41FDBCF4A147083 /* BatteryStatusAppearance.swift */; };
 		25D44B710D66540D4AB5D1C1 /* BatteryStatus+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4277660EFD0ED31251BDA4 /* BatteryStatus+Preview.swift */; };
@@ -65,6 +67,8 @@
 
 /* Begin PBXFileReference section */
 		04F03DEA1C5480DB11B43C0A /* DMGBackground.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = DMGBackground.png; path = ../Resources/DMGBackground.png; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4B5C /* BatteryHistoryStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BatteryHistoryStore.swift; path = ../Sources/BatteryPanicApp/Battery/BatteryHistoryStore.swift; sourceTree = "<group>"; };
+		C1D2E3F40516273849A5B6C7 /* BatteryDashboardView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BatteryDashboardView.swift; path = ../Sources/BatteryPanicApp/MenuBar/BatteryDashboardView.swift; sourceTree = "<group>"; };
 		07BCEC1DD226750810AF4049 /* OnboardingHeroView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OnboardingHeroView.swift; path = ../Sources/BatteryPanicApp/Settings/OnboardingHeroView.swift; sourceTree = "<group>"; };
 		0A88F43DB44CF8B63A3C3ACF /* AppDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../Sources/BatteryPanicApp/App/AppDelegate.swift; sourceTree = "<group>"; };
 		19D2892BE9B9D7753FE70417 /* Comparable+Clamp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Comparable+Clamp.swift"; path = "../Sources/BatteryPanicApp/Shared/Comparable+Clamp.swift"; sourceTree = "<group>"; };
@@ -136,7 +140,9 @@
 				A9B9D2C33D98C5DE94208587 /* BatteryProvider.swift */,
 				AD4277660EFD0ED31251BDA4 /* BatteryStatus+Preview.swift */,
 				68B99E54221B841D6A74D529 /* BatteryStatus.swift */,
+				A1B2C3D4E5F60718293A4B5C /* BatteryHistoryStore.swift */,
 				1FA7ACA70D93BC53C3FCA4C3 /* IOKitBatteryProvider.swift */,
+				C1D2E3F40516273849A5B6C7 /* BatteryDashboardView.swift */,
 				F837BAB71796B486F91D9E61 /* BatteryMenuDetailsView.swift */,
 				8EB710DCA43C1CA9950FC028 /* BatteryMenuHeaderView.swift */,
 				F372BE09D41FDBCF4A147083 /* BatteryStatusAppearance.swift */,
@@ -313,7 +319,9 @@
 				F8FA9B5BF722E5205050F0F8 /* BatteryProvider.swift in Sources */,
 				25D44B710D66540D4AB5D1C1 /* BatteryStatus+Preview.swift in Sources */,
 				028797CA5700F7C872BE063B /* BatteryStatus.swift in Sources */,
+				B1C2D3E4F5061728394A5B6C /* BatteryHistoryStore.swift in Sources */,
 				14314CE1F98EB24DA5C314B3 /* IOKitBatteryProvider.swift in Sources */,
+				D1E2F3041526374859A6B7C8 /* BatteryDashboardView.swift in Sources */,
 				5E24B764E8AC23EBB92DC6A0 /* BatteryMenuDetailsView.swift in Sources */,
 				EA984D9D420B7E6102ED09FC /* BatteryMenuHeaderView.swift in Sources */,
 				14E0370967CF3E00ED5E0C55 /* BatteryStatusAppearance.swift in Sources */,

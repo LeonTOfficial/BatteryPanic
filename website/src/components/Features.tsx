@@ -70,7 +70,7 @@ export function Features() {
               </div>
               <h3 className="font-display font-bold text-3xl text-white mb-4">100% Offline & Private</h3>
               <p className="text-white/60 text-lg leading-relaxed font-light">
-                Battery Panic runs locally on your Mac. No tracking, no analytics, no accounts, and no network access is needed for the battery warning itself.
+                Battery Panic runs locally on your Mac. Its history keeps only timestamps, percentages, and power transitions in Application Support for at most seven days. It is never uploaded, and there is no tracking, analytics, or account.
               </p>
             </motion.div>
           </div>
@@ -87,9 +87,9 @@ export function Features() {
               <div className="w-14 h-14 rounded-2xl bg-orange-500/10 flex items-center justify-center mb-6 border border-orange-500/20 text-orange-400 shadow-inner">
                 <Zap className="w-7 h-7" />
               </div>
-              <h3 className="font-display font-bold text-3xl text-white mb-4">Modern Menu Bar Status</h3>
+              <h3 className="font-display font-bold text-3xl text-white mb-4">Native Battery Dashboard</h3>
               <p className="text-white/60 text-lg leading-relaxed font-light">
-                Built natively in Swift for macOS. The menu bar icon shows battery percentage and charging state without opening a full window.
+                See real percentage, power state, remaining time, health, and alarm status without opening a full window. Switch from 30 minutes to one week of history, hover exact recorded values, and see green chart sections only when the battery was truly charging.
               </p>
             </motion.div>
             
@@ -104,7 +104,7 @@ export function Features() {
               </div>
               <h3 className="font-display font-bold text-3xl text-white mb-4">Unignorable Alerts</h3>
               <p className="text-white/60 text-lg leading-relaxed font-light">
-                When panic mode hits, standard notifications are easy to miss. Battery Panic uses a visible overlay, critical wording at <span className="text-brand-red font-medium">2%</span>, and optional sound alerts.
+                When panic mode hits, standard notifications are easy to miss. Battery Panic uses a visible overlay, critical wording at <span className="text-brand-red font-medium">2%</span>, and optional sound alerts. During a 30-minute low-battery snooze, only the percentage pulses red so the paused warning stays visible without taking over the screen.
               </p>
             </motion.div>
           </div>
@@ -118,9 +118,9 @@ export function Features() {
           >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03),transparent_70%)]" />
             <img 
-              src={assets.statusBar} 
-              alt="Status Bar Preview" 
-              className="w-full max-w-[760px] h-auto rounded-2xl shadow-[0_22px_60px_rgba(0,0,0,0.55)] border border-white/20 relative z-10"
+              src={assets.dashboard}
+              alt="Battery Panic native battery dashboard"
+              className="w-full max-w-[430px] h-auto rounded-2xl shadow-[0_22px_60px_rgba(0,0,0,0.55)] border border-white/20 relative z-10"
             />
           </motion.div>
         </div>

@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.6.0
+
+- Replaced the compact menu summary with a native battery dashboard that shows real percentage, power state, remaining time, health, and alarm state.
+- Added private local battery history with selectable 30-minute, one-hour, one-day, and one-week views.
+- Added a smooth, dynamically scaled history chart with exact hover values, robust average drain, short forecasts, and true charging-only green segments.
+- Added a red percentage-only menu bar pulse while a low-battery alarm is paused, including a static Reduce Motion state and automatic cleanup when the pause or alarm condition ends.
+- Removed visible keyboard shortcuts from menu actions and aligned every native SF Symbol action row.
+- Removed the unused WidgetKit extension, app-group plumbing, and fake fallback status while retaining the menu bar app, alarms, overlays, sounds, and Sparkle updates.
+- Hardened battery monitoring, optional IOKit metadata, settings values, onboarding, launch-at-login truth, and accessibility behavior.
+- Updated Sparkle to 2.9.5 and expanded native regression, persistence, rendering, packaging, and provenance checks.
+
 ## 0.5.16
 
 - Restored stable vertical baselines for the mode label, warning title, and subtitle in every full-screen alarm overlay.

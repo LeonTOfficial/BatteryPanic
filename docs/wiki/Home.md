@@ -2,7 +2,7 @@
 
 Battery Panic is a free, open-source macOS menu bar app for visible battery alerts.
 
-It watches your Mac battery in the background and helps you react before your Mac shuts down unexpectedly. The app supports a pulsing red low-battery overlay, a critical 2% mode, charging reminders, sound alerts, and Sparkle updates.
+It watches your Mac battery in the background and helps you react before your Mac shuts down unexpectedly. The app supports a native battery dashboard, private local history, a pulsing red low-battery overlay, a critical 2% mode, charging reminders, sound alerts, and Sparkle updates.
 
 ## Start Here
 
@@ -19,6 +19,7 @@ It watches your Mac battery in the background and helps you react before your Ma
 - Default low-battery warning: 10%.
 - Default charging reminder: 80%.
 - Critical warning mode starts at 2% or below.
+- The menu dashboard can show the last 30 minutes, hour, day, or week of locally recorded battery history.
 - Battery warnings run locally on your Mac.
 - Updates use the public GitHub appcast.
 

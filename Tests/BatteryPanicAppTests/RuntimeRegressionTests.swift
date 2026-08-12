@@ -93,6 +93,150 @@ final class IOKitBatteryProviderRegressionTests: XCTestCase {
         XCTAssertEqual(status.powerSource, .batteryPower)
         XCTAssertEqual(status.timeRemainingMinutes, 75)
     }
+
+    func testOfficialIOKitMetadataIsMappedToTypedBatteryStatus() {
+        let provider = IOKitBatteryProvider(readDescriptions: {
+            [[
+                kIOPSCurrentCapacityKey: 100,
+                kIOPSMaxCapacityKey: 100,
+                kIOPSPowerSourceStateKey: kIOPSACPowerValue,
+                kIOPSIsChargingKey: true,
+                kIOPSIsChargedKey: true,
+                kIOPSIsFinishingChargeKey: true,
+                kIOPSBatteryHealthKey: kIOPSFairValue,
+                kIOPSBatteryHealthConditionKey: kIOPSCheckBatteryValue,
+                kIOPSTimeToFullChargeKey: 12
+            ]]
+        })
+
+        let status = provider.currentStatus()
+
+        XCTAssertEqual(status.powerState, .charging)
+        XCTAssertTrue(status.isCharged)
+        XCTAssertTrue(status.isFinishingCharge)
+        XCTAssertEqual(status.health, .fair)
+        XCTAssertEqual(status.health?.displayName, "Fair")
+        XCTAssertEqual(status.healthCondition, .checkBattery)
+        XCTAssertEqual(status.healthCondition?.displayName, "Check Battery")
+        XCTAssertEqual(status.timeRemainingMinutes, 12)
+    }
+
+    func testConnectedBatteryNotChargingRemainsDistinctFromCharging() {
+        let provider = IOKitBatteryProvider(readDescriptions: {
+            [[
+                kIOPSCurrentCapacityKey: 82,
+                kIOPSMaxCapacityKey: 100,
+                kIOPSPowerSourceStateKey: kIOPSACPowerValue,
+                kIOPSIsChargingKey: false,
+                kIOPSIsChargedKey: false,
+                kIOPSTimeToEmptyKey: 99
+            ]]
+        })
+
+        let status = provider.currentStatus()
+
+        XCTAssertEqual(status.powerState, .connectedNotCharging)
+        XCTAssertTrue(status.isPluggedIn)
+        XCTAssertFalse(status.isCharging)
+        XCTAssertNil(status.timeRemainingMinutes)
+    }
+
+    func testFinishingChargeIsAnEffectiveChargingStateWithTimeToFull() {
+        let provider = IOKitBatteryProvider(readDescriptions: {
+            [[
+                kIOPSCurrentCapacityKey: 99,
+                kIOPSMaxCapacityKey: 100,
+                kIOPSPowerSourceStateKey: kIOPSACPowerValue,
+                kIOPSIsChargingKey: false,
+                kIOPSIsFinishingChargeKey: true,
+                kIOPSTimeToFullChargeKey: 8
+            ]]
+        })
+
+        let status = provider.currentStatus()
+
+        XCTAssertFalse(status.isCharging)
+        XCTAssertTrue(status.isFinishingCharge)
+        XCTAssertTrue(status.isActivelyCharging)
+        XCTAssertEqual(status.powerState, .charging)
+        XCTAssertEqual(status.timeRemainingMinutes, 8)
+        XCTAssertEqual(BatteryFormatter.longStatus(for: status), "99% on charging")
+        XCTAssertEqual(BatteryFormatter.timeRemainingText(for: status), "About 8m until full")
+    }
+
+    func testUnknownHealthValuesArePreservedAndBlankValuesAreAbsent() {
+        let futureProvider = IOKitBatteryProvider(readDescriptions: {
+            [[
+                kIOPSCurrentCapacityKey: 70,
+                kIOPSPowerSourceStateKey: kIOPSBatteryPowerValue,
+                kIOPSIsChargingKey: false,
+                kIOPSBatteryHealthKey: "  Excellent  ",
+                kIOPSBatteryHealthConditionKey: "  Service Soon  "
+            ]]
+        })
+        let blankProvider = IOKitBatteryProvider(readDescriptions: {
+            [[
+                kIOPSCurrentCapacityKey: 70,
+                kIOPSPowerSourceStateKey: kIOPSBatteryPowerValue,
+                kIOPSIsChargingKey: false,
+                kIOPSBatteryHealthKey: "   ",
+                kIOPSBatteryHealthConditionKey: "\n"
+            ]]
+        })
+
+        let futureStatus = futureProvider.currentStatus()
+        let blankStatus = blankProvider.currentStatus()
+
+        XCTAssertEqual(futureStatus.health, .unknown("Excellent"))
+        XCTAssertEqual(futureStatus.healthCondition, .unknown("Service Soon"))
+        XCTAssertNil(blankStatus.health)
+        XCTAssertNil(blankStatus.healthCondition)
+    }
+}
+
+final class BatteryStatusAppearanceRegressionTests: XCTestCase {
+    func testConnectedNotChargingAppearanceDoesNotClaimCharging() {
+        let status = BatteryStatus(
+            percentage: 82,
+            powerSource: .acPower,
+            isCharging: false,
+            hasBattery: true
+        )
+
+        let appearance = BatteryStatusAppearance.appearance(for: status, threshold: 10)
+
+        XCTAssertEqual(appearance.level, .healthy)
+        XCTAssertEqual(appearance.title, "82% on power adapter")
+        XCTAssertEqual(appearance.subtitle, "Connected, not charging.")
+        XCTAssertFalse(appearance.showsBolt)
+        XCTAssertEqual(BatteryFormatter.menuTitle(for: status, threshold: 10), "82%")
+    }
+
+    func testChargedAndFinishingChargeAppearancesAreExplicit() {
+        let charged = BatteryStatus(
+            percentage: 100,
+            powerSource: .acPower,
+            isCharging: false,
+            isCharged: true,
+            hasBattery: true
+        )
+        let finishing = BatteryStatus(
+            percentage: 100,
+            powerSource: .acPower,
+            isCharging: false,
+            isFinishingCharge: true,
+            hasBattery: true
+        )
+
+        let chargedAppearance = BatteryStatusAppearance.appearance(for: charged, threshold: 10)
+        let finishingAppearance = BatteryStatusAppearance.appearance(for: finishing, threshold: 10)
+
+        XCTAssertEqual(chargedAppearance.title, "100% charged")
+        XCTAssertFalse(chargedAppearance.showsBolt)
+        XCTAssertEqual(finishingAppearance.level, .charging)
+        XCTAssertEqual(finishingAppearance.title, "100% finishing charge")
+        XCTAssertTrue(finishingAppearance.showsBolt)
+    }
 }
 
 final class BatteryMonitorRegressionTests: XCTestCase {
