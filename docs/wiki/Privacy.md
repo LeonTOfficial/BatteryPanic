@@ -8,6 +8,7 @@ The battery warning itself works on your Mac and does not need an account, cloud
 
 - Battery percentage.
 - Charging state.
+- Up to seven days of timestamps, battery percentages, and power-source transitions in local Application Support.
 - Low-battery threshold.
 - Charging reminder threshold.
 - Overlay and sound settings.

@@ -37,63 +37,97 @@ In **Settings -> Branches**, consider adding a branch protection rule for `main`
 
 Before creating a GitHub Release:
 
-1. Run tests:
+1. Confirm the canonical release identity in `Config/Version.xcconfig`:
+
+```text
+MARKETING_VERSION = 0.6.0
+CURRENT_PROJECT_VERSION = 22
+```
+
+The app Info.plist, SwiftPM packaging script, Xcode project, website, README,
+appcast, and CI checks must agree with that file. Do not introduce a second
+version source.
+
+2. Run the release checks:
 
 ```bash
 ./scripts/run_tests.sh
+swift test
 ```
 
-2. Build packages:
+3. Build packages:
 
 ```bash
 ./scripts/build_app.sh
 ```
 
-3. Check `outputs/` contains:
+4. Generate the appcast from the exact ZIP, then verify the completed version
+   contract and Sparkle signature:
+
+```bash
+./scripts/generate_appcast.sh
+./scripts/check_version_consistency.sh
+swift scripts/verify_appcast_update.swift outputs/Battery.Panic.0.6.0.zip
+```
+
+5. Check `outputs/` contains:
 
 ```text
 Battery Panic.app
-Battery.Panic.0.5.16.zip
-Battery.Panic.0.5.16.dmg
+Battery.Panic.0.6.0.zip
+Battery.Panic.0.6.0.dmg
 ```
 
-4. Confirm the ZIP contains the finished `.app`, not source code.
-5. Confirm the DMG opens and supports the normal drag-and-drop install flow: `Battery Panic.app` -> `Applications`.
-6. Upload both files to the GitHub Release before relying on the direct README links.
-7. After uploading, the README links should resolve:
-   - `https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.16/Battery.Panic.0.5.16.dmg`
-   - `https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.16/Battery.Panic.0.5.16.zip`
+6. Confirm the ZIP contains the finished `.app`, not source code, and reports
+   version `0.6.0`, build `22`, and an `arm64` app executable.
+7. Confirm the DMG opens and supports the normal drag-and-drop install flow:
+   `Battery Panic.app` -> `Applications`.
+8. Verify the exact ZIP and DMG that will be uploaded. Do not reuse local
+   `0.5.16` artifacts or rename an older package.
+9. Commit the generated appcast and release notes, merge the reviewed release
+   commits, and tag that exact `main` commit. Do not rebuild the signed ZIP.
+10. Upload both files to the GitHub Release before relying on the direct README links.
+11. After uploading, the README links should resolve:
+   - `https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.6.0/Battery.Panic.0.6.0.dmg`
+   - `https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.6.0/Battery.Panic.0.6.0.zip`
+
+The 0.6.0 package is an Apple Silicon (`arm64`) build. Its nested Sparkle
+components and app bundle are signed inside-out with an ad-hoc signature and
+verified after assembly. It is not Developer ID signed, does not have an Apple
+notarization ticket, and does not have a GitHub artifact attestation. Do not
+claim any of those properties in release notes or announcements.
 
 ## Release Fields
 
 Create a new release with these values:
 
-- Tag: `v0.5.16`
-- Release title: `Battery Panic 0.5.16`
+- Tag: `v0.6.0`
+- Release title: `Battery Panic 0.6.0`
 - Release label: leave as `None` for a normal release. Use `Pre-release` only if you want to clearly mark it as a test build.
 - Attached binaries:
-  - `outputs/Battery.Panic.0.5.16.dmg`
-  - `outputs/Battery.Panic.0.5.16.zip`
+  - `outputs/Battery.Panic.0.6.0.dmg`
+  - `outputs/Battery.Panic.0.6.0.zip`
 
 Do not upload only GitHub's automatically generated source code archives as the main user download. Those are useful for developers, but normal users need the `.dmg` or `.zip` app package.
 
 You can copy the prepared release description from:
 
 ```text
-docs/RELEASE_0.5.16_TEXT.md
+docs/RELEASE_0.6.0_TEXT.md
 ```
 
 Suggested release description:
 
 ```markdown
-Battery Panic 0.5.16 fixes the vertically shifted text in every full-screen warning overlay.
+Battery Panic 0.6.0 introduces a native battery dashboard, private local
+battery history, and a clearer paused-alarm status in the menu bar.
 
 Download:
-- Recommended: `Battery.Panic.0.5.16.dmg`
-- Fallback: `Battery.Panic.0.5.16.zip`
+- Recommended: `Battery.Panic.0.6.0.dmg`
+- Fallback: `Battery.Panic.0.6.0.zip`
 
 Install with DMG:
-1. Download `Battery.Panic.0.5.16.dmg`.
+1. Download `Battery.Panic.0.6.0.dmg`.
 2. Open it.
 3. Drag `Battery Panic.app` into Applications.
 4. Open Battery Panic from Applications.
@@ -101,11 +135,17 @@ Install with DMG:
 If macOS warns that the developer cannot be verified, open [Privacy & Security settings](x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension), scroll to the bottom, and click Open Anyway / Dennoch öffnen.
 
 What's new:
-- Restored separate, balanced baselines for the mode label, warning title, and subtitle.
-- Removed the crowded label/title spacing and the oversized gap above the subtitle.
-- Corrected normal, preview, critical, 80%, and 100% charging overlays together.
-- Added adaptive text sizing for compact displays while keeping clean per-frame redraws.
-- Added pixel-band spacing regression tests at 1920x1080 and 1280x800.
+- Added a native menu dashboard with real percentage, power state, remaining
+  time, battery health, and alarm state.
+- Added private on-device history with 30-minute, one-hour, one-day, and
+  one-week views.
+- Added exact chart hover values, robust average drain, short forecasts, and
+  green segments only for real charging intervals.
+- Added a red percentage-only menu bar pulse while a low-battery alarm is
+  paused, with a static Reduce Motion state.
+- Removed the unused widget, app-group plumbing, and fake fallback status.
+- Updated Sparkle to 2.9.5 and expanded native, persistence, rendering,
+  packaging, and accessibility checks.
 
 Privacy:
 - No analytics.
@@ -115,17 +155,24 @@ Privacy:
 - No network connection needed for the battery warning itself.
 - Optional Sparkle update checks use the GitHub appcast.
 
-Note: This release is locally/ad-hoc signed for open-source testing. A future public distribution build should use Apple Developer ID signing and notarization.
+Distribution: This release is an arm64 build with an ad-hoc signature. It is
+not Developer ID signed, not Apple-notarized, and has no GitHub artifact
+attestation. macOS may require Open Anyway on first launch.
 ```
 
-After uploading the ZIP, regenerate and commit the Sparkle appcast if needed:
+Commit the appcast generated and verified in step 4 before publishing:
 
 ```bash
-./scripts/generate_appcast.sh
-git add appcast.xml Battery.Panic.0.5.16.md
-git commit -m "Update Sparkle appcast for 0.5.16"
-git push origin main
+git add appcast.xml Battery.Panic.0.6.0.md
+git commit -m "Update Sparkle appcast for 0.6.0"
 ```
+
+Generate the appcast only from the exact ZIP that will be uploaded using the existing
+Battery Panic Sparkle signing key. Never rebuild or replace that ZIP afterward,
+and never generate, rotate, print, or commit the private key. Merge the reviewed
+release commits, tag that exact `main` commit, and upload the already verified
+ZIP and DMG. After publication, wait for Release Guard and verify that its public
+ZIP check is for `0.6.0` rather than an older feed item.
 
 ## Screenshots
 

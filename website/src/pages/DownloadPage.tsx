@@ -52,7 +52,10 @@ export function DownloadPage() {
             </div>
 
             <p className="mt-5 text-sm text-white/40">
-              Latest public package: Battery Panic 0.5.16 DMG
+              Latest public package: Battery Panic 0.6.0 (Build 22) DMG
+            </p>
+            <p className="mt-2 text-sm text-white/40">
+              Apple silicon (arm64) • ad-hoc signed • not Apple-notarized
             </p>
           </div>
 

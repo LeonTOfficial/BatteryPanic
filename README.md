@@ -2,7 +2,7 @@
 
 ![Battery Panic redoverlay preview](docs/screenshots/overlay-preview.png)
 
-Battery Panic is a native macOS menu bar app that makes low battery warnings impossible to miss. When your MacBook drops below your chosen battery threshold, Battery Panic shows a red pulsing screen overlay, plays an optional warning sound, and keeps the status visible in the menu bar. It can also show a short reminder when your Mac reaches a chosen percentage while charging.
+Battery Panic is a native macOS menu bar app that makes low battery warnings impossible to miss. When your MacBook drops below your chosen battery threshold, Battery Panic shows a red pulsing screen overlay, plays an optional warning sound, and keeps the status visible in the menu bar. Its native dashboard also shows real battery health, remaining time, and a private local history chart.
 
 The app is built with Swift and AppKit, stays local to your Mac, and is designed as a clean open-source project rather than a one-file demo.
 
@@ -16,10 +16,10 @@ For normal users, download the finished DMG below. Do **not** use GitHub's **Cod
 
 **Latest app download:**
 
-- [Download Battery Panic 0.5.16 DMG](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.5.16/Battery.Panic.0.5.16.dmg)
+- [Download Battery Panic 0.6.0 DMG](https://github.com/LeonTOfficial/BatteryPanic/releases/download/v0.6.0/Battery.Panic.0.6.0.dmg)
 - [All releases and fallback ZIP](https://github.com/LeonTOfficial/BatteryPanic/releases)
 
-Use `Battery.Panic.0.5.16.zip` only as a fallback if the DMG does not work.
+Use `Battery.Panic.0.6.0.zip` only as a fallback if the DMG does not work.
 
 DMG install:
 
@@ -66,7 +66,11 @@ See the full install guide: [`docs/INSTALL.md`](docs/INSTALL.md).
 ## Features
 
 - Native macOS menu bar app.
+- Native menu dashboard with real battery percentage, remaining time, power state, health, and alarm state.
+- Private on-device battery history with 30-minute, one-hour, one-day, and one-week views.
+- Smooth history chart with exact hover values, average drain, short forecast, and real charging segments.
 - Green, orange, red, and charging-aware menu bar battery states.
+- Red percentage-only menu bar pulse while a low-battery alarm is paused for 30 minutes.
 - Red pulsing full-screen overlay across connected displays.
 - Estimated battery time in the red warning overlay when macOS provides it.
 - Adjustable low-battery threshold.
@@ -86,6 +90,7 @@ See the full install guide: [`docs/INSTALL.md`](docs/INSTALL.md).
 
 ## Screenshots
 
+![Battery Panic battery dashboard](docs/screenshots/dashboard-preview.png)
 ![Battery Panic status bar preview](docs/screenshots/status-bar-preview.png)
 ![Battery Panic settings preview](docs/screenshots/settings-preview.jpg)
 
@@ -129,6 +134,7 @@ Battery Panic is local-first:
 - No tracking.
 - No account required.
 - No network connection is needed for the battery warning itself.
+- Battery history is retained locally for no more than seven days and is never uploaded.
 - Optional update checks contact the configured Sparkle appcast on GitHub.
 - No API keys or tokens.
 - No private user data collection.

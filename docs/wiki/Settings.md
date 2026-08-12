@@ -2,6 +2,10 @@
 
 Open Battery Panic from the macOS menu bar and choose `Settings`.
 
+## Menu Dashboard
+
+Click the percentage in the menu bar to see the current percentage, remaining-time estimate or power state, battery health, and locally recorded history. Click `Last 30 min` to choose a 30-minute, one-hour, one-day, or one-week range. Moving the pointer over the chart shows the exact recorded percentage and time without changing the data.
+
 ## Battery Threshold
 
 This controls when the red low-battery warning starts.
@@ -47,3 +51,4 @@ You can choose the built-in Battery Panic siren or macOS system sounds.
 
 - `Start at login`: starts Battery Panic automatically after restarting your Mac.
 - `Pause Alarms for 30 Minutes`: temporarily pauses low-battery alarms without disabling protection forever.
+- While a low-battery alarm is paused, only the menu-bar percentage pulses red. With Reduce Motion enabled, it stays red without pulsing.

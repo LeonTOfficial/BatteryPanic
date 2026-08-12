@@ -6,6 +6,7 @@ Battery Panic is a privacy-friendly macOS utility. It does not require an accoun
 
 - Battery status is read locally through macOS power APIs.
 - Settings are stored in local `UserDefaults`.
+- Battery history is stored only in the app's local Application Support folder, is retained for at most seven days, and is never uploaded.
 - The battery warning, menu bar status, overlay, settings, and sound features run locally.
 - Optional update checks use Sparkle and contact the configured GitHub appcast URL.
 - No analytics.
@@ -14,6 +15,7 @@ Battery Panic is a privacy-friendly macOS utility. It does not require an accoun
 - No account required.
 - No network connection is needed for the core battery warning.
 - The app does not store prompts, documents, contacts, emails, tokens, or credentials.
+- The local history contains timestamps, battery percentages, and charging/power-source transitions only.
 - The optional login item uses Apple's ServiceManagement API.
 
 ## Permissions
@@ -24,7 +26,7 @@ The app can draw a transparent warning overlay only inside the logged-in user se
 
 ## Local Signing
 
-The local build script ad-hoc signs the `.app` bundle so it can run on the developer's Mac. Public distribution should use a Developer ID certificate and notarization.
+The build script ad-hoc signs the `.app` bundle and verifies the assembled signature. Current public packages use this same ad-hoc signing path and are not Apple-notarized, so macOS may require first-launch approval in Privacy & Security. Developer ID signing and notarization would remove that limitation in a future distribution step.
 
 ## GitHub Security Settings
 

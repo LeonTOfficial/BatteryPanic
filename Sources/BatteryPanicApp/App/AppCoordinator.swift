@@ -4,9 +4,11 @@ import Foundation
 final class AppCoordinator {
     private let settingsStore: AppSettingsStore
     private let batteryMonitor: BatteryMonitor
+    private let batteryHistoryStore: BatteryHistoryStore
     private let overlayManager: OverlayManager
     private let soundPlayer: WarningSoundPlaying
     private let loginItemService: LoginItemService
+    private let checksForUpdatesInBackground: Bool
     private let menuBarController: MenuBarController
     private let settingsWindowController: SettingsWindowController
     private let onboardingWindowController: OnboardingWindowController
@@ -28,16 +30,25 @@ final class AppCoordinator {
     init(
         settingsStore: AppSettingsStore = AppSettingsStore(),
         batteryMonitor: BatteryMonitor = BatteryMonitor(),
+        batteryHistoryStore: BatteryHistoryStore = BatteryHistoryStore(),
+        dashboardDefaults: UserDefaults = .standard,
         overlayManager: OverlayManager = OverlayManager(),
         soundPlayer: WarningSoundPlaying = WarningSoundPlayer(),
-        loginItemService: LoginItemService = LoginItemService()
+        loginItemService: LoginItemService = LoginItemService(),
+        checksForUpdatesInBackground: Bool = true
     ) {
         self.settingsStore = settingsStore
         self.batteryMonitor = batteryMonitor
+        self.batteryHistoryStore = batteryHistoryStore
         self.overlayManager = overlayManager
         self.soundPlayer = soundPlayer
         self.loginItemService = loginItemService
-        self.menuBarController = MenuBarController(settingsStore: settingsStore)
+        self.checksForUpdatesInBackground = checksForUpdatesInBackground
+        self.menuBarController = MenuBarController(
+            settingsStore: settingsStore,
+            historyStore: batteryHistoryStore,
+            dashboardDefaults: dashboardDefaults
+        )
         self.settingsWindowController = SettingsWindowController(
             settingsStore: settingsStore,
             loginItemService: loginItemService
@@ -57,11 +68,19 @@ final class AppCoordinator {
             self?.handleBatteryStatus(status)
         }
         batteryMonitor.start()
-        appUpdater.checkForUpdatesInBackgroundAfterLaunch()
+        if checksForUpdatesInBackground {
+            appUpdater.checkForUpdatesInBackgroundAfterLaunch()
+        }
     }
 
     func stop() {
         batteryMonitor.stop()
+        menuBarController.stop()
+        do {
+            try batteryHistoryStore.stop()
+        } catch {
+            NSLog("Battery history could not be saved: %@", error.localizedDescription)
+        }
         testAlarmTimer?.invalidate()
         testAlarmTimer = nil
         soundPreviewToken = UUID()
@@ -130,6 +149,7 @@ final class AppCoordinator {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             latestStatus = status
+            batteryHistoryStore.record(status)
             menuBarController.update(status: status)
             evaluateAlarm(for: status)
         }

@@ -41,27 +41,35 @@ Vendor/Sparkle/bin/generate_keys --account BatteryPanic -p
 ## Release workflow
 
 1. Update `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION` in `Config/Version.xcconfig`.
-2. Run `./scripts/check_version_consistency.sh`.
-3. Build the app:
+2. Run the tests, then build the exact release archive:
 
 ```bash
+./scripts/run_tests.sh
+swift test
 ./scripts/build_app.sh
 ```
 
-4. Generate/update the appcast:
+3. Generate/update the appcast from that exact ZIP:
 
 ```bash
 ./scripts/generate_appcast.sh
 ```
 
-5. Commit `appcast.xml` and release notes.
-6. Push to GitHub.
-7. Create a GitHub release tag matching the version, for example `v0.5.16`.
+4. Verify the completed version contract and the local Sparkle signature:
+
+```bash
+./scripts/check_version_consistency.sh
+swift scripts/verify_appcast_update.swift outputs/Battery.Panic.0.6.0.zip
+```
+
+5. Commit `appcast.xml` and release notes. Do not rebuild or replace the signed ZIP afterward.
+6. Push the reviewed commits and wait for CI.
+7. Create a GitHub release tag matching the approved `main` commit, for example `v0.6.0`.
 8. Upload:
 
 ```text
-outputs/Battery.Panic.0.5.16.zip
-outputs/Battery.Panic.0.5.16.dmg
+outputs/Battery.Panic.0.6.0.zip
+outputs/Battery.Panic.0.6.0.dmg
 ```
 
 The appcast should point to the ZIP because Sparkle installs app updates from the ZIP archive. The DMG is still useful for first-time manual installation.
