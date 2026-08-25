@@ -18,6 +18,41 @@ https://raw.githubusercontent.com/LeonTOfficial/BatteryPanic/main/appcast.xml
 
 and compares the installed app version with the newest signed update in the feed.
 
+## Sparkle release notes
+
+Start every new Sparkle page from the canonical self-contained template:
+
+```bash
+version="0.7.1"
+mkdir -p "docs/sparkle-release-notes/$version"
+cp templates/sparkle-release-notes/index.html "docs/sparkle-release-notes/$version/index.html"
+perl -0pi -e "s/__VERSION__/$version/g" "docs/sparkle-release-notes/$version/index.html"
+```
+
+Replace all instructional copy, then validate the finished page:
+
+```bash
+python3 scripts/check_sparkle_release_notes.py \
+  "docs/sparkle-release-notes/$version/index.html"
+```
+
+Do not use a fragment-only link such as `<a href="#changes">` for the scroll
+cue. Sparkle 2.9.5 downloads the HTML, disables page JavaScript unless the host
+app explicitly opts in, and loads the data with the parent directory as its
+base URL. After the initial load, its web view treats navigation as an external
+link. A fragment-only cue can therefore resolve to the release-notes parent and
+open a 404.
+
+The template uses a semantic button and native popover state, so supported
+WebKit versions reveal `#changes` inside the existing Sparkle page without
+JavaScript or navigation. Older WebKit versions receive a native submit-button
+fallback whose action is the full public version URL ending in `/#changes`.
+Keep that absolute fallback URL versioned and test click, Return, and Space.
+
+Before publishing, repeat the interaction in the real Sparkle update window
+with a temporary lower DEBUG build against the reviewed appcast. Do not press
+Install Update and do not alter or expose the private Sparkle key for this test.
+
 ## Signing keys
 
 Sparkle updates are signed with an EdDSA key. The public key is committed in the app build script:

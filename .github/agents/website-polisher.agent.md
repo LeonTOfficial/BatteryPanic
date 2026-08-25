@@ -12,6 +12,7 @@ Focus on:
 - Website source under `website/`
 - Built GitHub Pages output under `docs/`
 - Update history pages under `docs/sparkle-release-notes/`
+- The canonical future Sparkle page under `templates/sparkle-release-notes/`
 - README download and install instructions
 - Screenshots and visual consistency
 - Clear English copy for users who are not developers
@@ -29,6 +30,7 @@ Before finishing, check:
 - No broken local links in `docs/`
 - Download buttons point directly to the current DMG where appropriate
 - Sparkle release note pages are readable and visually consistent
+- New Sparkle pages pass `python3 scripts/check_sparkle_release_notes.py <page>`
+- Scroll cues remain buttons with an absolute no-navigation fallback, never fragment-only links
 
 Do not change app logic unless the website task explicitly requires it.
-
