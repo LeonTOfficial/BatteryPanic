@@ -88,19 +88,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             timestamp: now
         )
         let historyStore = BatteryHistoryStore(storageURL: nil, now: { now })
-        for minute in 0...30 {
-            let isInitialCharge = minute < 5
-            historyStore.record(
-                BatteryHistorySample(
-                    timestamp: now.addingTimeInterval(TimeInterval((minute - 30) * 60)),
-                    percentage: isInitialCharge
-                        ? 22 + (minute / 3)
-                        : 23 - Int((Double(minute - 5) * 5 / 25).rounded(.down)),
-                    powerSource: isInitialCharge ? .acPower : .batteryPower,
-                    isCharging: isInitialCharge
-                )
-            )
-        }
+        DashboardQAHistoryFixture.populate(historyStore, endingAt: now)
 
         return AppCoordinator(
             settingsStore: settingsStore,
@@ -126,6 +114,78 @@ private final class DashboardQABatteryProvider: BatteryProviding {
 
     func currentStatus() -> BatteryStatus {
         status
+    }
+}
+
+/// Deterministic history used only by opt-in DEBUG visual QA and screenshot tests.
+/// Release builds compile none of this fixture.
+enum DashboardQAHistoryFixture {
+    static func populate(_ historyStore: BatteryHistoryStore, endingAt now: Date) {
+        for hour in (-7 * 24)...(-3) {
+            let cycleHour = ((hour % 24) + 24) % 24
+            let isCharging = (2...5).contains(cycleHour)
+            let isConnectedNotCharging = cycleHour == 6
+            let percentage: Int
+            if isCharging {
+                percentage = 40 + ((cycleHour - 2) * 15)
+            } else if cycleHour > 5 {
+                percentage = max(22, 85 - ((cycleHour - 5) * 4))
+            } else {
+                percentage = 32 - (cycleHour * 3)
+            }
+            historyStore.record(
+                BatteryHistorySample(
+                    timestamp: now.addingTimeInterval(TimeInterval(hour * 60 * 60)),
+                    percentage: percentage,
+                    powerSource: (isCharging || isConnectedNotCharging) ? .acPower : .batteryPower,
+                    isCharging: isCharging
+                )
+            )
+        }
+
+        for minutesAgo in stride(from: 120, through: 35, by: -5) {
+            let beginsEarlierCycle = minutesAgo > 60
+            let cycleStart = beginsEarlierCycle ? 120 : 60
+            let elapsed = cycleStart - minutesAgo
+            let isCharging = elapsed <= 10
+            let base = beginsEarlierCycle ? 35 : 21
+            let peak = base + 4
+            let percentage: Int
+            if isCharging {
+                percentage = base + ((elapsed / 5) * 2)
+            } else {
+                let dischargeStep = beginsEarlierCycle ? 2 : 1
+                percentage = peak - (((elapsed - 10) / 5) * dischargeStep)
+            }
+            historyStore.record(
+                BatteryHistorySample(
+                    timestamp: now.addingTimeInterval(TimeInterval(-minutesAgo * 60)),
+                    percentage: percentage,
+                    powerSource: isCharging ? .acPower : .batteryPower,
+                    isCharging: isCharging
+                )
+            )
+        }
+
+        for minute in 0...30 {
+            let isCharging = (4...8).contains(minute)
+            let percentage: Int
+            if minute < 4 {
+                percentage = 22 - (minute / 2)
+            } else if isCharging {
+                percentage = 21 + (minute - 4)
+            } else {
+                percentage = 25 - Int((Double(minute - 8) * 7 / 22).rounded(.down))
+            }
+            historyStore.record(
+                BatteryHistorySample(
+                    timestamp: now.addingTimeInterval(TimeInterval((minute - 30) * 60)),
+                    percentage: percentage,
+                    powerSource: isCharging ? .acPower : .batteryPower,
+                    isCharging: isCharging
+                )
+            )
+        }
     }
 }
 #endif

@@ -59,17 +59,17 @@ swift test
 
 ```bash
 ./scripts/check_version_consistency.sh
-swift scripts/verify_appcast_update.swift outputs/Battery.Panic.0.6.0.zip
+swift scripts/verify_appcast_update.swift outputs/Battery.Panic.0.7.0.zip
 ```
 
 5. Commit `appcast.xml` and release notes. Do not rebuild or replace the signed ZIP afterward.
 6. Push the reviewed commits and wait for CI.
-7. Create a GitHub release tag matching the approved `main` commit, for example `v0.6.0`.
+7. Create a GitHub release tag matching the approved `main` commit, for example `v0.7.0`.
 8. Upload:
 
 ```text
-outputs/Battery.Panic.0.6.0.zip
-outputs/Battery.Panic.0.6.0.dmg
+outputs/Battery.Panic.0.7.0.zip
+outputs/Battery.Panic.0.7.0.dmg
 ```
 
 The appcast should point to the ZIP because Sparkle installs app updates from the ZIP archive. The DMG is still useful for first-time manual installation.

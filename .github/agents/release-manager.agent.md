@@ -26,11 +26,11 @@ Before suggesting a release is ready, verify:
 - `./scripts/generate_appcast.sh` against the exact release ZIP
 - `./scripts/check_version_consistency.sh`
 - `xmllint --noout appcast.xml`
-- `swift scripts/verify_appcast_update.swift outputs/Battery.Panic.0.6.0.zip`
+- `swift scripts/verify_appcast_update.swift outputs/Battery.Panic.0.7.0.zip`
 - Website build checks from `website/`
 
-For Battery Panic 0.6.0, `Config/Version.xcconfig` must contain marketing
-version `0.6.0` and build `22`. Never claim a release is ready unless that
+For Battery Panic 0.7.0, `Config/Version.xcconfig` must contain marketing
+version `0.7.0` and build `23`. Never claim a release is ready unless that
 canonical identity, the appcast entry, ZIP, DMG, release notes, README links,
 website download links, and CI checks all agree.
 

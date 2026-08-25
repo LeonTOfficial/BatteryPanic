@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.7.0
+
+- Added quiet launch and reopen update probes that present Sparkle only when a newer release exists, while preserving the manual update action.
+- Added responsive Sparkle release notes with a clear summary, categorized changes, and an accessible scroll cue.
+- Reworked the range selector into an underlined inline control that resets to Last 30 min whenever the menu opens.
+- Refined the chart with a left-to-right reveal, stronger grid, integrated hover-only axes, supported per-range forecasts, and genuine charging markers.
+- Kept hover points on real render measurements and reduced boundary chatter without interpolating tooltip values.
+- Added honest neutral gaps in day and week views when no observations were recorded while the Mac was unavailable.
+- Optically centered symbols and text in the native menu action rows.
+
 ## 0.6.0
 
 - Replaced the compact menu summary with a native battery dashboard that shows real percentage, power state, remaining time, health, and alarm state.

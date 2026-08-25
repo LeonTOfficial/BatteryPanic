@@ -284,6 +284,39 @@ final class BatteryHistoryStoreTests: XCTestCase {
         XCTAssertEqual(store.shortForecasts(endingAt: now).count, 2)
     }
 
+    func testOneDayForecastUsesOnlyTheLatestPhaseInsideTheDay() throws {
+        let now = Date(timeIntervalSince1970: 1_700_086_400)
+        let store = makeStore(now: { now })
+        let observations: [(TimeInterval, Int, PowerSource, Bool)] = [
+            (-23 * 60 * 60, 40, .acPower, true),
+            (-22 * 60 * 60, 55, .acPower, true),
+            (-60 * 60, 80, .batteryPower, false),
+            (-30 * 60, 77, .batteryPower, false),
+            (0, 74, .batteryPower, false)
+        ]
+        observations.forEach { offset, percentage, source, charging in
+            XCTAssertTrue(
+                store.record(
+                    sample(
+                        at: now.addingTimeInterval(offset),
+                        percentage: percentage,
+                        powerSource: source,
+                        isCharging: charging
+                    )
+                )
+            )
+        }
+
+        let forecast = try XCTUnwrap(
+            store.forecast(for: .oneDay, basedOn: .oneDay, endingAt: now)
+        )
+
+        XCTAssertEqual(forecast.horizon, .oneDay)
+        XCTAssertEqual(forecast.ratePercentagePerHour, -6, accuracy: 0.001)
+        XCTAssertEqual(forecast.projectedPercentage, 0, accuracy: 0.001)
+        XCTAssertFalse(forecast.isCharging)
+    }
+
     func testStopFlushesAtomicallyPersistedJSONAndReloadsIt() throws {
         let directory = FileManager.default.temporaryDirectory
             .appendingPathComponent("BatteryHistoryStoreTests-\(UUID().uuidString)", isDirectory: true)
