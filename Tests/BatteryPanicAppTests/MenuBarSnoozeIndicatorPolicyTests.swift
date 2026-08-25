@@ -68,6 +68,37 @@ final class MenuBarSnoozeIndicatorPolicyTests: XCTestCase {
         XCTAssertTrue(controller.isPercentagePulseActiveForTesting)
         XCTAssertEqual(controller.statusTitleForTesting?.string, "18%")
         XCTAssertTrue(controller.menuKeyEquivalentsForTesting.allSatisfy(\.isEmpty))
+        XCTAssertEqual(controller.menuActionItemsForTesting.count, 3)
+        XCTAssertTrue(
+            controller.menuActionItemsForTesting.allSatisfy {
+                $0.image?.size == NSSize(width: 32, height: 18)
+            }
+        )
+        let actionFont = NSFont.systemFont(ofSize: 15, weight: .regular)
+        let nativeLineHeight = NSLayoutManager().defaultLineHeight(for: actionFont)
+        XCTAssertLessThanOrEqual(
+            abs((controller.menuActionItemsForTesting.first?.image?.size.height ?? 0) - nativeLineHeight),
+            1,
+            "Action symbols and titles must occupy the same native text-line height"
+        )
+        let actionSymbolCenters = try controller.menuActionItemsForTesting.map { item in
+            try XCTUnwrap(opticalInkCenterY(of: XCTUnwrap(item.image)))
+        }
+        XCTAssertLessThanOrEqual(
+            (actionSymbolCenters.max() ?? 0) - (actionSymbolCenters.min() ?? 0),
+            0.5,
+            "Action symbols must share the same visual horizontal midline"
+        )
+        XCTAssertTrue(
+            actionSymbolCenters.allSatisfy { abs($0 - 9) <= 0.5 },
+            "Action symbols must be vertically centered in their 18-point text-line image"
+        )
+        XCTAssertTrue(
+            controller.menuActionItemsForTesting.allSatisfy {
+                $0.attributedTitle?.attribute(.font, at: 0, effectiveRange: nil) as? NSFont
+                    == NSFont.systemFont(ofSize: 15, weight: .regular)
+            }
+        )
         XCTAssertNotNil(
             controller.statusTitleForTesting?.attribute(
                 .foregroundColor,
@@ -115,6 +146,28 @@ final class MenuBarSnoozeIndicatorPolicyTests: XCTestCase {
             isCharging: false,
             hasBattery: hasBattery
         )
+    }
+
+    private func opticalInkCenterY(of image: NSImage) -> CGFloat? {
+        guard
+            let data = image.tiffRepresentation,
+            let bitmap = NSBitmapImageRep(data: data),
+            bitmap.pixelsHigh > 0
+        else {
+            return nil
+        }
+
+        var minimumY = bitmap.pixelsHigh
+        var maximumY = -1
+        for y in 0..<bitmap.pixelsHigh {
+            for x in 0..<bitmap.pixelsWide where (bitmap.colorAt(x: x, y: y)?.alphaComponent ?? 0) > 0.05 {
+                minimumY = min(minimumY, y)
+                maximumY = max(maximumY, y)
+            }
+        }
+        guard maximumY >= minimumY else { return nil }
+        let centerInPixels = CGFloat(minimumY + maximumY + 1) / 2
+        return centerInPixels / CGFloat(bitmap.pixelsHigh) * image.size.height
     }
 
     private func settings(isPaused: Bool) -> AlarmSettingsSnapshot {

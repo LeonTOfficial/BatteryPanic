@@ -17,13 +17,15 @@ enum MenuBarSnoozeIndicatorPolicy {
     }
 }
 
-final class MenuBarController: NSObject {
+final class MenuBarController: NSObject, NSMenuDelegate {
     private enum Layout {
         static let minimumStatusItemLength: CGFloat = 58
         static let statusItemPadding: CGFloat = 32
         static let dashboardWidth: CGFloat = 426
         static let dashboardHeight: CGFloat = 376
         static let pausedDashboardHeight: CGFloat = 440
+        static let expandedRangePickerHeight: CGFloat = 38
+        static let rangePickerTransitionDuration: TimeInterval = 0.30
     }
 
     private let settingsStore: AppSettingsStore
@@ -39,7 +41,7 @@ final class MenuBarController: NSObject {
     private var percentagePulseTimer: Timer?
     private var percentagePulseStartedAt = Date()
     private var percentagePulseUntil: Date?
-    private var historyRangeSelectionCommitted = false
+    private var rangePickerResizeGeneration = 0
 
     var onOpenSettings: (() -> Void)?
     var onOpenWelcome: (() -> Void)?
@@ -63,6 +65,11 @@ final class MenuBarController: NSObject {
             .map(\.keyEquivalent)
     }
 
+    var menuActionItemsForTesting: [NSMenuItem] {
+        let alignedTitles = Set(["Preview alarm", "Settings…", "Check for Updates…"])
+        return menu.items.filter { alignedTitles.contains($0.title) }
+    }
+
     init(
         settingsStore: AppSettingsStore,
         historyStore: BatteryHistoryStore,
@@ -81,13 +88,40 @@ final class MenuBarController: NSObject {
         dashboardModel = model
         dashboardView = NSHostingView(rootView: BatteryDashboardView(model: model))
         super.init()
+        // The menu item must follow the explicit dashboard frame. Letting the
+        // hosting view publish its intrinsic size can restore the pre-picker
+        // height between cancellation and reopening, clipping the inline row.
+        dashboardView.sizingOptions = []
 
         model.onResumeAlarm = { [weak self] in
             self?.menu.cancelTracking()
             self?.onTogglePause?()
         }
-        model.onChooseHistoryRange = { [weak self] in
-            self?.presentHistoryRangeMenu()
+        model.onRangePickerVisibilityChange = { [weak self] isExpanded in
+            guard let self else { return }
+            self.rangePickerResizeGeneration += 1
+            let generation = self.rangePickerResizeGeneration
+
+            if isExpanded {
+                self.resizeDashboard(for: self.settingsStore.snapshot())
+                self.menu.update()
+                return
+            }
+
+            // Let the SwiftUI spring finish fading and sliding the picker out
+            // before the native menu shortens. This removes the hard snap at
+            // the end of a range choice while keeping the tracking session open.
+            DispatchQueue.main.asyncAfter(
+                deadline: .now() + Layout.rangePickerTransitionDuration
+            ) { [weak self] in
+                guard let self,
+                      self.rangePickerResizeGeneration == generation
+                else {
+                    return
+                }
+                self.resizeDashboard(for: self.settingsStore.snapshot())
+                self.menu.update()
+            }
         }
         NSWorkspace.shared.notificationCenter.addObserver(
             self,
@@ -136,6 +170,7 @@ final class MenuBarController: NSObject {
 
     private func configureMenu() {
         menu.removeAllItems()
+        menu.delegate = self
         configureMenuItems()
         statusItem?.menu = menu
         statusItem?.isVisible = true
@@ -272,47 +307,6 @@ final class MenuBarController: NSObject {
         item.keyEquivalentModifierMask = []
     }
 
-    private func presentHistoryRangeMenu() {
-        let anchor = NSEvent.mouseLocation
-        menu.cancelTrackingWithoutAnimation()
-
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            let rangeMenu = NSMenu(title: "History range")
-            rangeMenu.autoenablesItems = false
-            var selectedItem: NSMenuItem?
-
-            for (index, range) in BatteryHistoryRange.allCases.enumerated() {
-                let item = NSMenuItem(
-                    title: range.menuTitle,
-                    action: #selector(self.selectHistoryRange(_:)),
-                    keyEquivalent: ""
-                )
-                item.target = self
-                item.tag = index
-                item.state = range == dashboardModel.selectedRange ? .on : .off
-                removeKeyEquivalent(from: item)
-                rangeMenu.addItem(item)
-                if item.state == .on {
-                    selectedItem = item
-                }
-            }
-
-            historyRangeSelectionCommitted = false
-            rangeMenu.popUp(positioning: selectedItem, at: anchor, in: nil)
-            guard historyRangeSelectionCommitted else { return }
-            DispatchQueue.main.async { [weak self] in
-                self?.statusItem?.button?.performClick(nil)
-            }
-        }
-    }
-
-    @objc private func selectHistoryRange(_ sender: NSMenuItem) {
-        guard BatteryHistoryRange.allCases.indices.contains(sender.tag) else { return }
-        dashboardModel.selectedRange = BatteryHistoryRange.allCases[sender.tag]
-        historyRangeSelectionCommitted = true
-    }
-
     private func configureSymbol(_ name: String, for item: NSMenuItem, description: String) {
         item.indentationLevel = 2
         item.image = alignedMenuSymbol(named: name, description: description)
@@ -341,19 +335,26 @@ final class MenuBarController: NSObject {
 
         // AppKit gives menu items only the intrinsic SF Symbol width, so icons
         // with different silhouettes otherwise make their labels jump sideways.
-        // A fixed 18 pt symbol cell plus a transparent 14 pt text gutter keeps
-        // every native action on the same visual column as the paused banner.
+        // Keep the image canvas at the native 18 pt text-line height. The old
+        // 28 pt canvas made AppKit center the glyph against the whole row while
+        // the title remained baseline-positioned, so the bell and label looked
+        // vertically detached even though the icon pixels matched each other.
+        // The transparent horizontal gutter still keeps every title aligned.
         let symbolCell = NSSize(width: 18, height: 18)
-        let canvas = NSImage(size: NSSize(width: 32, height: 28))
+        let canvas = NSImage(size: NSSize(width: 32, height: 18))
         canvas.lockFocus()
         let scale = min(
             symbolCell.width / max(symbol.size.width, 1),
             symbolCell.height / max(symbol.size.height, 1)
         )
         let drawSize = NSSize(width: symbol.size.width * scale, height: symbol.size.height * scale)
+        let opticalCenter = NSPoint(
+            x: symbol.alignmentRect.midX * scale,
+            y: symbol.alignmentRect.midY * scale
+        )
         let drawRect = NSRect(
-            x: (symbolCell.width - drawSize.width) / 2,
-            y: (canvas.size.height - drawSize.height) / 2,
+            x: symbolCell.width / 2 - opticalCenter.x,
+            y: canvas.size.height / 2 - opticalCenter.y,
             width: drawSize.width,
             height: drawSize.height
         )
@@ -365,12 +366,24 @@ final class MenuBarController: NSObject {
     }
 
     private func resizeDashboard(for settings: AlarmSettingsSnapshot) {
+        let baseHeight = settings.isPaused
+            ? Layout.pausedDashboardHeight
+            : Layout.dashboardHeight
+        let rangePickerHeight = dashboardModel.isRangePickerExpanded
+            ? Layout.expandedRangePickerHeight
+            : 0
         dashboardView.frame = NSRect(
             x: 0,
             y: 0,
             width: Layout.dashboardWidth,
-            height: settings.isPaused ? Layout.pausedDashboardHeight : Layout.dashboardHeight
+            height: baseHeight + rangePickerHeight
         )
+    }
+
+    func menuWillOpen(_ menu: NSMenu) {
+        rangePickerResizeGeneration += 1
+        dashboardModel.prepareForMenuOpening()
+        resizeDashboard(for: settingsStore.snapshot())
     }
 
     private func setPendingStatusButton(_ button: NSStatusBarButton) {

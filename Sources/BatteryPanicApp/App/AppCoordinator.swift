@@ -12,7 +12,7 @@ final class AppCoordinator {
     private let menuBarController: MenuBarController
     private let settingsWindowController: SettingsWindowController
     private let onboardingWindowController: OnboardingWindowController
-    private let appUpdater = AppUpdater()
+    private let appUpdater: AppUpdater
 
     private var latestStatus: BatteryStatus?
     private var alarmVisible = false
@@ -35,6 +35,7 @@ final class AppCoordinator {
         overlayManager: OverlayManager = OverlayManager(),
         soundPlayer: WarningSoundPlaying = WarningSoundPlayer(),
         loginItemService: LoginItemService = LoginItemService(),
+        appUpdater: AppUpdater = AppUpdater(),
         checksForUpdatesInBackground: Bool = true
     ) {
         self.settingsStore = settingsStore
@@ -43,6 +44,7 @@ final class AppCoordinator {
         self.overlayManager = overlayManager
         self.soundPlayer = soundPlayer
         self.loginItemService = loginItemService
+        self.appUpdater = appUpdater
         self.checksForUpdatesInBackground = checksForUpdatesInBackground
         self.menuBarController = MenuBarController(
             settingsStore: settingsStore,
@@ -69,7 +71,7 @@ final class AppCoordinator {
         }
         batteryMonitor.start()
         if checksForUpdatesInBackground {
-            appUpdater.checkForUpdatesInBackgroundAfterLaunch()
+            appUpdater.checkQuietlyAfterLaunch()
         }
     }
 
@@ -93,6 +95,9 @@ final class AppCoordinator {
     func showSettingsForReopen() {
         menuBarController.ensureStatusItemVisible()
         showSettings()
+        if checksForUpdatesInBackground {
+            appUpdater.checkQuietlyAfterReopen()
+        }
     }
 
     private func wireCallbacks() {

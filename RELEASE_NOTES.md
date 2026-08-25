@@ -1,55 +1,41 @@
-# Battery Panic 0.6.0 Release Notes
+# Battery Panic 0.7.0 Release Notes
 
-Battery Panic 0.6.0 introduces a native menu bar dashboard built from real battery data, with an honest local history and clearer alarm state.
+Battery Panic 0.7.0 makes updates easier to notice and refines the native battery-history chart while keeping every displayed measurement honest and local.
 
 ## Highlights
 
-### Real Battery Dashboard
+### Reliable Update Notices
 
-- The menu now leads with the current battery percentage, power state, remaining-time estimate when macOS provides one, and battery health.
-- Battery Panic records at most seven days of battery history locally in Application Support.
-- Choose between the last 30 minutes, hour, day, or week without leaving the menu.
-- Hover over the chart to see the exact stored percentage and observation time.
+- Battery Panic quietly checks for updates on launch, login start, and app reopen.
+- Sparkle comes to the front only when a newer update exists; automatic no-update checks and network errors stay unobtrusive.
+- Manual **Check for Updates...** remains a visible foreground action.
+- Release notes now open with a clear summary and an accessible **Scroll down to see all changes** cue sized for Sparkle's compact window.
 
-### Honest History, Trends, and Forecasts
+### Refined Native History Chart
 
-- The smooth chart is drawn from recorded samples and uses a dynamically padded scale instead of inventing measurements or fixed labels.
-- Charging color is limited to intervals actually reported as charging; a connected power adapter without active charging remains distinct.
-- The compact average rate appears only after at least three samples cover ten minutes of one uninterrupted power phase.
-- Short dashed forecasts are available for the 30-minute and one-hour views only when the same real trend is strong enough to support them.
+- The menu always opens on **Last 30 min**, with an underlined inline selector for 30 minutes, one hour, day, and week that keeps the menu open.
+- The chart reveals smoothly from left to right and respects Reduce Motion.
+- Grid, line, area, charging colors, and forecasts have been polished to stay readable in the compact dashboard.
+- Supported dashed forecasts use real measurements from the newest uninterrupted phase for 30 minutes, one hour, and day; week remains history-only.
+- Day and week keep their honest full calendar domains, using clock labels and weekdays only while hovering.
+- Long recording pauses are shown as neutral dashed gaps between the two real observations around the pause. They never create hoverable or invented measurements.
 
-### Clear Snooze State
+### Exact Hover and Charging Markers
 
-- After an alarm is stopped for 30 minutes, only the menu bar percentage pulses red while the low-battery condition remains active.
-- The indicator stops when the pause expires, the battery recovers, or external power is connected.
-- Reduce Motion replaces the animation with a static red percentage.
+- Hover selects only stored points used by the visible Catmull-Rom curve, keeping the marker directly on the rendered line.
+- Tooltip percentage and time remain unchanged recorded values rather than interpolated estimates.
+- A small deadband reduces marker chatter while moving horizontally.
+- Every visible charging section gets one bolt at its real render point nearest the section's temporal midpoint.
 
-### Cleanup and Runtime Hardening
+### Menu Polish
 
-- Removed the unused WidgetKit extension, App Group remnants, snapshot publisher, and the fake 68% fallback.
-- Kept the real menu bar app, battery monitoring, alarms, overlay, sounds, and Sparkle updates.
-- Hardened sound preview state, optional IOKit results, serialized monitoring, finite settings values, one-time onboarding, and login-item state reporting.
-- Updated the vendored updater framework to Sparkle 2.9.5 without changing the public EdDSA trust root.
+- **Preview alarm**, **Settings...**, and **Check for Updates...** use a shared symbol cell with optically centered symbol and text baselines.
+- The current endpoint stays visible without a permanent percentage or time label.
 
 ## Privacy
 
-Battery history stays on the Mac. It is stored locally, retained for no more than seven days, and is not sent to an analytics service or account.
-
-## Build
-
-~~~bash
-./scripts/run_tests.sh
-./scripts/build_app.sh
-~~~
-
-The release files are written to:
-
-~~~text
-outputs/Battery Panic.app
-outputs/Battery.Panic.0.6.0.zip
-outputs/Battery.Panic.0.6.0.dmg
-~~~
+Battery history stays on the Mac. It is retained for no more than seven days, is not uploaded, and release builds contain no deterministic QA fixtures or demo history.
 
 ## Distribution Note
 
-The current release package is for Apple silicon Macs (arm64) running macOS 13 or later. It is locally/ad-hoc signed and is not Apple-notarized, so macOS may require approval in System Settings -> Privacy & Security on first launch. Sparkle separately verifies the EdDSA signature of update archives.
+Battery Panic 0.7.0 is an Apple silicon (`arm64`) build for macOS 13 or later. It is locally/ad-hoc signed and is not Apple-notarized, so macOS may require approval in System Settings -> Privacy & Security on first launch. Sparkle separately verifies the EdDSA signature of update archives.

@@ -58,7 +58,7 @@ struct BatteryHistorySample: Codable, Equatable {
     }
 }
 
-enum BatteryHistoryRange: CaseIterable, Equatable {
+enum BatteryHistoryRange: CaseIterable, Hashable {
     case thirtyMinutes
     case oneHour
     case oneDay
@@ -81,6 +81,7 @@ enum BatteryHistoryRange: CaseIterable, Equatable {
 enum BatteryForecastHorizon: CaseIterable, Equatable {
     case thirtyMinutes
     case oneHour
+    case oneDay
 
     var duration: TimeInterval {
         switch self {
@@ -88,6 +89,8 @@ enum BatteryForecastHorizon: CaseIterable, Equatable {
             return 30 * 60
         case .oneHour:
             return 60 * 60
+        case .oneDay:
+            return 24 * 60 * 60
         }
     }
 }
@@ -379,7 +382,7 @@ final class BatteryHistoryStore {
         basedOn range: BatteryHistoryRange = .oneHour,
         endingAt endDate: Date = Date()
     ) -> [BatteryHistoryForecast] {
-        BatteryForecastHorizon.allCases.compactMap {
+        [BatteryForecastHorizon.thirtyMinutes, .oneHour].compactMap {
             forecast(for: $0, basedOn: range, endingAt: endDate)
         }
     }

@@ -16,7 +16,7 @@ export default defineConfig(() => {
           main: path.resolve(__dirname, 'index.html'),
           download: path.resolve(__dirname, 'download/index.html'),
           updates: path.resolve(__dirname, 'updates/index.html'),
-          releaseNotes: path.resolve(__dirname, 'release-notes/0.6.0/index.html'),
+          releaseNotes: path.resolve(__dirname, 'release-notes/0.7.0/index.html'),
         },
       },
     },
