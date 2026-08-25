@@ -26,6 +26,7 @@ cp "$ROOT_DIR/RELEASE_NOTES.md" "$ROOT_DIR/Battery.Panic.$VERSION.md"
 if [[ -n "$PRIVATE_KEY_ENV" ]]; then
     echo "$PRIVATE_KEY_ENV" | "$ROOT_DIR/Vendor/Sparkle/bin/generate_appcast" \
         --ed-key-file - \
+        --maximum-versions 0 \
         --download-url-prefix "$DOWNLOAD_URL_PREFIX" \
         --link "https://github.com/LeonTOfficial/BatteryPanic" \
         -o "$ROOT_DIR/appcast.xml" \
@@ -33,6 +34,7 @@ if [[ -n "$PRIVATE_KEY_ENV" ]]; then
 else
     "$ROOT_DIR/Vendor/Sparkle/bin/generate_appcast" \
         --account "$SPARKLE_ACCOUNT" \
+        --maximum-versions 0 \
         --download-url-prefix "$DOWNLOAD_URL_PREFIX" \
         --link "https://github.com/LeonTOfficial/BatteryPanic" \
         -o "$ROOT_DIR/appcast.xml" \
