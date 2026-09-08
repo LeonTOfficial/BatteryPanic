@@ -59,6 +59,18 @@ final class MenuBarController: NSObject, NSMenuDelegate {
         statusItem?.button?.attributedTitle
     }
 
+    var pauseItemTitleForTesting: String {
+        pauseItem.title
+    }
+
+    var pauseItemForegroundColorForTesting: NSColor? {
+        pauseItem.attributedTitle?.attribute(
+            .foregroundColor,
+            at: 0,
+            effectiveRange: nil
+        ) as? NSColor
+    }
+
     var menuKeyEquivalentsForTesting: [String] {
         menu.items
             .filter { !$0.isSeparatorItem && $0 !== dashboardItem }
@@ -313,11 +325,14 @@ final class MenuBarController: NSObject, NSMenuDelegate {
         styleActionTitle(for: item)
     }
 
-    private func styleActionTitle(for item: NSMenuItem) {
-        item.attributedTitle = NSAttributedString(
-            string: item.title,
-            attributes: [.font: NSFont.systemFont(ofSize: 15, weight: .regular)]
-        )
+    private func styleActionTitle(for item: NSMenuItem, color: NSColor? = nil) {
+        var attributes: [NSAttributedString.Key: Any] = [
+            .font: NSFont.systemFont(ofSize: 15, weight: .regular)
+        ]
+        if let color {
+            attributes[.foregroundColor] = color
+        }
+        item.attributedTitle = NSAttributedString(string: item.title, attributes: attributes)
     }
 
     private func alignedMenuSymbol(named name: String, description: String) -> NSImage? {
@@ -422,7 +437,7 @@ final class MenuBarController: NSObject, NSMenuDelegate {
         pauseItem.title = alarmVisible
             ? "Stop alarm for 30 minutes"
             : "Pause alarms for 30 minutes"
-        styleActionTitle(for: pauseItem)
+        styleActionTitle(for: pauseItem, color: alarmVisible ? .systemRed : nil)
     }
 
     private func startPercentagePulse() {

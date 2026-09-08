@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Battery Panic __VERSION__ — What’s new</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --background: #0e1014;
+        --panel: rgba(255, 255, 255, 0.065);
+        --text: #fff8f8;
+        --muted: rgba(255, 248, 248, 0.72);
+        --soft: rgba(255, 248, 248, 0.54);
+        --line: rgba(255, 255, 255, 0.14);
+        --red: #ff4050;
+        --teal: #2bd4d1;
+        --green: #47d764;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        min-width: 320px;
+        margin: 0;
+        background:
+          radial-gradient(circle at 8% 0%, rgba(255, 64, 80, 0.25), transparent 26rem),
+          radial-gradient(circle at 92% 8%, rgba(43, 212, 209, 0.18), transparent 24rem),
+          var(--background);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+        line-height: 1.4;
+      }
+
+      main {
+        width: min(760px, calc(100% - 28px));
+        margin: 0 auto;
+        padding: 18px 0 88px;
+      }
+
+      .intro,
+      .change-group,
+      .privacy-note {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        box-shadow: 0 18px 60px rgba(0, 0, 0, 0.30);
+        backdrop-filter: blur(18px);
+      }
+
+      .intro {
+        border-radius: 22px;
+        padding: 18px 20px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        min-height: 25px;
+        margin: 0;
+        border: 1px solid rgba(43, 212, 209, 0.34);
+        border-radius: 999px;
+        background: rgba(43, 212, 209, 0.10);
+        color: var(--teal);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.13em;
+        padding: 5px 10px;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 12px 0 7px;
+        font-size: clamp(29px, 7vw, 44px);
+        letter-spacing: -0.045em;
+        line-height: 1.02;
+      }
+
+      .lead {
+        max-width: 650px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .first-change {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 10px;
+        align-items: start;
+        margin-top: 14px;
+        border-radius: 14px;
+        background: rgba(255, 64, 80, 0.10);
+        padding: 11px 12px;
+      }
+
+      .first-change strong {
+        display: block;
+        margin-bottom: 2px;
+        font-size: 13px;
+      }
+
+      .first-change p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .status-dot {
+        width: 9px;
+        height: 9px;
+        margin-top: 5px;
+        border-radius: 50%;
+        background: var(--red);
+        box-shadow: 0 0 14px rgba(255, 64, 80, 0.72);
+      }
+
+      .changes {
+        display: grid;
+        gap: 12px;
+        margin-top: 16px;
+      }
+
+      .change-group {
+        border-radius: 18px;
+        padding: 16px 18px;
+      }
+
+      .change-group h2 {
+        margin: 0 0 8px;
+        font-size: 17px;
+        letter-spacing: -0.025em;
+      }
+
+      .change-group.new h2 {
+        color: var(--green);
+      }
+
+      .change-group.improved h2 {
+        color: var(--teal);
+      }
+
+      .change-group.fixed h2 {
+        color: var(--red);
+      }
+
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      li {
+        position: relative;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 13px;
+        padding: 9px 0 9px 16px;
+      }
+
+      li:first-child {
+        border-top: 0;
+      }
+
+      li::before {
+        content: "";
+        position: absolute;
+        top: 15px;
+        left: 1px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      .privacy-note {
+        margin-top: 12px;
+        border-radius: 16px;
+        color: var(--soft);
+        font-size: 12px;
+        padding: 13px 16px;
+      }
+
+      .scroll-cue {
+        position: fixed;
+        z-index: 5;
+        right: 50%;
+        bottom: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 36px;
+        appearance: none;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 999px;
+        background: rgba(18, 20, 26, 0.94);
+        box-shadow: 0 10px 36px rgba(0, 0, 0, 0.44);
+        color: var(--text);
+        cursor: pointer;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 750;
+        padding: 8px 13px;
+        transform: translateX(50%);
+        transition: opacity 160ms ease, transform 160ms ease;
+      }
+
+      .scroll-cue:hover,
+      .scroll-cue:focus-visible {
+        border-color: rgba(43, 212, 209, 0.60);
+        outline: 2px solid rgba(43, 212, 209, 0.55);
+        outline-offset: 2px;
+      }
+
+      .scroll-cue--popover {
+        display: none;
+      }
+
+      .scroll-cue-form {
+        margin: 0;
+      }
+
+      .scroll-arrow {
+        color: var(--teal);
+        font-size: 18px;
+        line-height: 1;
+      }
+
+      @supports selector(body:has(#scroll-cue-state:popover-open)) {
+        .scroll-cue--popover {
+          display: inline-flex;
+        }
+
+        .scroll-cue-form {
+          display: none;
+        }
+
+        #scroll-cue-state[popover] {
+          position: fixed;
+          width: 1px;
+          height: 1px;
+          margin: 0;
+          border: 0;
+          background: transparent;
+          overflow: hidden;
+          padding: 0;
+        }
+
+        #scroll-cue-state::backdrop {
+          background: transparent;
+          pointer-events: none;
+        }
+
+        body:has(#scroll-cue-state:popover-open) .intro {
+          display: none;
+        }
+
+        body:has(#scroll-cue-state:popover-open) .changes {
+          margin-top: 0;
+        }
+
+        body:has(#scroll-cue-state:popover-open) .scroll-cue--popover {
+          display: none;
+        }
+      }
+
+      @media (min-width: 700px) and (min-height: 560px) {
+        main {
+          padding-top: 34px;
+        }
+
+        .changes {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        .scroll-cue {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header class="intro" aria-labelledby="release-title">
+        <p class="eyebrow">Battery Panic · __VERSION__</p>
+        <h1 id="release-title">What’s new in this update</h1>
+        <p class="lead">
+          Replace this summary with one concise sentence about the update.
+        </p>
+        <div class="first-change">
+          <span class="status-dot" aria-hidden="true"></span>
+          <div>
+            <strong>Replace this headline with the most important change</strong>
+            <p>Replace this explanation with a short, user-facing description.</p>
+          </div>
+        </div>
+      </header>
+
+      <section class="changes" id="changes" aria-label="All changes in this update">
+        <article class="change-group new">
+          <h2>New</h2>
+          <ul>
+            <li>Replace this item with a new capability.</li>
+          </ul>
+        </article>
+
+        <article class="change-group improved">
+          <h2>Improved</h2>
+          <ul>
+            <li>Replace this item with an improvement.</li>
+          </ul>
+        </article>
+
+        <article class="change-group fixed">
+          <h2>Fixed</h2>
+          <ul>
+            <li>Replace this item with a resolved issue.</li>
+          </ul>
+        </article>
+      </section>
+
+      <p class="privacy-note">
+        Battery history remains local, bounded to seven days, and is never replaced with demo data in release builds.
+      </p>
+    </main>
+
+    <button
+      class="scroll-cue scroll-cue--popover"
+      id="scroll-cue"
+      type="button"
+      popovertarget="scroll-cue-state"
+      aria-controls="changes"
+      aria-label="Scroll down to see all changes"
+    >
+      <span class="scroll-arrow" aria-hidden="true">↓</span>
+      <span>Scroll down to see all changes</span>
+    </button>
+
+    <form
+      class="scroll-cue-form"
+      action="https://leontofficial.github.io/BatteryPanic/sparkle-release-notes/__VERSION__/#changes"
+      method="get"
+    >
+      <button class="scroll-cue" type="submit" aria-label="Open all changes on the Battery Panic website">
+        <span class="scroll-arrow" aria-hidden="true">↓</span>
+        <span>Open all changes on the website</span>
+      </button>
+    </form>
+
+    <div id="scroll-cue-state" popover="manual" aria-hidden="true"></div>
+  </body>
+</html>

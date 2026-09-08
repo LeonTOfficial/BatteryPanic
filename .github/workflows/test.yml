@@ -79,6 +79,14 @@ jobs:
           grep -q "sparkle-release-notes/0.5.11/" docs/web-assets/*.js
           grep -q "sparkle-release-notes/0.5.9/" docs/web-assets/*.js
 
+      - name: Validate future Sparkle release-note template
+        run: |
+          set -euo pipefail
+          test -f templates/sparkle-release-notes/index.html
+          test -f scripts/check_sparkle_release_notes.py
+          python3 scripts/check_sparkle_release_notes.py \
+            --template templates/sparkle-release-notes/index.html
+
       - name: Run logic tests
         run: ./scripts/run_tests.sh
 

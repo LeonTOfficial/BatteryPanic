@@ -3,6 +3,35 @@ import XCTest
 @testable import BatteryPanicApp
 
 final class MenuBarSnoozeIndicatorPolicyTests: XCTestCase {
+    @MainActor
+    func testPauseActionTurnsRedOnlyWhileAnAlarmIsVisible() throws {
+        let suiteName = "BatteryPanicMenuAlarmActionTests.\(UUID().uuidString)"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suiteName))
+        defaults.set(true, forKey: "migratedLegacyBundleSettings")
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        let controller = MenuBarController(
+            settingsStore: AppSettingsStore(defaults: defaults),
+            historyStore: BatteryHistoryStore(storageURL: nil)
+        )
+        controller.start()
+        defer { controller.stop() }
+
+        XCTAssertEqual(controller.pauseItemTitleForTesting, "Pause alarms for 30 minutes")
+        XCTAssertNil(controller.pauseItemForegroundColorForTesting)
+
+        controller.setAlarmVisible(true, mode: .active)
+
+        XCTAssertEqual(controller.pauseItemTitleForTesting, "Stop alarm for 30 minutes")
+        let alarmColor = try XCTUnwrap(controller.pauseItemForegroundColorForTesting)
+        XCTAssertTrue(alarmColor.isEqual(NSColor.systemRed))
+
+        controller.setAlarmVisible(false)
+
+        XCTAssertEqual(controller.pauseItemTitleForTesting, "Pause alarms for 30 minutes")
+        XCTAssertNil(controller.pauseItemForegroundColorForTesting)
+    }
+
     func testOnlyPausedLowBatteryOnBatteryPowerIsHighlighted() {
         let pausedSettings = settings(isPaused: true)
         let lowOnBattery = status(percentage: 10, powerSource: .batteryPower, hasBattery: true)
